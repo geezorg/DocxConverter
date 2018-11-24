@@ -53,7 +53,8 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 	}
 	private String prediacritic;
 	public boolean isPrediacritic(String text) {
-		if ( text.equals( "\u0071" ) || text.equals( "\u00ff" ) ) {
+		char lastChar = text.charAt( text.length()-1 );
+		if ( (lastChar == 0x71 ) || (lastChar == 0xff)  ) {
 			prediacritic = text;
 			return true;
 		}
@@ -148,7 +149,6 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 									txt.setSpace( "preserve" );
 								}
 								else if( isDiacritic( out ) ) {
-									System.err.println( "lastTxt: " + lastTxtValue );
 									if( lastTxtValue != null ) {
 										out = convertText( lastTxtValue + txt.getValue() );
 										lastTxt.setValue( out );
