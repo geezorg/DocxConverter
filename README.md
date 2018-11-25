@@ -6,7 +6,7 @@
 This repository may be imported into [Eclipse](http://www.eclipse.org) as a simple [Maven](https://maven.apache.org/) Java project.
 The "Eclipse IDE for Java Developers" download option will include both Maven and Git integration, no additional installation will
 be needed to build this project.  Maven in turn will retrieve all dependencies, primarily the [docx4j](https://www.docx4java.org/)
-(6.0.1) and [ICU](http://site.icu-project.org/) and Java libaries.
+(6.0.1) and [ICU](http://site.icu-project.org/) (63.1) and Java libaries.
 
 The converter presently provides support for two legacy (non-Unicode) systems, Brana (I &amp; II) and Feedel Ge'ez (New &amp; B).
 The conversion mappings come directly from the long defunct [LibEth](http://libeth.sourceforge.net) C language library which
