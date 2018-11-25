@@ -10,8 +10,9 @@ package org.geez.convert.docx;
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
 import org.docx4j.finders.ClassFinder;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+// import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
+import org.docx4j.openpackaging.parts.JaxbXmlPart;
 
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
@@ -70,34 +71,20 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 
 	
 
-	public void processWithDiacritics(
-		final String table1RulesFile,
-		final String table2RulesFile,
-		final String fontName1,
-		final String fontName2,
-		final File inputFile,
-		final File outputFile)
-	{
+	public void processObjects(
+			final JaxbXmlPart<?> part,
+			final Transliterator translit1,
+			final Transliterator translit2,
+			final String fontName1,
+			final String fontName2) throws Docx4JException
+		{
 
-		try {
-			// specify the transliteration file in the first argument.
-			// read the input, transliterate, and write to output
-			String table1Text = readRules( table1RulesFile  );
-			String table2Text = readRules( table2RulesFile );
-
-			final Transliterator translit1 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-			final Transliterator translit2 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-
-
-			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
-			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-				
 			ClassFinder finder = new ClassFinder( R.class );
-			new TraversalUtil(documentPart.getContent(), finder);
+			new TraversalUtil(part.getContents(), finder);
 
 			Text lastTxt = null;
 			String lastTxtValue = null;
-		
+
 
 			for (Object o : finder.results) {
 				Object o2 = XmlUtils.unwrap(o);
@@ -108,6 +95,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 				if (o2 instanceof org.docx4j.wml.R) {
 					R r = (org.docx4j.wml.R)o2;
 					RPr rpr = r.getRPr();
+					if (rpr == null ) continue;
 					RFonts rfonts = rpr.getRFonts();
 				
 					if( rfonts == null ) {
@@ -177,13 +165,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 					System.err.println( XmlUtils.marshaltoString(o, true, true) );
 				}
 			}
-   
-			// Save it zipped
-			wordMLPackage.save( outputFile );
 
-		} catch ( Exception ex ) {
-			System.err.println( ex );
-		}
    
 
 	}
@@ -209,7 +191,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 		}
 		else if( "geeznewab".equals( system ) ) {
 			ConvertDocxFeedelGeezNewAB converter = new ConvertDocxFeedelGeezNewAB();
-			converter.processWithDiacritics( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB",  inputFile, outputFile );
+			converter.process( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB",  inputFile, outputFile );
 		}
 		else {
 			System.err.println( "Unrecognized input system: " + system );
