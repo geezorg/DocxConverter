@@ -19,9 +19,6 @@ import org.docx4j.wml.RPr;
 import org.docx4j.wml.RFonts;
 import org.docx4j.wml.Text;
 
-
-import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
