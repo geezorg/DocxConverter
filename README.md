@@ -32,7 +32,9 @@ used the HighEdit document format as its native system.
 3. The converter application may be run simply from Eclipse. At the command line, you will need to specify the paths
    to depending librariesl in a form similar to:
 
-% java -cp DocxConverter-0.0.1-SNAPSHOT.jar:docx4j-6.0.1.jar:dependencies/\*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana MyFileIn.docx MyFileOut.docx 
+```
+% java -cp DocxConverter-0.0.1-SNAPSHOT.jar:docx4j-6.0.1.jar:dependencies/\*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx **brana** MyFileIn.docx MyFileOut.docx 
+```
 
 
 ### Feedel
@@ -47,5 +49,7 @@ following steps assume that Feedel documents were composed in older versions of 
 3. The converter application may be run simply from Eclipse. At the command line, you will need to specify the paths
    to depending librariesl in a form similar to:
 
-% java -cp DocxConverter-0.0.1-SNAPSHOT.jar:docx4j-6.0.1.jar:dependencies/*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab MyFileIn.docx MyFileOut.docx 
+```
+% java -cp DocxConverter-0.0.1-SNAPSHOT.jar:docx4j-6.0.1.jar:dependencies/\*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx **geeznewab** MyFileIn.docx MyFileOut.docx 
+```
 
