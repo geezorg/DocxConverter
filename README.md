@@ -27,7 +27,7 @@ the full syllabary across two two fonts, Brana I and Brana II respectively. Bran
 used the HighEdit document format as its native system.
 
 1. In the Brana 90 application, save a document as RTF.
-2. Open the RTF document in Microsoft WordPad and Save As... Office Open XML Document (.docx)
+2. Open the RTF document in Microsoft WordPad and Save As... Office Open XML Document (.docx)  
    (MS Word 2016 is unable to open RTF documets saved from Brana 90).
 3. The converter application may be run simply from Eclipse. At the command line, you will need to specify the paths
    to depending librariesl in a form similar to:
