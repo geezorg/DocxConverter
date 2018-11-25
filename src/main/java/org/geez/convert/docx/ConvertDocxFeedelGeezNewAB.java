@@ -170,31 +170,4 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 
 	}
 
-
-
-	public static void main( String[] args ) {
-		if( args.length != 3 ) {
-			System.err.println( "Exactly 3 arguements are expected: <system> <input file> <output file>" );
-			System.exit(0);
-		}
-
-		String system = args[0];
-		String inputFilepath  = System.getProperty("user.dir") + "/" + args[1];
-		String outputFilepath = System.getProperty("user.dir") + "/" + args[2];
-		File inputFile = new File ( inputFilepath );
-		File outputFile = new File ( outputFilepath );
-
-
-		if( "brana".equals( system ) ) {
-			ConvertDocx converter = new ConvertDocx();
-			converter.process( "BranaITable.txt", "BranaIITable.txt", "Brana I", "Brana II", inputFile, outputFile );
-		}
-		else if( "geeznewab".equals( system ) ) {
-			ConvertDocxFeedelGeezNewAB converter = new ConvertDocxFeedelGeezNewAB();
-			converter.process( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB",  inputFile, outputFile );
-		}
-		else {
-			System.err.println( "Unrecognized input system: " + system );
-		}
-	}
 }
