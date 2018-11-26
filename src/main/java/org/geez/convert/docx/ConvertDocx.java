@@ -1,8 +1,10 @@
 package org.geez.convert.docx;
 
 /*
- * javac -Xlint:deprecation -cp docx4j-6.0.1.jar:dependencies/commons-io-2.5.jar:../icu4j-63_1.jar:dependencies/slf4j-api-1.7.25.jar:slf4j-1.7.25 ConvertDocx.java
- * jar -cvf convert.jar org/geez/convert/docx/ConvertDocx.class org/geez/convert/tables/
+ * The non-maven way to build the jar file:
+ *
+ * javac -Xlint:deprecation -cp docx4j-6.0.1.jar:dependencies/commons-io-2.5.jar:../icu4j-63_1.jar:dependencies/slf4j-api-1.7.25.jar:slf4j-1.7.25 *.java
+ * jar -cvf convert.jar org/geez/convert/docx/*.class org/geez/convert/tables/
  * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana myFile-In.docx myFile-Out.docx
  *
  */
@@ -38,11 +40,7 @@ public class ConvertDocx {
 
 	public String readRules( String fileName ) throws IOException {
 		String line, segment, rules = "";
-		/*
-	    File initialFile = new File("org/geez/convert/tables/" + fileName);
-	    InputStream in = new FileInputStream(initialFile);
-	    */
-		// InputStream in = getClass().getResourceAsStream( "/org/geez/convert/tables/" + fileName ); 
+
 		ClassLoader classLoader = this.getClass().getClassLoader();
 		InputStream in = classLoader.getResourceAsStream( "tables/" + fileName ); 
 		BufferedReader ruleFile = new BufferedReader( new InputStreamReader(in, "UTF-8") );
