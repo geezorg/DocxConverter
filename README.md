@@ -10,7 +10,7 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 
 The converter presently provides support for two legacy (non-Unicode) systems, Brana (I &amp; II) and Feedel Ge'ez (New &amp; B).
 The conversion mappings come directly from the long defunct [LibEth](http://libeth.sourceforge.net) C language library which
-supported conversion of many more [legacy encoding systems](http://libeth.sourceforge.net/CharacterSets.html).  Support for additional
+supported conversion of [many more legacy encoding systems](http://libeth.sourceforge.net/CharacterSets.html).  Support for additional
 encodings systems can be porrted from LibEth as the need arrises. Please feel free to request support for additional systems.
 
 
