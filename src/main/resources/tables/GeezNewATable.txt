@@ -1,3 +1,18 @@
+################################################################################
+#
+# This is a bidirectional mapping file for the GeezNewA font encoding into the
+# Unicode standard for Ethiopic. The file is intended to be read as input for
+# the International Components for Unicode (ICU) software library. The mapping
+# syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# GeezNewA and GeezNewB were provided with the Feedel software created by
+# Fekade Mesfin.
+#
+################################################################################
+#
+#
 \x20 ↔ \x20 ;
 \x21 ↔ \x21 ;
 \u201c ↔ \xc7 ;
@@ -329,7 +344,6 @@
 ብ ↔ x ;
 ቦ ↔ y ;
 ተ ↔ z ;
-
 #
 #
 :: ([\x20-\xff]) ;

@@ -57,7 +57,7 @@ public final class DocxConverter extends Application {
 
 
         ComboBox<String> fontMenu = new ComboBox<String>();
-        fontMenu.getItems().addAll( brana, geeznewab );       
+        fontMenu.getItems().addAll( brana, geeznewab, geeztype );       
         fontMenu.setValue( "Brana I/II" );
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
