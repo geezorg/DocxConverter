@@ -20,6 +20,9 @@ In the GitHub the "releases" folder you can find and download the "DocxConverter
 contains the converter and all of its dependencies (jar libraries).  Double clicking the jar file will launch a user
 interface where fonts and files may be selected via mouse and menus.
 
+Output files will have the name "-Abyssinica" appended to it.  The application uses the [Abyssinica SIL](http://software.sil.org/abyssinica/download/) font as a default for output.  If you do not have the Aybssinica SIL font installed this will not be an
+issue, Microsoft Word will substitute for another font such as Nyala.
+
 
 ## Command Line Usage Examples
 
