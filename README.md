@@ -14,7 +14,14 @@ supported conversion of [many more legacy encoding systems](http://libeth.source
 encodings systems can be porrted from LibEth as the need arrises. Please feel free to request support for additional systems.
 
 
-## Usage Examples
+## Usage Examples (Executable Jar)
+
+In the GitHub the "releases" folder you can find and download the "DocxConverter-0.2.0-full-gui.jar" file. This version
+contains the converter and all of its dependencies (jar libraries).  Double clicking the jar file will launch a user
+interface where fonts and files may be selected via mouse and menus.
+
+
+## Usage Examples (Command Line)
 
 % java -cp [path to libaries]  &lt;system&gt; &lt;file-in&gt; &lt;file-out&gt;
 
@@ -33,7 +40,7 @@ used the HighEdit document format as its native system.
    to depending librariesl in a form similar to:
 
 ```
-% java -cp DocxConverter-0.1.0.jar:docx4j-6.0.1.jar:dependencies/*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana MyFileIn.docx MyFileOut.docx 
+% java -cp DocxConverter-0.2.0.jar:docx4j-6.0.1.jar:dependencies/*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana MyFileIn.docx MyFileOut.docx 
 ```
 
 
@@ -50,6 +57,6 @@ following steps assume that Feedel documents were composed in older versions of 
    to depending librariesl in a form similar to:
 
 ```
-% java -cp DocxConverter-0.1.0.jar:docx4j-6.0.1.jar:dependencies/*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab MyFileIn.docx MyFileOut.docx 
+% java -cp DocxConverter-0.2.0.jar:docx4j-6.0.1.jar:dependencies/*:icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab MyFileIn.docx MyFileOut.docx 
 ```
 
