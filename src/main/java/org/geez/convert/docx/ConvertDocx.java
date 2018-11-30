@@ -69,12 +69,7 @@ public class ConvertDocx {
 
 
 
-	public void processObjects(
-		final JaxbXmlPart<?> part,
-		final Transliterator translit1,
-		final Transliterator translit2,
-		final String fontName1,
-		final String fontName2) throws Docx4JException
+	public void processObjects( final JaxbXmlPart<?> part) throws Docx4JException
 	{
 				
 			ClassFinder finder = new ClassFinder( R.class );
@@ -140,14 +135,16 @@ public class ConvertDocx {
 	}
 
 
+	protected Transliterator translit1 = null;
+	protected Transliterator translit2 = null;
+	protected String fontName1 = null;
+	protected String fontName2 = null;
 
-	public void process(
+	public void initialize(
 		final String table1RulesFile,
 		final String table2RulesFile,
 		final String fontName1,
-		final String fontName2,
-		final File inputFile,
-		final File outputFile)
+		final String fontName2)
 	{
 
 		try {
@@ -156,27 +153,36 @@ public class ConvertDocx {
 			String table1Text = readRules( table1RulesFile  );
 			String table2Text = readRules( table2RulesFile );
 
-			final Transliterator translit1 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-			final Transliterator translit2 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-
-
-			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
-			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-            processObjects( documentPart, translit1, translit2, fontName1, fontName2 );
-            
-            if( documentPart.hasFootnotesPart() ) {
-            	FootnotesPart footnotesPart = documentPart.getFootnotesPart();
-            	processObjects( footnotesPart, translit1, translit2, fontName1, fontName2 );	
-            }
-
-   
-			// Save it zipped
-			wordMLPackage.save( outputFile );
+			translit1 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
+			translit2 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
+			this.fontName1 = fontName1;
+			this.fontName2 = fontName2;;
 
 		} catch ( Exception ex ) {
 			System.err.println( ex );
 		}
+	}
+
+
+	public void process( final File inputFile, final File outputFile )
+	{
+
+		try {
+			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
+			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
+       		processObjects( documentPart );
+            
+       		if( documentPart.hasFootnotesPart() ) {
+	            	FootnotesPart footnotesPart = documentPart.getFootnotesPart();
+       			processObjects( footnotesPart );
+       		}
+
    
+       		wordMLPackage.save( outputFile );
+		}
+		catch ( Exception ex ) {
+			System.err.println( ex );
+		}
 
 	}
 	
@@ -195,12 +201,16 @@ public class ConvertDocx {
 
 
 		if( "brana".equals( system ) ) {
-			ConvertDocx converter = new ConvertDocx();
-			converter.process( "BranaITable.txt", "BranaIITable.txt", "Brana I", "Brana II", inputFile, outputFile );
+			ConvertDocx converter = new ConvertDocxBrana();
+			converter.process( inputFile, outputFile );
 		}
 		else if( "geeznewab".equals( system ) ) {
-			ConvertDocxFeedelGeezNewAB converter = new ConvertDocxFeedelGeezNewAB();
-			converter.process( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB",  inputFile, outputFile );
+			ConvertDocx converter = new ConvertDocxFeedelGeezNewAB();
+			converter.process( inputFile, outputFile );
+		}
+		else if( "geeztype".equals( system ) ) {
+			ConvertDocx converter = new ConvertDocxGeezType();
+			converter.process( inputFile, outputFile );
 		}
 		else {
 			System.err.println( "Unrecognized input system: " + system );
