@@ -14,14 +14,14 @@ supported conversion of [many more legacy encoding systems](http://libeth.source
 encodings systems can be porrted from LibEth as the need arrises. Please feel free to request support for additional systems.
 
 
-## Usage Examples (Executable Jar)
+## Usage (Executable Jar with GUI)
 
 In the GitHub the "releases" folder you can find and download the "DocxConverter-0.2.0-full-gui.jar" file. This version
 contains the converter and all of its dependencies (jar libraries).  Double clicking the jar file will launch a user
 interface where fonts and files may be selected via mouse and menus.
 
 
-## Usage Examples (Command Line)
+## Command Line Usage Examples
 
 % java -cp [path to libaries]  &lt;system&gt; &lt;file-in&gt; &lt;file-out&gt;
 
