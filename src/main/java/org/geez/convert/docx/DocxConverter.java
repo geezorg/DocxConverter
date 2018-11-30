@@ -31,6 +31,8 @@ public final class DocxConverter extends Application {
     private Desktop desktop = Desktop.getDesktop();
 	private static final String brana = "Brana I/II";
 	private static final String geeznewab = "GeezNewA/B";
+	private static final String geeztype = "GeezType";
+
 	private String system = brana; // alphabetic based default
 	private boolean openOutput = true;
 	private List<File>  inputList = null;
@@ -130,6 +132,7 @@ public final class DocxConverter extends Application {
         Application.launch(args);
     }
  
+    ConvertDocx converter = null;
     private void openFile(File inputFile) {
         try {
         	String inputFilePath = inputFile.getPath();
@@ -137,36 +140,34 @@ public final class DocxConverter extends Application {
     		File outputFile = new File ( outputFilePath );
 
 
-    		switch( system ) {
-    		
-    		case brana:
-    			{
-    				ConvertDocx converter = new ConvertDocx();
-    				converter.process( "BranaITable.txt", "BranaIITable.txt", "Brana I", "Brana II", inputFile, outputFile );
+		if( converter == null ) {
+    			switch( system ) {
+		    		case brana:
+    				converter = new ConvertDocxBrana();
+    				break;
+    			
+    				case geeznewab:
+    				converter = new ConvertDocxFeedelGeezNewAB();
+    				break;
+
+    				case geeztype:
+    				converter = new ConvertDocxGeezType();
+    				break;
+    			
+    				default:
+    				System.err.println( "Unrecognized input system: " + system );
+    				return;
     			}
-    			break;
-    			
-    		case geeznewab:
-    			{
-    				ConvertDocxFeedelGeezNewAB converter = new ConvertDocxFeedelGeezNewAB();
-    				converter.process( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB",  inputFile, outputFile );
-    			}
-    			break;
-    			
-    		default:
-    			System.err.println( "Unrecognized input system: " + system );
-    			break;
-    			
-    		}
+		}
+
+		converter.process( inputFile, outputFile );
     		
-          if ( openOutput ) {
-        	  desktop.open( outputFile );
-          }
-        } catch (Exception ex) {
-            Logger.getLogger(
-                DocxConverter.class.getName()).log(
-                    Level.SEVERE, null, ex
-                );
-        }
+		if ( openOutput ) {
+	  	  desktop.open( outputFile );
+		}
+	}
+	catch (Exception ex) {
+		Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+	}
     }
 }
