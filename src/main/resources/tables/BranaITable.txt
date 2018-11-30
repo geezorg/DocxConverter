@@ -1,3 +1,18 @@
+################################################################################
+#
+# This is a bidirectional mapping file for the Brana I font encoding into the
+# Unicode standard for Ethiopic. The file is intended to be read as input for
+# the International Components for Unicode (ICU) software library. The mapping
+# syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# Brana I and Brana II were provided with the Brana 90 software created by
+# Amha Asfaw.
+#
+################################################################################
+#
+#
 ኸ ↔ \x22 ;
 ሁ ↔ \x23 ;
 ሂ ↔ \x24 ;
