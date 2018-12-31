@@ -40,7 +40,7 @@ public final class DocxConverter extends Application {
     private static void configureFileChooser(
     		
             final FileChooser fileChooser) {      
-                fileChooser.setTitle("View Pictures");
+                fileChooser.setTitle("View Word Files");
                 fileChooser.setInitialDirectory(
                     new File(System.getProperty("user.home"))
                 );                 
@@ -58,7 +58,7 @@ public final class DocxConverter extends Application {
 
         ComboBox<String> fontMenu = new ComboBox<String>();
         fontMenu.getItems().addAll( brana, geeznewab, geeztype );       
-        fontMenu.setValue( "Brana I/II" );
+        fontMenu.setValue( brana );
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String oldFont, String newFont) {
