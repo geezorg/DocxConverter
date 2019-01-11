@@ -10,16 +10,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -51,10 +61,14 @@ public final class DocxConverter extends Application {
     
     @Override
     public void start(final Stage stage) {
-        stage.setTitle("Ethiopic Docx Converter");
+        stage.setTitle("Ethiopic Docx Font Converter");
         Image logoImage = new Image( ClassLoader.getSystemResourceAsStream("images/geez-org-avatar.png") );
         stage.getIcons().add( logoImage );
-
+        final Label label = new Label( "Ethiopic Legacy Font Converter" );
+        String osName = System.getProperty("os.name");
+        if( osName.equals("Mac OS X") ) {
+            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage(logoImage, null) );      
+        }
 
         ComboBox<String> fontMenu = new ComboBox<String>();
         fontMenu.getItems().addAll( brana, geeznewab, geeztype );       
@@ -66,6 +80,15 @@ public final class DocxConverter extends Application {
             } 
         });
         
+
+        ListView<Label> listView = new ListView<Label>();
+        listView.setEditable(false);
+        listView.setPrefHeight( 100 );
+        listView.setPrefWidth( 280 );
+        ObservableList<Label> data = FXCollections.observableArrayList();
+        VBox listVBox = new VBox( listView );
+        listView.autosize();
+        
         
         final Button convertButton = new Button("Convert File(s)");
         convertButton.setDisable( true );
@@ -74,12 +97,21 @@ public final class DocxConverter extends Application {
                     @Override
                     public void handle(final ActionEvent e) {
                         if (inputList != null) {
+                        	convertButton.setDisable( true );
+                        	int i = 0;
+                            ObservableList<Label> itemList = listView.getItems();
                             for (File file : inputList) {
-                                openFile( file );
+                            	processFile( file );
+                                Label label = itemList.get(i);
+                                label.setText("\u2713 " + label.getText() );
+                                label.setStyle( "-fx-font-style: italic;" );
+                                // itemList.set(i, oldValue );
+                                Platform.runLater(() -> listView.refresh() );
+                        		// listView.fireEvent(new ListView.EditEvent<>(listView, ListView.editCommitEvent(), label, i));
+                                i++;
                             }
-                        }
+                        } 
                         inputList = null;
-                        convertButton.setDisable( true );
                     }
                 }
         );
@@ -87,13 +119,22 @@ public final class DocxConverter extends Application {
 
         final Button openFilesButton  = new Button("Select Files...");
         final FileChooser fileChooser = new FileChooser();
+        
         openFilesButton.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(final ActionEvent e) {
+                	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
                     inputList = fileChooser.showOpenMultipleDialog( stage );
                     
+                    for( File file: inputList) {
+                    	Label rowLabel = new Label( file.getName() );
+                    	data.add( rowLabel );
+                    	Tooltip tooltip = new Tooltip( file.getPath() );
+                    	rowLabel.setTooltip( tooltip );
+                    } 
+                    listView.setItems( data );
                     convertButton.setDisable( false );
                 }
             }
@@ -101,7 +142,7 @@ public final class DocxConverter extends Application {
 
         
         
-        CheckBox openFilesCheckbox = new CheckBox( "Open file(s)\nafter conversion?");
+        CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after\nconversion?");
         openFilesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> ov,
                 Boolean old_val, Boolean new_val) {
@@ -112,19 +153,28 @@ public final class DocxConverter extends Application {
  
         final GridPane inputGridPane = new GridPane();
  
-        GridPane.setConstraints(fontMenu, 0, 0);
-        GridPane.setConstraints(openFilesButton, 1, 0);
-        GridPane.setConstraints(openFilesCheckbox, 0, 1);
-        GridPane.setConstraints(convertButton, 1, 1);
+        GridPane.setConstraints(label, 0, 0, 2, 1);
+        GridPane.setConstraints(fontMenu, 0, 1);               GridPane.setConstraints(openFilesButton, 1, 1);
+        GridPane.setHalignment(fontMenu, HPos.LEFT);           GridPane.setHalignment(openFilesButton, HPos.RIGHT);
+        
+        GridPane.setConstraints(listVBox, 0, 2, 2, 1);
+        GridPane.setConstraints(openFilesCheckbox, 0, 3);      GridPane.setConstraints(convertButton, 1, 3);
+        GridPane.setHalignment(openFilesCheckbox, HPos.LEFT);  GridPane.setHalignment(convertButton, HPos.RIGHT);
+        GridPane.setValignment(openFilesCheckbox, VPos.TOP);
+        
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(60);
+        inputGridPane.getColumnConstraints().addAll(col1);
+        
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(fontMenu, openFilesButton, openFilesCheckbox, convertButton);
+        inputGridPane.getChildren().addAll(label,fontMenu, openFilesButton, listVBox, openFilesCheckbox, convertButton);
  
         final Pane rootGroup = new VBox(12);
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding( new Insets(12, 12, 12, 12) );
  
-        stage.setScene(new Scene(rootGroup));
+        stage.setScene(new Scene(rootGroup, 300, 250) );
         stage.show();
     }
  
@@ -133,7 +183,7 @@ public final class DocxConverter extends Application {
     }
  
     ConvertDocx converter = null;
-    private void openFile(File inputFile) {
+    private void processFile(File inputFile) {
         try {
         	String inputFilePath = inputFile.getPath();
         	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-Abyssinica.docx");
@@ -161,10 +211,9 @@ public final class DocxConverter extends Application {
 		}
 
 		converter.process( inputFile, outputFile );
-    		
-		if ( openOutput ) {
-	  	  desktop.open( outputFile );
-		}
+        if ( openOutput ) {
+        	desktop.open( outputFile );
+        }
 	}
 	catch (Exception ex) {
 		Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
