@@ -37,7 +37,12 @@ import com.ibm.icu.text.*;
 
 public class ConvertDocx {
 	protected Transliterator t = null;
+	protected String fontOut = null;
 
+	public void setFont(String fontOut) {
+		this.fontOut = fontOut;
+	}
+	
 	public String readRules( String fileName ) throws IOException {
 		String line, segment, rules = "";
 
@@ -92,17 +97,17 @@ public class ConvertDocx {
 						t = null;
 					}
 					else if( fontName1.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( "Abyssinica SIL" );
-						rfonts.setHAnsi( "Abyssinica SIL" );
-						rfonts.setCs( "Abyssinica SIL" );
-						rfonts.setEastAsia( "Abyssinica SIL" );
+						rfonts.setAscii( fontOut );
+						rfonts.setHAnsi( fontOut );
+						rfonts.setCs( fontOut );
+						rfonts.setEastAsia( fontOut );
 						t = translit1;
 					}
 					else if( fontName2.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( "Abyssinica SIL" );
-						rfonts.setHAnsi( "Abyssinica SIL" );
-						rfonts.setCs( "Abyssinica SIL" );
-						rfonts.setEastAsia( "Abyssinica SIL" );
+						rfonts.setAscii( fontOut );
+						rfonts.setHAnsi( fontOut );
+						rfonts.setCs( fontOut );
+						rfonts.setEastAsia( fontOut );
 						t = translit2;
 					}
 					else {

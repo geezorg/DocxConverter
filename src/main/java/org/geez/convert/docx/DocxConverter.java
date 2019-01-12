@@ -29,10 +29,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
  
@@ -42,21 +42,24 @@ public final class DocxConverter extends Application {
 	private static final String brana = "Brana I/II";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztype = "GeezType";
+	private static final String abyssinica = "Abyssinica SIL";
+	private static final String nyala = "Nyala";
+	private static final String kefa = "Kefa";
 
-	private String system = brana; // alphabetic based default
+	private String systemIn  = brana; // alphabetic based default
+	private String systemOut = abyssinica;
 	private boolean openOutput = true;
 	private List<File>  inputList = null;
 	
-    private static void configureFileChooser(
-    		
-            final FileChooser fileChooser) {      
-                fileChooser.setTitle("View Word Files");
-                fileChooser.setInitialDirectory(
-                    new File(System.getProperty("user.home"))
-                );                 
-                fileChooser.getExtensionFilters().add(
-                    new FileChooser.ExtensionFilter("*.docx", "*.docx")
-                );
+	
+    private static void configureFileChooser( final FileChooser fileChooser ) {      
+    	fileChooser.setTitle("View Word Files");
+        fileChooser.setInitialDirectory(
+        		new File( System.getProperty("user.home") )
+        );                 
+        fileChooser.getExtensionFilters().add(
+        		new FileChooser.ExtensionFilter("*.docx", "*.docx")
+        );
     }
     
     @Override
@@ -76,7 +79,18 @@ public final class DocxConverter extends Application {
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String oldFont, String newFont) {
-                system = newFont;
+                systemIn = newFont;
+            } 
+        });
+        
+
+        ComboBox<String> uniFontMenu = new ComboBox<String>();
+        uniFontMenu.getItems().addAll( abyssinica, kefa, nyala );       
+        uniFontMenu.setValue( abyssinica );
+        uniFontMenu.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String oldFont, String newFont) {
+                systemOut = newFont;
             } 
         });
         
@@ -128,21 +142,23 @@ public final class DocxConverter extends Application {
                 	configureFileChooser(fileChooser);    
                     inputList = fileChooser.showOpenMultipleDialog( stage );
                     
-                    for( File file: inputList) {
-                    	Label rowLabel = new Label( file.getName() );
-                    	data.add( rowLabel );
-                    	Tooltip tooltip = new Tooltip( file.getPath() );
-                    	rowLabel.setTooltip( tooltip );
-                    } 
-                    listView.setItems( data );
-                    convertButton.setDisable( false );
+                    if ( inputList != null ) {
+                    	for( File file: inputList) {
+                    		Label rowLabel = new Label( file.getName() );
+                    		data.add( rowLabel );
+                    		Tooltip tooltip = new Tooltip( file.getPath() );
+                    		rowLabel.setTooltip( tooltip );
+                    	} 
+                    	listView.setItems( data );
+                    	convertButton.setDisable( false );
+                    }
                 }
             }
         );
 
         
         
-        CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after\nconversion?");
+        CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after conversion?");
         openFilesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> ov,
                 Boolean old_val, Boolean new_val) {
@@ -153,28 +169,33 @@ public final class DocxConverter extends Application {
  
         final GridPane inputGridPane = new GridPane();
  
-        GridPane.setConstraints(label, 0, 0, 2, 1);
-        GridPane.setConstraints(fontMenu, 0, 1);               GridPane.setConstraints(openFilesButton, 1, 1);
-        GridPane.setHalignment(fontMenu, HPos.LEFT);           GridPane.setHalignment(openFilesButton, HPos.RIGHT);
+        GridPane.setConstraints(label, 0, 0, 3, 1);
+        Text fontIn = new Text( "Font In" );
+        fontIn.setStyle( "-fx-font-style: italic;" );
+        Text fontOut = new Text( "Font Out" );
+        fontOut.setStyle( "-fx-font-style: italic;" );
+        GridPane.setConstraints( fontIn, 0, 1);                  GridPane.setConstraints( fontOut, 1, 1);
+        GridPane.setConstraints(fontMenu, 0, 2);                 GridPane.setConstraints(uniFontMenu, 1, 2);               GridPane.setConstraints(openFilesButton, 2, 2);
+        GridPane.setHalignment(fontMenu, HPos.LEFT);             GridPane.setHalignment(uniFontMenu, HPos.CENTER);         GridPane.setHalignment(openFilesButton, HPos.RIGHT);
         
-        GridPane.setConstraints(listVBox, 0, 2, 2, 1);
-        GridPane.setConstraints(openFilesCheckbox, 0, 3);      GridPane.setConstraints(convertButton, 1, 3);
-        GridPane.setHalignment(openFilesCheckbox, HPos.LEFT);  GridPane.setHalignment(convertButton, HPos.RIGHT);
+        GridPane.setConstraints(listVBox, 0, 3, 3, 1);
+        GridPane.setConstraints(openFilesCheckbox, 0, 4, 2, 1);  GridPane.setConstraints(convertButton, 2, 4);
+        GridPane.setHalignment(openFilesCheckbox, HPos.LEFT);    GridPane.setHalignment(convertButton, HPos.RIGHT);
         GridPane.setValignment(openFilesCheckbox, VPos.TOP);
         
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(60);
-        inputGridPane.getColumnConstraints().addAll(col1);
+        // ColumnConstraints col1 = new ColumnConstraints();
+        // col1.setPercentWidth(40);
+        // inputGridPane.getColumnConstraints().addAll(col1);
         
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(label,fontMenu, openFilesButton, listVBox, openFilesCheckbox, convertButton);
+        inputGridPane.getChildren().addAll(label, fontIn, fontOut, fontMenu, uniFontMenu, openFilesButton, listVBox, openFilesCheckbox, convertButton);
  
         final Pane rootGroup = new VBox(12);
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding( new Insets(12, 12, 12, 12) );
  
-        stage.setScene(new Scene(rootGroup, 300, 250) );
+        stage.setScene(new Scene(rootGroup, 400, 270) );
         stage.show();
     }
  
@@ -186,37 +207,39 @@ public final class DocxConverter extends Application {
     private void processFile(File inputFile) {
         try {
         	String inputFilePath = inputFile.getPath();
-        	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-Abyssinica.docx");
+        	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
     		File outputFile = new File ( outputFilePath );
 
 
-		if( converter == null ) {
-    			switch( system ) {
+    		if( converter == null ) {
+    			switch( systemOut ) {
 		    		case brana:
-    				converter = new ConvertDocxBrana();
-    				break;
+		    			converter = new ConvertDocxBrana();
+		    			break;
     			
-    				case geeznewab:
-    				converter = new ConvertDocxFeedelGeezNewAB();
-    				break;
+		    		case geeznewab:
+		    			converter = new ConvertDocxFeedelGeezNewAB();
+		    			break;
 
-    				case geeztype:
-    				converter = new ConvertDocxGeezType();
-    				break;
+		    		case geeztype:
+		    			converter = new ConvertDocxGeezType();
+		    			break;
     			
-    				default:
-    				System.err.println( "Unrecognized input system: " + system );
-    				return;
+		    		default:
+		    			System.err.println( "Unrecognized input system: " + systemOut );
+		    			return;
     			}
-		}
-
-		converter.process( inputFile, outputFile );
-        if ( openOutput ) {
-        	desktop.open( outputFile );
+    		}
+		
+    		converter.setFont( systemIn );
+    		converter.process( inputFile, outputFile );
+    		if ( openOutput ) {
+    			desktop.open( outputFile );
+    		}
         }
-	}
-	catch (Exception ex) {
-		Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
-	}
+        catch (Exception ex) {
+        	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+        }
     }
+
 }
