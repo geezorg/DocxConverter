@@ -29,23 +29,11 @@ import java.util.Arrays;
 // import com.ibm.icu.text.*;
 
 
-public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
-
-	public ConvertDocxFeedelGeezNewAB() {
-		this.initialize( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB" );
+public class ConvertDocxGeezType extends ConvertDocx {
+	public ConvertDocxGeezType() {
+		this.initialize( "GeezType.txt", "GeezType.txt", "GeezType", "GeezType" );
 	}
 
-/*
-	private ArrayList<String> checks = new ArrayList<String>(
-		Arrays.asList("H", "K", "c", "h", "m", "v", "z", "±", "Ñ", "Ù", "\u009E", "¤", "\u0085", "\u0099", "\u00ad", "\u00ae", "÷", "Ö", "ã", "W", "X", "ª", "ç", "ë", "ì" )
-	);
-	public boolean isIncomplete(String text) {
-		if ( text.equals( "" ) ) {
-			return false;
-		}
-		return checks.contains( text.substring( text.length()-1 ) );
-	}
-*/
 	private ArrayList<String> diacritics = new ArrayList<String>(
 		Arrays.asList( "\"", "\u0023", "\u0025", "\u0026", "\u002a", "\u002b", "\u002c", "\u003a", "\u003b", "\u003c", "\u003d", "\u003e", "\u0040" )
 	);
@@ -106,13 +94,6 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 						rfonts.setEastAsia( fontOut );
 						t = translit1;
 					}
-					else if( fontName2.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit2;
-					}
 					else {
 						t = null;
 					}
@@ -163,6 +144,8 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 					System.err.println( XmlUtils.marshaltoString(o, true, true) );
 				}
 			}
+
+   
 
 	}
 
