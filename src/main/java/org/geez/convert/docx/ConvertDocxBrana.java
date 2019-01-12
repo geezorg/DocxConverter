@@ -9,6 +9,7 @@ package org.geez.convert.docx;
  *
  */
 
+/*
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
 import org.docx4j.finders.ClassFinder;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 
 
 import com.ibm.icu.text.*;
+*/
 
 
 public class ConvertDocxBrana extends ConvertDocx {

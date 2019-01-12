@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Arrays;
 
 
-import com.ibm.icu.text.*;
+// import com.ibm.icu.text.*;
 
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
@@ -100,17 +100,17 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 						t = null;
 					}
 					else if( fontName1.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( "Abyssinica SIL" );
-						rfonts.setHAnsi( "Abyssinica SIL" );
-						rfonts.setCs( "Abyssinica SIL" );
-						rfonts.setEastAsia( "Abyssinica SIL" );
+						rfonts.setAscii( fontOut );
+						rfonts.setHAnsi( fontOut );
+						rfonts.setCs( fontOut );
+						rfonts.setEastAsia( fontOut );
 						t = translit1;
 					}
 					else if( fontName2.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( "Abyssinica SIL" );
-						rfonts.setHAnsi( "Abyssinica SIL" );
-						rfonts.setCs( "Abyssinica SIL" );
-						rfonts.setEastAsia( "Abyssinica SIL" );
+						rfonts.setAscii( fontOut );
+						rfonts.setHAnsi( fontOut );
+						rfonts.setCs( fontOut );
+						rfonts.setEastAsia( fontOut );
 						t = translit2;
 					}
 					else {
