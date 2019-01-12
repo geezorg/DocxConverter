@@ -30,6 +30,7 @@
 		</attributes>
 		<accessrules>
 			<accessrule kind="accessible" pattern="javafx/**"/>
+			<accessrule kind="accessible" pattern="com/apple/eawt/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
