@@ -30,42 +30,34 @@ import java.util.Arrays;
 
 
 public class ConvertDocxPowerGeez extends ConvertDocx {
+	private final List<String> font1Typefaces = new ArrayList<String>();
 
 	public ConvertDocxPowerGeez() {
-		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "GeezNewA", "GeezNewB" );
+		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez 1", "Ge'ez 1 Numbers, etc" );
+		font1Typefaces.add( "Ge'ez 1" );
+		font1Typefaces.add( "Ge'ez 2" );
+		font1Typefaces.add( "Ge'ez 3" );
 	}
 
-	private ArrayList<String> diacritics = new ArrayList<String>(
-		Arrays.asList( "\"", "\u0023", "\u0025", "\u0026", "\u002a", "\u002b", "\u002c", "\u003a", "\u003b", "\u003c", "\u003d", "\u003e", "\u0040" )
+	private ArrayList<String> diacritics123 = new ArrayList<String>(
+		Arrays.asList( "\u003c", "\u003d", "\u003e", "\u003f", "\u0040", "\u0041", "\u0042", "\u0043", "\u0044", "\u0045", "\u0046" )
 	);
-	public boolean isMacron(String text) {
-		if ( text.equals( "\u0071" ) ) {
-			return true;
-		}
-		return false;
-	}
-	private String prediacritic;
-	public boolean isPrediacritic(String text) {
-		char lastChar = text.charAt( text.length()-1 );
-		if ( (lastChar == 0x71 ) || (lastChar == 0xff)  ) {
-			prediacritic = text;
-			return true;
-		}
-		return false;
-	}
-	public boolean isDiacritic(String text) {
+	private ArrayList<String> diacriticsNumbers = new ArrayList<String>(
+			Arrays.asList( "\u002b", "\u002c" )
+	);
+
+	public boolean isDiacritic(String fontName, String text) {
 		if ( text.equals( "" ) ) {
 			return false;
 		}
-		return diacritics.contains( text.substring( text.length()-1 ) );
+		if( fontName.equals( fontName2 ) ) {
+			return diacriticsNumbers.contains( text.substring( text.length()-1 ) );
+		}
+		return diacritics123.contains( text.substring( text.length()-1 ) );
 	}
-	private boolean lastPrediacritic = false;
 
 	
-
-	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException
-		{
-
+	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
 			ClassFinder finder = new ClassFinder( R.class );
 			new TraversalUtil(part.getContents(), finder);
 
@@ -84,18 +76,21 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 					RPr rpr = r.getRPr();
 					if (rpr == null ) continue;
 					RFonts rfonts = rpr.getRFonts();
+					
 				
 					if( rfonts == null ) {
-						t = null;
+						continue;
 					}
-					else if( fontName1.equals( rfonts.getAscii() ) ) {
+					String fontName = rfonts.getAscii();
+					
+					if( font1Typefaces.contains( fontName ) ) {
 						rfonts.setAscii( fontOut );
 						rfonts.setHAnsi( fontOut );
 						rfonts.setCs( fontOut );
 						rfonts.setEastAsia( fontOut );
 						t = translit1;
 					}
-					else if( fontName2.equals( rfonts.getAscii() ) ) {
+					else if( fontName2.equals( fontName ) ) {
 						rfonts.setAscii( fontOut );
 						rfonts.setHAnsi( fontOut );
 						rfonts.setCs( fontOut );
@@ -113,17 +108,13 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 							if (t != null) {
 								Text txt = (org.docx4j.wml.Text)x2;
 								String txtValue = txt.getValue();
-								if( lastPrediacritic ) {
-									txtValue = prediacritic + txtValue;
-									lastPrediacritic = false;
-								}
 
 								String out = convertText( txtValue );
 								txt.setValue( out );
 								if( " ".equals( out ) ) { // if( Character.isWhitespace( out ) ) {
 									txt.setSpace( "preserve" );
 								}
-								else if( isDiacritic( out ) ) {
+								else if( isDiacritic( fontName, out ) ) {
 									if( lastTxtValue != null ) {
 										out = convertText( lastTxtValue + txt.getValue() );
 										lastTxt.setValue( out );
@@ -131,12 +122,6 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 									}
 									lastTxt = null;
 									lastTxtValue = null;
-								}
-								else if( isPrediacritic( out ) ) {
-									txt.setValue( "" );
-									lastTxt = null;
-									lastTxtValue = null;
-									lastPrediacritic = true;
 								}
 								else {
 									lastTxt = txt;
@@ -148,7 +133,8 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 							// System.err.println( "Found: " + x2.getClass() );
 						}
 					}
-				} else {
+				}
+				else {
 					System.err.println( XmlUtils.marshaltoString(o, true, true) );
 				}
 			}
