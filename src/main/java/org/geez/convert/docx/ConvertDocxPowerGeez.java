@@ -56,6 +56,35 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 		return diacritics123.contains( text.substring( text.length()-1 ) );
 	}
 
+
+	public String convertText( String text ) {
+		/* Revlidate this bit masking, it was necessary for GeezNewA, B but 
+		 * may not be needed with the others.
+		 */
+		String textIn = "";
+		try {
+			// byte[] b = text.getBytes("UTF-8"); 
+			// System.out.println( text + " has size " + b.length );
+
+			textIn = new String( text.getBytes("UTF-8"), "UTF-16"  );
+			byte[] b = text.getBytes("UTF-16");
+			System.out.println( "[" + text + "] has size " + text.length() );
+		} catch(Exception ex) {}
+		
+
+		
+
+		/*
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < text.length(); i++) {
+			int x =  ( 0x00ff & (int)text.charAt(i) );
+			sb.append(  (char)x );
+		}*/
+		String step1 = t.transliterate( text );
+		System.out.println( "Unicode: " +  String.format("\\u%04x", (int) text.charAt(0)) + " Out: " + step1 );
+		String step2 = (step1 == null ) ? null : step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
+		return step2;
+	}
 	
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
 			ClassFinder finder = new ClassFinder( R.class );

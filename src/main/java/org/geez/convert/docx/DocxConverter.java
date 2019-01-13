@@ -236,7 +236,7 @@ public final class DocxConverter extends Application {
     			}
     		}
 		
-    		converter.setFont( systemIn );
+    		converter.setFont( systemOut );
     		converter.process( inputFile, outputFile );
     		if ( openOutput ) {
     			desktop.open( outputFile );
