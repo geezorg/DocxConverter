@@ -239,7 +239,12 @@ public final class DocxConverter extends Application {
     		converter.setFont( systemOut );
     		converter.process( inputFile, outputFile );
     		if ( openOutput ) {
-    			desktop.open( outputFile );
+    			if ( outputFile.exists() ) {
+    				desktop.open( outputFile );
+    			}
+    			else {
+    				// add a popup dialog to indicate file not found
+    			}
     		}
         }
         catch (Exception ex) {
