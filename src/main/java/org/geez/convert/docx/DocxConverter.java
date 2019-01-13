@@ -213,7 +213,7 @@ public final class DocxConverter extends Application {
 
 
     		if( converter == null ) {
-    			switch( systemOut ) {
+    			switch( systemIn ) {
 		    		case brana:
 		    			converter = new ConvertDocxBrana();
 		    			break;
@@ -225,9 +225,13 @@ public final class DocxConverter extends Application {
 		    		case geeztype:
 		    			converter = new ConvertDocxGeezType();
 		    			break;
+
+		    		case powergeez:
+		    			converter = new ConvertDocxPowerGeez();
+		    			break;
     			
 		    		default:
-		    			System.err.println( "Unrecognized input system: " + systemOut );
+		    			System.err.println( "Unrecognized input system: " + systemIn );
 		    			return;
     			}
     		}
