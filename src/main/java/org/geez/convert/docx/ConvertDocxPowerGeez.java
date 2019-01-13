@@ -33,10 +33,10 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 	private final List<String> font1Typefaces = new ArrayList<String>();
 
 	public ConvertDocxPowerGeez() {
-		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez 1", "Ge'ez 1 Numbers, etc" );
-		font1Typefaces.add( "Ge'ez 1" );
-		font1Typefaces.add( "Ge'ez 2" );
-		font1Typefaces.add( "Ge'ez 3" );
+		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez 1 Numbers, etc" );
+		font1Typefaces.add( "Ge'ez-1" );
+		font1Typefaces.add( "Ge'ez-2" );
+		font1Typefaces.add( "Ge'ez-3" );
 	}
 
 	private ArrayList<String> diacritics123 = new ArrayList<String>(
