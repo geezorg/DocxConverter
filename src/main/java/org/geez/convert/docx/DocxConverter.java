@@ -42,6 +42,7 @@ public final class DocxConverter extends Application {
 	private static final String brana = "Brana I/II";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztype = "GeezType";
+	private static final String powergeez = "Power Ge'ez";
 	private static final String abyssinica = "Abyssinica SIL";
 	private static final String nyala = "Nyala";
 	private static final String kefa = "Kefa";
@@ -74,7 +75,7 @@ public final class DocxConverter extends Application {
         }
 
         ComboBox<String> fontMenu = new ComboBox<String>();
-        fontMenu.getItems().addAll( brana, geeznewab, geeztype );       
+        fontMenu.getItems().addAll( brana, geeznewab, geeztype, powergeez );       
         fontMenu.setValue( brana );
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
