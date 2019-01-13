@@ -1,6 +1,6 @@
 ################################################################################
 #
-# This is a bidirectional mapping file for the Ge'ez 1, Gee'z 2 and Ge'ez 3 font
+# This is a bidirectional mapping file for the Ge'ez-1, Gee'z-2 and Ge'ez-3 font
 # encoding into the Unicode standard for Ethiopic. The file is intended to be read
 # as input for the International Components for Unicode (ICU) software library. 
 # The mapping syntax is documented at the following URL:
@@ -137,7 +137,8 @@
 ን ↔ \x94 ;
 ኖ ↔ \x95 ;
 ኗ ↔ \x93\x45 ;
-ና ↔ \x93 ;
+# ና ↔ \x93 ;
+ና ↔ \u201c ;
 ኙ ↔ \x96\x3c ;
 ኚ ↔ \x96\x3e ;
 ኜ ↔ \x96\x40 ;
@@ -146,10 +147,10 @@
 ኞ ↔ \x99 ;
 ኟ ↔ \x97\x45 ;
 ኛ ↔ \x97 ;
-ኡ ↔ \x9b\x3c ;
-ኢ ↔ \x9b\x3e ;
-ኤ ↔ \x9b\x3f ;
-አ ↔ \x9b ;
+ኡ ↔ \u203a\x3c ;
+ኢ ↔ \u203a\x3d ;
+ኤ ↔ \u203a\x3f ;
+አ ↔ \u203a ;
 ኣ ↔ \x9c ;
 እ ↔ \x9d ;
 ኦ ↔ \x9e ;
@@ -299,3 +300,7 @@
 ፤ ↔ \x26 ;
 ፣ ↔ \x27 ;
 ፡ ↔ \x3a ;
+#
+#
+# :: ([\x20-\xff,\x201c]) ;
+:: ([\x20-\u203a]) ;
