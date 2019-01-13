@@ -62,7 +62,7 @@ public class ConvertDocx {
 
 
 	public String convertText( String text ) {
-		/* Revlidate this bit masking, it was necessary for GeezNewA, B but 
+		/* Revalidate this bit masking, it was necessary for GeezNewA, B but 
 		 * may not be needed with the others.
 		 */
 		StringBuilder sb = new StringBuilder();
