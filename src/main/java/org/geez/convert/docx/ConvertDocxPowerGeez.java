@@ -37,6 +37,7 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 		font1Typefaces.add( "Ge'ez-1" );
 		font1Typefaces.add( "Ge'ez-2" );
 		font1Typefaces.add( "Ge'ez-3" );
+		font1Typefaces.add( "Ge'ez-1 Normal" );
 	}
 
 	private ArrayList<String> diacritics123 = new ArrayList<String>(
