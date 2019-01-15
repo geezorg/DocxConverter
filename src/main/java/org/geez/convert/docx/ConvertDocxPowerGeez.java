@@ -16,6 +16,9 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
 
+import org.docx4j.wml.P;
+import org.docx4j.wml.PPr;
+import org.docx4j.wml.ParaRPr;
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
 import org.docx4j.wml.RFonts;
@@ -38,6 +41,20 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 		font1Typefaces.add( "Ge'ez-2" );
 		font1Typefaces.add( "Ge'ez-3" );
 		font1Typefaces.add( "Ge'ez-1 Normal" );
+		font1Typefaces.add( "Ge'ez-2 Normal" );
+		font1Typefaces.add( "Ge'ez-3 Normal" );
+		
+		targetTypefaces.add( "Ge'ez 2" );
+		targetTypefaces.add( "Ge'ez-3" );
+		targetTypefaces.add( "Ge'ez-1 Normal" );
+		targetTypefaces.add( "Ge'ez-2 Normal" );
+		targetTypefaces.add( "Ge'ez-3 Normal" );
+		
+		fontToTransliteratorMap.put( "Ge'ez 2", translit1 );
+		fontToTransliteratorMap.put( "Ge'ez 3", translit1 );
+		fontToTransliteratorMap.put( "Ge'ez-1 Normal", translit1 );
+		fontToTransliteratorMap.put( "Ge'ez-2 Normal", translit1 );
+		fontToTransliteratorMap.put( "Ge'ez-3 Normal", translit1 );
 	}
 
 	private ArrayList<String> diacritics123 = new ArrayList<String>(
@@ -88,51 +105,52 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 	}
 	
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
-			ClassFinder finder = new ClassFinder( R.class );
-			new TraversalUtil(part.getContents(), finder);
+			ClassFinder rFinder = new ClassFinder( R.class );
+			ClassFinder pFinder = new ClassFinder( P.class );
+			new TraversalUtil(part.getContents(), rFinder);
+			new TraversalUtil(part.getContents(), pFinder);
 
 			Text lastTxt = null;
 			String lastTxtValue = null;
+			List<Object> objects = new ArrayList<Object>( rFinder.results );
+			objects.addAll( pFinder.results );
+			int size = objects.size();
+			
 
 
-			for (Object o : finder.results) {
-				Object o2 = XmlUtils.unwrap(o);
+			for (int i=0; i<size; i++) {
+				Object o = XmlUtils.unwrap( objects.get(i)    );
 						
 				// this is ok, provided the results of the Callback
 				// won't be marshalled			
 			
-				if (o2 instanceof org.docx4j.wml.R) {
-					R r = (org.docx4j.wml.R)o2;
+				RFonts rfonts = null;
+				if (o instanceof org.docx4j.wml.R) {
+					R r = (org.docx4j.wml.R)o;
 					RPr rpr = r.getRPr();
 					if (rpr == null ) continue;
-					RFonts rfonts = rpr.getRFonts();
-					
-				
-					if( rfonts == null ) {
-						continue;
-					}
-					String fontName = rfonts.getAscii();
-					
-					if( font1Typefaces.contains( fontName ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit1;
-					}
-					else if( fontName2.equals( fontName ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit2;
-					}
-					else {
-						t = null;
-					}
+					rfonts = rpr.getRFonts();
+				}
+				else if  (o instanceof org.docx4j.wml.P) {
+					P p = (org.docx4j.wml.P)o;
+					PPr ppr = p.getPPr();
+					if (ppr == null ) continue;
+					ParaRPr rpr = ppr.getRPr();
+					if (rpr == null ) continue;
+					rfonts = rpr.getRFonts();
+				}
 
-					List<Object> objects = r.getContent();
-					for ( Object x : objects ) {
+				t =  getTransliteratorForFont( rfonts );
+				
+				if( t == null ) {
+					continue;
+				}
+				
+				
+					if (o instanceof org.docx4j.wml.R) {
+					R r = (org.docx4j.wml.R)o;
+					List<Object> rObjects = r.getContent();
+					for ( Object x : rObjects ) {
 						Object x2 = XmlUtils.unwrap(x);
 						if ( x2 instanceof org.docx4j.wml.Text ) {
 							if (t != null) {
@@ -144,7 +162,7 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 								if( " ".equals( out ) ) { // if( Character.isWhitespace( out ) ) {
 									txt.setSpace( "preserve" );
 								}
-								else if( isDiacritic( fontName, out ) ) {
+								else if( isDiacritic( fontIn, out ) ) {
 									if( lastTxtValue != null ) {
 										out = convertText( lastTxtValue + txt.getValue() );
 										lastTxt.setValue( out );
