@@ -37,6 +37,8 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 
 	public ConvertDocxPowerGeez() {
 		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez 1 Numbers, etc" );
+		huletNeteb = ':';
+		
 		font1Typefaces.add( "Ge'ez-1" );
 		font1Typefaces.add( "Ge'ez-2" );
 		font1Typefaces.add( "Ge'ez-3" );
@@ -76,9 +78,7 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 
 
 	public String convertText( String text ) {
-		/* Revlidate this bit masking, it was necessary for GeezNewA, B but 
-		 * may not be needed with the others.
-		 */
+		/*
 		String textIn = "";
 		try {
 			// byte[] b = text.getBytes("UTF-8"); 
@@ -88,20 +88,44 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 			byte[] b = text.getBytes("UTF-16");
 			System.out.println( "[" + text + "] has size " + text.length() );
 		} catch(Exception ex) {}
+		*/
 		
-
-		
-
-		/*
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < text.length(); i++) {
-			int x =  ( 0x00ff & (int)text.charAt(i) );
-			sb.append(  (char)x );
-		}*/
 		String step1 = t.transliterate( text );
-		System.out.println( "Unicode: " +  String.format("\\u%04x", (int) text.charAt(0)) + " Out: " + step1 );
-		String step2 = (step1 == null ) ? null : step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
+		// System.out.println( "Unicode: " +  String.format("\\u%04x", (int) text.charAt(0)) + " Out: " + step1 );
+		String step2 = (step1 == null ) ? null : step1; // step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
 		return step2;
+	}
+	
+	
+	public String getQualifiedText( Text text, Object obj ) {
+		if (! (obj instanceof org.docx4j.wml.R)) {
+			return text.getValue();
+		}
+		
+		String currentText = text.getValue();
+		
+		R r = (org.docx4j.wml.R)obj;
+		List<Object> objects = r.getContent();
+		for ( Object o : objects ) {
+			Object x = XmlUtils.unwrap(o);
+			if ( x instanceof org.docx4j.wml.Text ) {
+				// we expect only one instance, so we'll return on the frist one encountered
+				Text nextText = (org.docx4j.wml.Text)x;
+				String nextString =  nextText.getValue();
+				char firstChar = nextString.charAt(0);
+				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
+					nextText.setValue( nextString.substring(1) );
+					return currentText + firstChar  ;
+				}
+				else if ( (huletNeteb == firstChar) 
+					 && ( huletNeteb == currentText.charAt(  currentText.length() - 1 ) ) ) {
+						nextText.setValue( nextString.substring(1) );
+						return currentText + firstChar  ;
+				}
+				break;
+			}
+		}
+		return currentText;
 	}
 	
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
@@ -116,8 +140,7 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 			objects.addAll( pFinder.results );
 			int size = objects.size();
 			
-
-
+			
 			for (int i=0; i<size; i++) {
 				Object o = XmlUtils.unwrap( objects.get(i)    );
 						
@@ -147,34 +170,38 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 				}
 				
 				
-					if (o instanceof org.docx4j.wml.R) {
+				/*
+				 * Check if object at i+1 starts with a diacritic mark that may modify
+				 * the last chart of  object i.  If true, append the i+1 first char to the end
+				 * of the string at i. 
+				 */
+				
+				if (o instanceof org.docx4j.wml.R) {
 					R r = (org.docx4j.wml.R)o;
 					List<Object> rObjects = r.getContent();
 					for ( Object x : rObjects ) {
 						Object x2 = XmlUtils.unwrap(x);
 						if ( x2 instanceof org.docx4j.wml.Text ) {
-							if (t != null) {
-								Text txt = (org.docx4j.wml.Text)x2;
-								String txtValue = txt.getValue();
+							Text txt = (org.docx4j.wml.Text)x2;
+							String txtValue = getQualifiedText( txt, objects.get(i+1) );
 
-								String out = convertText( txtValue );
-								txt.setValue( out );
-								if( " ".equals( out ) ) { // if( Character.isWhitespace( out ) ) {
-									txt.setSpace( "preserve" );
+							String out = convertText( txtValue );
+							txt.setValue( out );
+							if( " ".equals( out ) ) { // if( Character.isWhitespace( out ) ) {
+								txt.setSpace( "preserve" );
+							}
+							else if( isDiacritic( fontIn, out ) ) {
+								if( lastTxtValue != null ) {
+									out = convertText( lastTxtValue + txt.getValue() );
+									lastTxt.setValue( out );
+									txt.setValue( "" );
 								}
-								else if( isDiacritic( fontIn, out ) ) {
-									if( lastTxtValue != null ) {
-										out = convertText( lastTxtValue + txt.getValue() );
-										lastTxt.setValue( out );
-										txt.setValue( "" );
-									}
-									lastTxt = null;
-									lastTxtValue = null;
-								}
-								else {
-									lastTxt = txt;
-									lastTxtValue = txtValue;
-								}
+								lastTxt = null;
+								lastTxtValue = null;
+							}
+							else {
+								lastTxt = txt;
+								lastTxtValue = txtValue;
 							}
 						}
 						else {
@@ -182,9 +209,11 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 						}
 					}
 				}
+				/*
 				else {
 					System.err.println( XmlUtils.marshaltoString(o, true, true) );
 				}
+				*/
 			}
 
 	}

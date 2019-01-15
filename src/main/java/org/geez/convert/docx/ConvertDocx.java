@@ -41,6 +41,7 @@ public class ConvertDocx {
 	protected Transliterator t = null;
 	protected String fontOut = null;
 	protected String fontIn = null;
+	protected char huletNeteb = 0x0;
 
 	public void setFont(String fontOut) {
 		this.fontOut = fontOut;
@@ -117,7 +118,9 @@ public class ConvertDocx {
 				if (o2 instanceof org.docx4j.wml.R) {
 					R r = (org.docx4j.wml.R)o2;
 					RPr rpr = r.getRPr();
-					if (rpr == null ) continue;
+					if (rpr == null ) {
+						continue;
+					}
 					RFonts rfonts = rpr.getRFonts();
 				
 					t =  getTransliteratorForFont(  rfonts );
@@ -130,13 +133,11 @@ public class ConvertDocx {
 					for ( Object x : objects ) {
 						Object x2 = XmlUtils.unwrap(x);
 						if ( x2 instanceof org.docx4j.wml.Text ) {
-							if ( t != null) {
-								Text txt = (org.docx4j.wml.Text)x2;
-								String out = convertText( txt.getValue() );
-								txt.setValue( out );
-								if ( " ".equals( out ) ) {	
-									txt.setSpace( "preserve" );
-								}
+							Text txt = (org.docx4j.wml.Text)x2;
+							String out = convertText( txt.getValue() );
+							txt.setValue( out );
+							if ( " ".equals( out ) ) {	
+								txt.setSpace( "preserve" );
 							}
 						}
 						else {
