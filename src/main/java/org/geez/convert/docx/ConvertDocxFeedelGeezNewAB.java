@@ -71,8 +71,22 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 		return diacritics.contains( text.substring( text.length()-1 ) );
 	}
 	private boolean lastPrediacritic = false;
-
 	
+
+	public String convertText( String text ) {
+		/* Revalidate this bit masking, it was necessary for GeezNewA, B but 
+		 * may not be needed with the others.
+		 */
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < text.length(); i++) {
+			int x =  ( 0x00ff & (int)text.charAt(i) );
+			sb.append(  (char)x );
+		}
+		String step1 = t.transliterate( sb.toString() );
+		String step2 = (step1 == null ) ? null : step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
+		return step2;
+	}
+
 
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException
 		{
