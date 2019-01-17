@@ -11,14 +11,10 @@ package org.geez.convert.docx;
 
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
-import org.docx4j.finders.ClassFinder;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
 
-import org.docx4j.wml.P;
-import org.docx4j.wml.PPr;
-import org.docx4j.wml.ParaRPr;
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
 import org.docx4j.wml.RFonts;
@@ -52,11 +48,9 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 		targetTypefaces.add( "Ge'ez-2 Normal" );
 		targetTypefaces.add( "Ge'ez-3 Normal" );
 		
-		fontToTransliteratorMap.put( "Ge'ez 2", translit1 );
-		fontToTransliteratorMap.put( "Ge'ez 3", translit1 );
-		fontToTransliteratorMap.put( "Ge'ez-1 Normal", translit1 );
-		fontToTransliteratorMap.put( "Ge'ez-2 Normal", translit1 );
-		fontToTransliteratorMap.put( "Ge'ez-3 Normal", translit1 );
+		for(String key: font1Typefaces) {
+			fontToTransliteratorMap.put( key, translit1 );			
+		}
 	}
 
 	private ArrayList<String> diacritics123 = new ArrayList<String>(
@@ -75,41 +69,25 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 		}
 		return diacritics123.contains( text.substring( text.length()-1 ) );
 	}
-
-
-	public String convertText( String text ) {
-		/*
-		String textIn = "";
-		try {
-			// byte[] b = text.getBytes("UTF-8"); 
-			// System.out.println( text + " has size " + b.length );
-
-			textIn = new String( text.getBytes("UTF-8"), "UTF-16"  );
-			byte[] b = text.getBytes("UTF-16");
-			System.out.println( "[" + text + "] has size " + text.length() );
-		} catch(Exception ex) {}
-		*/
-		
-		String step1 = t.transliterate( text );
-		// System.out.println( "Unicode: " +  String.format("\\u%04x", (int) text.charAt(0)) + " Out: " + step1 );
-		String step2 = (step1 == null ) ? null : step1; // step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
-		return step2;
-	}
 	
 	
 	public String getQualifiedText( Text text, Object obj ) {
-		if (! (obj instanceof org.docx4j.wml.R)) {
+		if (! (obj instanceof org.docx4j.wml.RPr)) {
 			return text.getValue();
 		}
 		
 		String currentText = text.getValue();
-		
-		R r = (org.docx4j.wml.R)obj;
+
+		RPr rpr = (org.docx4j.wml.RPr)obj;
+		if(! ((rpr.getParent()) instanceof org.docx4j.wml.R) ) {
+			return text.getValue();	
+		}
+		R r = (org.docx4j.wml.R)rpr.getParent();
 		List<Object> objects = r.getContent();
 		for ( Object o : objects ) {
 			Object x = XmlUtils.unwrap(o);
 			if ( x instanceof org.docx4j.wml.Text ) {
-				// we expect only one instance, so we'll return on the frist one encountered
+				// we expect only one instance, so we'll return on the first one encountered
 				Text nextText = (org.docx4j.wml.Text)x;
 				String nextString =  nextText.getValue();
 				char firstChar = nextString.charAt(0);
@@ -118,51 +96,27 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 					return currentText + firstChar  ;
 				}
 				else if ( (huletNeteb == firstChar) 
-					 && ( huletNeteb == currentText.charAt(  currentText.length() - 1 ) ) ) {
+					 && ( huletNeteb == currentText.charAt( currentText.length() - 1 ) ) ) {
 						nextText.setValue( nextString.substring(1) );
 						return currentText + firstChar  ;
 				}
 				break;
 			}
 		}
+		
 		return currentText;
 	}
 	
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
-			ClassFinder rFinder = new ClassFinder( R.class );
-			ClassFinder pFinder = new ClassFinder( P.class );
-			new TraversalUtil(part.getContents(), rFinder);
-			new TraversalUtil(part.getContents(), pFinder);
+			PropertiesFinder prFinder = new PropertiesFinder();
+			new TraversalUtil(part.getContents(), prFinder );
 
-			Text lastTxt = null;
-			String lastTxtValue = null;
-			List<Object> objects = new ArrayList<Object>( rFinder.results );
-			objects.addAll( pFinder.results );
-			int size = objects.size();
+			List<RFonts> rfontsNodes = new ArrayList<RFonts>( prFinder.results ); 
+			int size = rfontsNodes.size();
 			
 			
 			for (int i=0; i<size; i++) {
-				Object o = XmlUtils.unwrap( objects.get(i)    );
-						
-				// this is ok, provided the results of the Callback
-				// won't be marshalled			
-			
-				RFonts rfonts = null;
-				if (o instanceof org.docx4j.wml.R) {
-					R r = (org.docx4j.wml.R)o;
-					RPr rpr = r.getRPr();
-					if (rpr == null ) continue;
-					rfonts = rpr.getRFonts();
-				}
-				else if  (o instanceof org.docx4j.wml.P) {
-					P p = (org.docx4j.wml.P)o;
-					PPr ppr = p.getPPr();
-					if (ppr == null ) continue;
-					ParaRPr rpr = ppr.getRPr();
-					if (rpr == null ) continue;
-					rfonts = rpr.getRFonts();
-				}
-
+				RFonts rfonts = rfontsNodes.get(i);
 				t =  getTransliteratorForFont( rfonts );
 				
 				if( t == null ) {
@@ -176,36 +130,26 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 				 * of the string at i. 
 				 */
 				
-				if (o instanceof org.docx4j.wml.R) {
-					R r = (org.docx4j.wml.R)o;
-					List<Object> rObjects = r.getContent();
-					for ( Object x : rObjects ) {
-						Object x2 = XmlUtils.unwrap(x);
-						if ( x2 instanceof org.docx4j.wml.Text ) {
-							Text txt = (org.docx4j.wml.Text)x2;
-							String txtValue = getQualifiedText( txt, objects.get(i+1) );
+				if (rfonts.getParent() instanceof org.docx4j.wml.RPr) {
+					R r = (org.docx4j.wml.R)((org.docx4j.wml.RPr)rfonts.getParent()).getParent();
+					List<Object> objects = r.getContent();
+					for ( Object o : objects ) {
+						Object x = XmlUtils.unwrap(o);
+						if ( x instanceof org.docx4j.wml.Text ) {
+							Text txt = (org.docx4j.wml.Text)x;
 
-							String out = convertText( txtValue );
-							txt.setValue( out );
-							if( " ".equals( out ) ) { // if( Character.isWhitespace( out ) ) {
-								txt.setSpace( "preserve" );
-							}
-							else if( isDiacritic( fontIn, out ) ) {
-								if( lastTxtValue != null ) {
-									out = convertText( lastTxtValue + txt.getValue() );
-									lastTxt.setValue( out );
-									txt.setValue( "" );
-								}
-								lastTxt = null;
-								lastTxtValue = null;
+							// revisit why we need this first part, maybe it was only necessary for Brana -?
+							if( " ".equals( txt.getValue() ) || "".equals( txt.getValue() )) {
+								// txt.setSpace( "preserve" );
 							}
 							else {
-								lastTxt = txt;
-								lastTxtValue = txtValue;
+								String txtValue = ( (i+1) == size )
+										? txt.getValue()
+										: getQualifiedText( txt, ((Object)(rfontsNodes.get(i+1)).getParent()) )
+								;
+								String out = convertText( txtValue );
+								txt.setValue( out );
 							}
-						}
-						else {
-							// System.err.println( "Found: " + x2.getClass() );
 						}
 					}
 				}

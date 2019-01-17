@@ -108,27 +108,27 @@ public final class DocxConverter extends Application {
         final Button convertButton = new Button("Convert File(s)");
         convertButton.setDisable( true );
         convertButton.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        if (inputList != null) {
-                        	convertButton.setDisable( true );
-                        	int i = 0;
-                            ObservableList<Label> itemList = listView.getItems();
-                            for (File file : inputList) {
-                            	processFile( file );
-                                Label label = itemList.get(i);
-                                label.setText("\u2713 " + label.getText() );
-                                label.setStyle( "-fx-font-style: italic;" );
-                                // itemList.set(i, oldValue );
-                                Platform.runLater(() -> listView.refresh() );
-                        		// listView.fireEvent(new ListView.EditEvent<>(listView, ListView.editCommitEvent(), label, i));
-                                i++;
-                            }
-                        } 
-                        inputList = null;
-                    }
+        	new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    if ( inputList != null ) {
+                       convertButton.setDisable( true );
+                       int i = 0;
+                       ObservableList<Label> itemList = listView.getItems();
+                       for (File file : inputList) {
+                            processFile( file );
+                            Label label = itemList.get(i);
+                            label.setText("\u2713 " + label.getText() );
+                            label.setStyle( "-fx-font-style: italic;" );
+                            // itemList.set(i, oldValue );
+                            Platform.runLater(() -> listView.refresh() );
+                        	// listView.fireEvent(new ListView.EditEvent<>(listView, ListView.editCommitEvent(), label, i));
+                            i++;
+                        }
+                    } 
+                    inputList = null;
                 }
+            }
         );
 
 
