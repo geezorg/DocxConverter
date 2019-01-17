@@ -30,9 +30,41 @@ import java.util.Arrays;
 
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
+	private final List<String> font1Typefaces = new ArrayList<String>();
+	private final List<String> font2Typefaces = new ArrayList<String>();
 
 	public ConvertDocxFeedelGeezNewAB() {
 		this.initialize( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB" );
+		huletNeteb = '"';
+		
+		font1Typefaces.add( "GeezA" );
+		font1Typefaces.add( "GeezNewA" );
+		font1Typefaces.add( "GeezSindeA" );
+		font1Typefaces.add( "GeezNet" );
+		font1Typefaces.add( "ZewdituA" );
+		
+		font2Typefaces.add( "GeezB" );
+		font2Typefaces.add( "GeezNewB" );
+		font2Typefaces.add( "GeezSindeB" );
+		font2Typefaces.add( "ZewdituB" );
+		
+		targetTypefaces.add( "GeezA" );
+		targetTypefaces.add( "GeezNewA" );
+		targetTypefaces.add( "GeezNet" );
+		targetTypefaces.add( "ZewdituA" );
+		targetTypefaces.add( "GeezB" );
+		targetTypefaces.add( "GeezNewB" );
+		targetTypefaces.add( "ZewdituB" );
+
+		
+		for(String key: font1Typefaces) {
+			fontToTransliteratorMap.put( key, translit1 );			
+		}
+		
+		for(String key: font2Typefaces) {
+			fontToTransliteratorMap.put( key, translit2 );			
+		}
+		
 	}
 
 /*
@@ -110,25 +142,11 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 					if (rpr == null ) continue;
 					RFonts rfonts = rpr.getRFonts();
 				
-					if( rfonts == null ) {
-						t = null;
-					}
-					else if( fontName1.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit1;
-					}
-					else if( fontName2.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit2;
-					}
-					else {
-						t = null;
+
+					t =  getTransliteratorForFont( rfonts );
+					
+					if( t == null ) {
+						continue;
 					}
 
 					List<Object> objects = r.getContent();

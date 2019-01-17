@@ -66,9 +66,7 @@ public class ConvertDocx {
 
 
 	public String convertText( String text ) {
-		String step1 = t.transliterate( text );
-		String step2 = (step1 == null ) ? null : step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
-		return step2;
+		return t.transliterate( text );
 	}
 
 	
@@ -98,13 +96,11 @@ public class ConvertDocx {
 		}
 
 		return fontToTransliteratorMap.get(fontIn) ;
-
 	}
 
 
 	public void processObjects( final JaxbXmlPart<?> part) throws Docx4JException
-	{
-				
+	{			
 			ClassFinder finder = new ClassFinder( R.class );
 			new TraversalUtil(part.getContents(), finder);
 		
@@ -148,8 +144,6 @@ public class ConvertDocx {
 					System.err.println( XmlUtils.marshaltoString(o, true, true) );
 				}
 			}
-   
-
 	}
 
 
@@ -191,7 +185,6 @@ public class ConvertDocx {
 
 	public void process( final File inputFile, final File outputFile )
 	{
-
 		try {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
@@ -201,14 +194,12 @@ public class ConvertDocx {
 	            	FootnotesPart footnotesPart = documentPart.getFootnotesPart();
        			processObjects( footnotesPart );
        		}
-
-   
+  
        		wordMLPackage.save( outputFile );
 		}
 		catch ( Exception ex ) {
 			System.err.println( ex );
 		}
-
 	}
 	
 
