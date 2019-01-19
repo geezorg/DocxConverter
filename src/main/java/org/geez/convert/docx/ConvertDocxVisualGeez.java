@@ -14,6 +14,7 @@ import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
+import org.docx4j.fonts.Mapper;
 
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
@@ -28,48 +29,42 @@ import java.util.Arrays;
 // import com.ibm.icu.text.*;
 
 
-public class ConvertDocxPowerGeez extends ConvertDocx {
+public class ConvertDocxVisualGeez extends ConvertDocx {
 	private final List<String> font1Typefaces = new ArrayList<String>();
 
-	public ConvertDocxPowerGeez() {
-		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez-1 Numbers" );
-		huletNeteb = ':';
+	public ConvertDocxVisualGeez() {
+		this.initialize( "VisualGeez.txt", "VisualGeezNumbers.txt", "VG2 Main", "VG Geez Numbers" );
+		huletNeteb = '\u003a';
 		
-		font1Typefaces.add( "Ge'ez-1" );
-		font1Typefaces.add( "Ge'ez-2" );
-		font1Typefaces.add( "Ge'ez-3" );
-		font1Typefaces.add( "Ge'ez-1 Normal" );
-		font1Typefaces.add( "Ge'ez-2 Normal" );
-		font1Typefaces.add( "Ge'ez-3 Normal" );
+		font1Typefaces.add( "VG2 Main" );
+		font1Typefaces.add( "VG2 Agazian" );
+		font1Typefaces.add( "VG2 Title" );
+		font1Typefaces.add( "VG2 Main regular" );
+		font1Typefaces.add( "VG2 Agazian regular" );
+		font1Typefaces.add( "VG2 Title regular" );
 		
-		targetTypefaces.add( "Ge'ez 2" );
-		targetTypefaces.add( "Ge'ez-3" );
-		targetTypefaces.add( "Ge'ez-1 Normal" );
-		targetTypefaces.add( "Ge'ez-2 Normal" );
-		targetTypefaces.add( "Ge'ez-3 Normal" );
+		targetTypefaces.add( "VG2 Agazian" );
+		targetTypefaces.add( "VG2 Title" );
+		targetTypefaces.add( "VG2 Main regular" );
+		targetTypefaces.add( "VG2 Agazian regular" );
+		targetTypefaces.add( "VG2 Title regular" );
 		
 		for(String key: font1Typefaces) {
 			fontToTransliteratorMap.put( key, translit1 );			
 		}
 		
-		fontToTransliteratorMap.put( "Ge'ez-1 Numbers, etc" , translit2 );
+		fontToTransliteratorMap.put( "VG2 Geez Numbers" , translit2 );
 	}
 
-	private ArrayList<String> diacritics123 = new ArrayList<String>(
-		Arrays.asList( "\u003c", "\u003d", "\u003e", "\u003f", "\u0040", "\u0041", "\u0042", "\u0043", "\u0044", "\u0045", "\u0046" )
-	);
-	private ArrayList<String> diacriticsNumbers = new ArrayList<String>(
-			Arrays.asList( "\u002b", "\u002c" )
+	private ArrayList<String> diacritics = new ArrayList<String>(
+		Arrays.asList( "\u0021", "\u0023", "\u0024", "\u0026", "\u002a", "\u0040", "\u0045", "\u00a4", "\u00ba", "\u00d6" )
 	);
 
 	public boolean isDiacritic(String fontName, String text) {
 		if ( text.equals( "" ) ) {
 			return false;
 		}
-		if( fontName.equals( fontName2 ) ) {
-			return diacriticsNumbers.contains( text.substring( text.length()-1 ) );
-		}
-		return diacritics123.contains( text.substring( text.length()-1 ) );
+		return diacritics.contains( text.substring( text.length()-1 ) );
 	}
 	
 	
@@ -116,6 +111,7 @@ public class ConvertDocxPowerGeez extends ConvertDocx {
 			List<RFonts> rfontsNodes = new ArrayList<RFonts>( prFinder.results ); 
 			int size = rfontsNodes.size();
 			
+			String fallback = Mapper.FONT_FALLBACK;
 			
 			for (int i=0; i<size; i++) {
 				RFonts rfonts = rfontsNodes.get(i);

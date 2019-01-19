@@ -15,6 +15,7 @@ import org.docx4j.finders.ClassFinder;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.FontTablePart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
@@ -78,20 +79,28 @@ public class ConvertDocx {
 	
 		fontIn = null;
 		// We assume one of these fields will be set, and not more then one legacy typeface is set per RFonts element.
+		boolean isSet = false;
 		if( targetTypefaces.contains( rfonts.getAscii() ) ) {
 			fontIn = rfonts.getAscii();
 			rfonts.setAscii( fontOut );
+			isSet = true;
 		}
 		if( targetTypefaces.contains( rfonts.getHAnsi() ) ) {
-			fontIn = rfonts.getHAnsi();
+			if(! isSet ) {
+				fontIn = rfonts.getHAnsi();
+			}
 			rfonts.setHAnsi( fontOut );
 		}
 		if( targetTypefaces.contains( rfonts.getCs() ) ) {
-			fontIn = rfonts.getCs();
+			if(! isSet ) {
+				fontIn = rfonts.getCs();
+			}
 			rfonts.setCs( fontOut );
 		}
 		if( targetTypefaces.contains( rfonts.getEastAsia() ) ) {
-			fontIn = rfonts.getEastAsia();
+			if(! isSet ) {
+				fontIn = rfonts.getEastAsia();
+			}
 			rfonts.setEastAsia( fontOut );
 		}
 
@@ -194,7 +203,7 @@ public class ConvertDocx {
 	            	FootnotesPart footnotesPart = documentPart.getFootnotesPart();
        			processObjects( footnotesPart );
        		}
-  
+       		
        		wordMLPackage.save( outputFile );
 		}
 		catch ( Exception ex ) {
