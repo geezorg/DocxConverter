@@ -15,6 +15,7 @@ import org.docx4j.finders.ClassFinder;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.FontTablePart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
@@ -29,8 +30,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import com.ibm.icu.text.*;
 
@@ -38,6 +41,8 @@ import com.ibm.icu.text.*;
 public class ConvertDocx {
 	protected Transliterator t = null;
 	protected String fontOut = null;
+	protected String fontIn = null;
+	protected char huletNeteb = 0x0;
 
 	public void setFont(String fontOut) {
 		this.fontOut = fontOut;
@@ -62,21 +67,49 @@ public class ConvertDocx {
 
 
 	public String convertText( String text ) {
-		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < text.length(); i++) {
-			int x =  ( 0x00ff & (int)text.charAt(i) );
-			sb.append(  (char)x );
+		return t.transliterate( text );
+	}
+
+	
+	public Transliterator getTransliteratorForFont( RFonts rfonts ) {
+		
+		if(  rfonts == null ) {
+			return null;
 		}
-		String step1 = t.transliterate( sb.toString() );
-		String step2 = (step1 == null ) ? null : step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
-		return step2;
+	
+		fontIn = null;
+		// We assume one of these fields will be set, and not more then one legacy typeface is set per RFonts element.
+		boolean isSet = false;
+		if( targetTypefaces.contains( rfonts.getAscii() ) ) {
+			fontIn = rfonts.getAscii();
+			rfonts.setAscii( fontOut );
+			isSet = true;
+		}
+		if( targetTypefaces.contains( rfonts.getHAnsi() ) ) {
+			if(! isSet ) {
+				fontIn = rfonts.getHAnsi();
+			}
+			rfonts.setHAnsi( fontOut );
+		}
+		if( targetTypefaces.contains( rfonts.getCs() ) ) {
+			if(! isSet ) {
+				fontIn = rfonts.getCs();
+			}
+			rfonts.setCs( fontOut );
+		}
+		if( targetTypefaces.contains( rfonts.getEastAsia() ) ) {
+			if(! isSet ) {
+				fontIn = rfonts.getEastAsia();
+			}
+			rfonts.setEastAsia( fontOut );
+		}
+
+		return fontToTransliteratorMap.get(fontIn) ;
 	}
 
 
-
 	public void processObjects( final JaxbXmlPart<?> part) throws Docx4JException
-	{
-				
+	{			
 			ClassFinder finder = new ClassFinder( R.class );
 			new TraversalUtil(part.getContents(), finder);
 		
@@ -90,41 +123,26 @@ public class ConvertDocx {
 				if (o2 instanceof org.docx4j.wml.R) {
 					R r = (org.docx4j.wml.R)o2;
 					RPr rpr = r.getRPr();
-					if (rpr == null ) continue;
+					if (rpr == null ) {
+						continue;
+					}
 					RFonts rfonts = rpr.getRFonts();
 				
-					if( rfonts == null ) {
-						t = null;
-					}
-					else if( fontName1.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit1;
-					}
-					else if( fontName2.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit2;
-					}
-					else {
-						t = null;
+					t =  getTransliteratorForFont(  rfonts );
+					
+					if( t == null ) {
+						continue;
 					}
 
 					List<Object> objects = r.getContent();
 					for ( Object x : objects ) {
 						Object x2 = XmlUtils.unwrap(x);
 						if ( x2 instanceof org.docx4j.wml.Text ) {
-							if ( t != null) {
-								Text txt = (org.docx4j.wml.Text)x2;
-								String out = convertText( txt.getValue() );
-								txt.setValue( out );
-								if ( " ".equals( out ) ) {	
-									txt.setSpace( "preserve" );
-								}
+							Text txt = (org.docx4j.wml.Text)x2;
+							String out = convertText( txt.getValue() );
+							txt.setValue( out );
+							if ( " ".equals( out ) ) {	
+								txt.setSpace( "preserve" );
 							}
 						}
 						else {
@@ -135,8 +153,6 @@ public class ConvertDocx {
 					System.err.println( XmlUtils.marshaltoString(o, true, true) );
 				}
 			}
-   
-
 	}
 
 
@@ -144,6 +160,8 @@ public class ConvertDocx {
 	protected Transliterator translit2 = null;
 	protected String fontName1 = null;
 	protected String fontName2 = null;
+	protected List<String> targetTypefaces = new  ArrayList<String>();
+	protected Map<String,Transliterator> fontToTransliteratorMap = new HashMap<String,Transliterator>();
 
 	public void initialize(
 		final String table1RulesFile,
@@ -161,7 +179,12 @@ public class ConvertDocx {
 			translit1 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
 			translit2 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
 			this.fontName1 = fontName1;
-			this.fontName2 = fontName2;;
+			this.fontName2 = fontName2;
+			
+			targetTypefaces.add( fontName1 );
+			targetTypefaces.add( fontName2 );
+			fontToTransliteratorMap.put( fontName1, translit1 );
+			fontToTransliteratorMap.put( fontName2, translit2 );
 
 		} catch ( Exception ex ) {
 			System.err.println( ex );
@@ -171,7 +194,6 @@ public class ConvertDocx {
 
 	public void process( final File inputFile, final File outputFile )
 	{
-
 		try {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
@@ -181,14 +203,12 @@ public class ConvertDocx {
 	            	FootnotesPart footnotesPart = documentPart.getFootnotesPart();
        			processObjects( footnotesPart );
        		}
-
-   
+       		
        		wordMLPackage.save( outputFile );
 		}
 		catch ( Exception ex ) {
 			System.err.println( ex );
 		}
-
 	}
 	
 

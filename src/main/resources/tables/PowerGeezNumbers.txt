@@ -1,0 +1,46 @@
+################################################################################
+#
+# This is a bidirectional mapping file for the "Ge'ez 1 Numbers, etc" font encoding
+# into the Unicode standard for Ethiopic. The file is intended to be read as input
+# for the International Components for Unicode (ICU) software library. The mapping
+# syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# "Ge'ez 1 Numbers, etc" was provided with the Power Ge'ez v1.0 1998 software
+# created by Concepts Data Systems PLC.
+#
+################################################################################
+#
+#
+ቒ ↔ \x40\x2b;
+ቔ ↔ \x40\x2c;
+ቐ ↔ \x40;
+ቑ ↔ A;
+ቓ ↔ B;
+ቕ ↔ C;
+ቖ ↔ D;
+
+፩ ↔ 1;
+፪ ↔ 2;
+፫ ↔ 3;
+፬ ↔ 4;
+፭ ↔ 5;
+፮ ↔ 6;
+፯ ↔ 7;
+፰ ↔ 8;
+፱ ↔ 9;
+፲ ↔ 0;
+፳ ↔ \x21;
+፴ ↔ \x22;
+፵ ↔ \x23;
+፶ ↔ \x24;
+፷ ↔ \x25;
+፸ ↔ \x26;
+፹ ↔ \x27;
+፺ ↔ \x28;
+፻ ↔ \x29;
+፼ ↔ \x2a;
+
+፦ ↔ \x2d ;
+፥ ↔ \x2e ;

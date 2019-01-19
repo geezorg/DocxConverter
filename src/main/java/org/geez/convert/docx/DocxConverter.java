@@ -42,6 +42,8 @@ public final class DocxConverter extends Application {
 	private static final String brana = "Brana I/II";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztype = "GeezType";
+	private static final String powergeez = "Power Ge'ez";
+	private static final String visualgeez = "Visual Ge'ez";
 	private static final String abyssinica = "Abyssinica SIL";
 	private static final String nyala = "Nyala";
 	private static final String kefa = "Kefa";
@@ -74,7 +76,7 @@ public final class DocxConverter extends Application {
         }
 
         ComboBox<String> fontMenu = new ComboBox<String>();
-        fontMenu.getItems().addAll( brana, geeznewab, geeztype );       
+        fontMenu.getItems().addAll( brana, geeznewab, geeztype, powergeez, visualgeez );       
         fontMenu.setValue( brana );
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -107,27 +109,27 @@ public final class DocxConverter extends Application {
         final Button convertButton = new Button("Convert File(s)");
         convertButton.setDisable( true );
         convertButton.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        if (inputList != null) {
-                        	convertButton.setDisable( true );
-                        	int i = 0;
-                            ObservableList<Label> itemList = listView.getItems();
-                            for (File file : inputList) {
-                            	processFile( file );
-                                Label label = itemList.get(i);
-                                label.setText("\u2713 " + label.getText() );
-                                label.setStyle( "-fx-font-style: italic;" );
-                                // itemList.set(i, oldValue );
-                                Platform.runLater(() -> listView.refresh() );
-                        		// listView.fireEvent(new ListView.EditEvent<>(listView, ListView.editCommitEvent(), label, i));
-                                i++;
-                            }
-                        } 
-                        inputList = null;
-                    }
+        	new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    if ( inputList != null ) {
+                       convertButton.setDisable( true );
+                       int i = 0;
+                       ObservableList<Label> itemList = listView.getItems();
+                       for (File file : inputList) {
+                            processFile( file );
+                            Label label = itemList.get(i);
+                            label.setText("\u2713 " + label.getText() );
+                            label.setStyle( "-fx-font-style: italic;" );
+                            // itemList.set(i, oldValue );
+                            Platform.runLater(() -> listView.refresh() );
+                        	// listView.fireEvent(new ListView.EditEvent<>(listView, ListView.editCommitEvent(), label, i));
+                            i++;
+                        }
+                    } 
+                    inputList = null;
                 }
+            }
         );
 
 
@@ -212,7 +214,7 @@ public final class DocxConverter extends Application {
 
 
     		if( converter == null ) {
-    			switch( systemOut ) {
+    			switch( systemIn ) {
 		    		case brana:
 		    			converter = new ConvertDocxBrana();
 		    			break;
@@ -224,17 +226,30 @@ public final class DocxConverter extends Application {
 		    		case geeztype:
 		    			converter = new ConvertDocxGeezType();
 		    			break;
+
+		    		case powergeez:
+		    			converter = new ConvertDocxPowerGeez();
+		    			break;
+
+		    		case visualgeez:
+		    			converter = new ConvertDocxVisualGeez();
+		    			break;
     			
 		    		default:
-		    			System.err.println( "Unrecognized input system: " + systemOut );
+		    			System.err.println( "Unrecognized input system: " + systemIn );
 		    			return;
     			}
     		}
 		
-    		converter.setFont( systemIn );
+    		converter.setFont( systemOut );
     		converter.process( inputFile, outputFile );
     		if ( openOutput ) {
-    			desktop.open( outputFile );
+    			if ( outputFile.exists() ) {
+    				desktop.open( outputFile );
+    			}
+    			else {
+    				// add a popup dialog to indicate file not found
+    			}
     		}
         }
         catch (Exception ex) {

@@ -1,0 +1,36 @@
+################################################################################
+#
+# This is a bidirectional mapping file for the "VG Geez Numbers" font encoding
+# into the Unicode standard for Ethiopic. The file is intended to be read as input
+# for the International Components for Unicode (ICU) software library. The mapping
+# syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# "VG Geez Numbers" was provided with the Visual Ge'ez software created by
+#  CUSTCOR Computing
+#
+################################################################################
+#
+#
+፩ ↔ 1;
+፪ ↔ 2;
+፫ ↔ 3;
+፬ ↔ 4;
+፭ ↔ 5;
+፮ ↔ 6;
+፯ ↔ 7;
+፰ ↔ 8;
+፱ ↔ 9;
+፲ ↔ '!';
+0 → ፲;
+፳ ↔ \x40;
+፴ ↔ \x23;
+፵ ↔ \x24;
+፶ ↔ \x25;
+፷ ↔ \x5e;
+፸ ↔ \x26;
+፹ ↔ \x2a;
+፺ ↔ \x28;
+፼ ↔ \x29\x29;
+፻ ↔ \x29;

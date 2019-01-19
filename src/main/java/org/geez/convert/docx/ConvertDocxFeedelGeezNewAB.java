@@ -30,9 +30,41 @@ import java.util.Arrays;
 
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
+	private final List<String> font1Typefaces = new ArrayList<String>();
+	private final List<String> font2Typefaces = new ArrayList<String>();
 
 	public ConvertDocxFeedelGeezNewAB() {
 		this.initialize( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB" );
+		huletNeteb = '"';
+		
+		font1Typefaces.add( "GeezA" );
+		font1Typefaces.add( "GeezNewA" );
+		font1Typefaces.add( "GeezSindeA" );
+		font1Typefaces.add( "GeezNet" );
+		font1Typefaces.add( "ZewdituA" );
+		
+		font2Typefaces.add( "GeezB" );
+		font2Typefaces.add( "GeezNewB" );
+		font2Typefaces.add( "GeezSindeB" );
+		font2Typefaces.add( "ZewdituB" );
+		
+		targetTypefaces.add( "GeezA" );
+		targetTypefaces.add( "GeezNewA" );
+		targetTypefaces.add( "GeezNet" );
+		targetTypefaces.add( "ZewdituA" );
+		targetTypefaces.add( "GeezB" );
+		targetTypefaces.add( "GeezNewB" );
+		targetTypefaces.add( "ZewdituB" );
+
+		
+		for(String key: font1Typefaces) {
+			fontToTransliteratorMap.put( key, translit1 );			
+		}
+		
+		for(String key: font2Typefaces) {
+			fontToTransliteratorMap.put( key, translit2 );			
+		}
+		
 	}
 
 /*
@@ -71,8 +103,22 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 		return diacritics.contains( text.substring( text.length()-1 ) );
 	}
 	private boolean lastPrediacritic = false;
-
 	
+
+	public String convertText( String text ) {
+		/* Revalidate this bit masking, it was necessary for GeezNewA, B but 
+		 * may not be needed with the others.
+		 */
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < text.length(); i++) {
+			int x =  ( 0x00ff & (int)text.charAt(i) );
+			sb.append(  (char)x );
+		}
+		String step1 = t.transliterate( sb.toString() );
+		String step2 = (step1 == null ) ? null : step1.replaceAll( "፡፡", "።"); // this usually won't work since each hulet neteb is surrounded by separate markup.
+		return step2;
+	}
+
 
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException
 		{
@@ -96,25 +142,11 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 					if (rpr == null ) continue;
 					RFonts rfonts = rpr.getRFonts();
 				
-					if( rfonts == null ) {
-						t = null;
-					}
-					else if( fontName1.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit1;
-					}
-					else if( fontName2.equals( rfonts.getAscii() ) ) {
-						rfonts.setAscii( fontOut );
-						rfonts.setHAnsi( fontOut );
-						rfonts.setCs( fontOut );
-						rfonts.setEastAsia( fontOut );
-						t = translit2;
-					}
-					else {
-						t = null;
+
+					t =  getTransliteratorForFont( rfonts );
+					
+					if( t == null ) {
+						continue;
 					}
 
 					List<Object> objects = r.getContent();
