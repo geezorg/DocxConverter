@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Arrays;
 
 
-// import com.ibm.icu.text.*;
-
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocx {
 	private final List<String> font1Typefaces = new ArrayList<String>();
