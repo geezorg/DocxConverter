@@ -234,7 +234,7 @@ public class ConvertDocx {
 			converter.process( inputFile, outputFile );
 		}
 		else if( "geeztype".equals( system ) ) {
-			ConvertDocx converter = new ConvertDocxGeezType();
+			ConvertDocx converter = new ConvertDocxGeezTypeNet();
 			converter.process( inputFile, outputFile );
 		}
 		else {

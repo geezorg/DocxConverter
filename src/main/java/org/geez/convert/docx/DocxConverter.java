@@ -41,7 +41,7 @@ public final class DocxConverter extends Application {
     private Desktop desktop = Desktop.getDesktop();
 	private static final String brana = "Brana I/II";
 	private static final String geeznewab = "GeezNewA/B";
-	private static final String geeztype = "GeezType";
+	private static final String geeztypenet = "GeezTypeNet";
 	private static final String powergeez = "Power Ge'ez";
 	private static final String visualgeez = "Visual Ge'ez";
 	private static final String abyssinica = "Abyssinica SIL";
@@ -76,7 +76,7 @@ public final class DocxConverter extends Application {
         }
 
         ComboBox<String> fontMenu = new ComboBox<String>();
-        fontMenu.getItems().addAll( brana, geeznewab, geeztype, powergeez, visualgeez );       
+        fontMenu.getItems().addAll( brana, geeznewab, geeztypenet, powergeez, visualgeez );       
         fontMenu.setValue( brana );
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -223,8 +223,8 @@ public final class DocxConverter extends Application {
 		    			converter = new ConvertDocxFeedelGeezNewAB();
 		    			break;
 
-		    		case geeztype:
-		    			converter = new ConvertDocxGeezType();
+		    		case geeztypenet:
+		    			converter = new ConvertDocxGeezTypeNet();
 		    			break;
 
 		    		case powergeez:
