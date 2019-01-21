@@ -51,7 +51,7 @@ public final class DocxConverter extends Application {
 	private String systemIn  = brana; // alphabetic based default
 	private String systemOut = abyssinica;
 	private boolean openOutput = true;
-	private List<File>  inputList = null;
+	private List<File> inputList = null;
 	
 	
     private static void configureFileChooser( final FileChooser fileChooser ) {      
