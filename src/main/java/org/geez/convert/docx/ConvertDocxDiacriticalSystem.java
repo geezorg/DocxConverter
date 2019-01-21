@@ -14,7 +14,6 @@ import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
-import org.docx4j.fonts.Mapper;
 
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
@@ -23,10 +22,7 @@ import org.docx4j.wml.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
-
-// import com.ibm.icu.text.*;
 
 
 public class ConvertDocxDiacriticalSystem extends ConvertDocx {
@@ -39,6 +35,11 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocx {
 			return false;
 		}
 		return diacritics.contains( text.substring( text.length()-1 ) );
+	}
+	
+	
+	public void localCheck( Text text ) {
+		return;
 	}
 	
 	
@@ -120,6 +121,7 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocx {
 								;
 								String out = convertText( txtValue );
 								txt.setValue( out );
+								localCheck( txt );
 							}
 						}
 					}

@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-// import com.ibm.icu.text.*;
-
 
 public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 
