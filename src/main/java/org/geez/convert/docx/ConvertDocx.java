@@ -189,6 +189,21 @@ public class ConvertDocx {
 			System.err.println( ex );
 		}
 	}
+	
+	
+	
+	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
+		new TraversalUtil(part.getContents(), stFinder );
+
+		HashMap<Text,String> textNodes = (HashMap)stFinder.results; 
+		for(Text text: textNodes.keySet() ) {
+			fontIn = textNodes.get(text);
+			t = fontToTransliteratorMap.get( fontIn );
+			String out = convertText( text.getValue() );
+			text.setValue( out );
+		}
+	
+	}
 
 
 	public void process( final File inputFile, final File outputFile )
@@ -199,8 +214,14 @@ public class ConvertDocx {
        		processObjects( documentPart );
             
        		if( documentPart.hasFootnotesPart() ) {
-	            	FootnotesPart footnotesPart = documentPart.getFootnotesPart();
+	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
        			processObjects( footnotesPart );
+       		}
+
+       		StyledTextFinder stf = new StyledTextFinder();
+       		stf.readStyles( wordMLPackage, targetTypefaces, fontOut );
+       		if( stf.hasStyles() ) {
+       			processStyledObjects( documentPart, stf );
        		}
        		
        		wordMLPackage.save( outputFile );
