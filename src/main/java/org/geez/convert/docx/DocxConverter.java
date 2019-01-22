@@ -100,7 +100,7 @@ public final class DocxConverter extends Application {
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable(false);
         listView.setPrefHeight( 100 );
-        listView.setPrefWidth( 280 );
+        listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
         listView.autosize();
@@ -197,7 +197,7 @@ public final class DocxConverter extends Application {
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding( new Insets(12, 12, 12, 12) );
  
-        stage.setScene(new Scene(rootGroup, 400, 270) );
+        stage.setScene(new Scene(rootGroup, 420, 270) );
         stage.show();
     }
  
@@ -212,7 +212,7 @@ public final class DocxConverter extends Application {
         	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
     		File outputFile = new File ( outputFilePath );
 
-
+    		
     		switch( systemIn ) {
 		   		case brana:
 		   			converter = new ConvertDocxBrana();
