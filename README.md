@@ -41,8 +41,16 @@ fonts maybe substuited for any other Unicode compliant font for Ethiopic.
 
 ### Limitations
 
-Some issues will remain...
+The Docx Converter has been tested on a small sample of Amharic documents that covers most, but not all of, the
+Ethiopic syllabary.  Testing is thus not comprehensive and is limited by the corpus sample available for testing.
+Conversion errors will likely be found as new documents uses letters not found in the testing corpus.
 
+Conversion issues may also be found when documents produced by additional versions of Microsoft Word are tested,
+or for documents produced by other word processors that support the .docx format.  Convesion may also fail for
+more complex formatting such as for tables which have not been tested.
+
+Issues can be reported to the author directly, or via the GitHub [issues tracker](https://github.com/geezorg/DocxConverter/issues)
+for the project.
 
 
 ## Command Line Usage Examples
