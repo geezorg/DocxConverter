@@ -17,7 +17,7 @@ encodings systems can be porrted from LibEth as the need arrises. Please feel fr
 
 ## Usage (Executable Jar with GUI)
 
-![v0.v Screenshot][doc/gui-screenshot-v0.5.png]
+![v0.v Screenshot](doc/gui-screenshot-v0.5.png)
 
 In the GitHub the "releases" folder you can find and download the "DocxConverter-0.5.0-full-gui.jar" file. This version
 contains the converter and all of its dependencies (jar libraries).  Double clicking the jar file will launch a user
