@@ -5,7 +5,7 @@
 
 Migrate Microsoft Word documents in pre-Unicode Ethiopic fonts into a Unicode font supporting Ethiopic script.
 
-The converter presently provides support for five legacy (non-Unicode) systems, Brana (I &amp; II),  Feedel Ge'ez (New &amp; B).
+The converter presently provides support for five legacy (non-Unicode) systems, Brana (I &amp; II),  Feedel Ge'ez New (A &amp; B).
 Ge'ezSoft (GeezTypeNet), Power Ge'ez (Ge'ez-1, Ge'ez-1 Numbers) and Visual Ge'ez (VG2 Main, VG Geez Numbers).
 The conversion mappings come directly from the long defunct [LibEth](http://libeth.sourceforge.net) C language library which
 supported conversion of [many more legacy encoding systems](http://libeth.sourceforge.net/CharacterSets.html).  Support for additional
