@@ -35,7 +35,7 @@ public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 			fontToTransliteratorMap.put( key, translit1 );			
 		}
 		
-		fontToTransliteratorMap.put( "VG2 Geez Numbers" , translit2 );
+		fontToTransliteratorMap.put( "VG Geez Numbers" , translit2 );
 
 
 		diacritics.addAll (
