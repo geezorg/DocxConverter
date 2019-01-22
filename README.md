@@ -3,16 +3,19 @@
 
 ## About
 
-This repository may be imported into [Eclipse](http://www.eclipse.org) as a simple [Maven](https://maven.apache.org/) Java project.
-The "Eclipse IDE for Java Developers" download option will include both Maven and Git integration, no additional installation will
-be needed to build this project.  Maven in turn will retrieve all dependencies, primarily the [docx4j](https://www.docx4java.org/)
-(6.1.0) and [ICU](http://site.icu-project.org/) (63.1) and Java libaries.
+Migrate Microsoft Word documents in pre-Unicode Ethiopic fonts into a Unicode font supporting Ethiopic script.
 
 The converter presently provides support for five legacy (non-Unicode) systems, Brana (I &amp; II),  Feedel Ge'ez (New &amp; B).
 Ge'ezSoft (GeezTypeNet), Power Ge'ez (Ge'ez-1, Ge'ez-1 Numbers) and Visual Ge'ez (VG2 Main, VG Geez Numbers).
 The conversion mappings come directly from the long defunct [LibEth](http://libeth.sourceforge.net) C language library which
 supported conversion of [many more legacy encoding systems](http://libeth.sourceforge.net/CharacterSets.html).  Support for additional
-encodings systems can be porrted from LibEth as the need arrises. Please feel free to request support for additional systems.
+encodings systems can be porrted from LibEth as the need arrises. 
+Please feel free to [request support](https://github.com/geezorg/DocxConverter/issues) for additional systems.
+
+This repository may be imported into [Eclipse](http://www.eclipse.org) as a simple [Maven](https://maven.apache.org/) Java project.
+The "Eclipse IDE for Java Developers" download option will include both Maven and Git integration, no additional installation will
+be needed to build this project.  Maven in turn will retrieve all dependencies, primarily the [docx4j](https://www.docx4java.org/)
+(6.1.0) and [ICU](http://site.icu-project.org/) (63.1) and Java libaries.
 
 
 ## Usage (Executable Jar with GUI)
