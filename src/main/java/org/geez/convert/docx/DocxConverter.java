@@ -99,7 +99,7 @@ public final class DocxConverter extends Application {
 
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable(false);
-        listView.setPrefHeight( 100 );
+        listView.setPrefHeight( 125 );
         listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
@@ -197,7 +197,7 @@ public final class DocxConverter extends Application {
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding( new Insets(12, 12, 12, 12) );
  
-        stage.setScene(new Scene(rootGroup, 420, 270) );
+        stage.setScene(new Scene(rootGroup, 420, 260) );
         stage.show();
     }
  
