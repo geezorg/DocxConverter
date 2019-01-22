@@ -168,7 +168,6 @@ public class ConvertDocx {
 		final String fontName1,
 		final String fontName2)
 	{
-
 		try {
 			// specify the transliteration file in the first argument.
 			// read the input, transliterate, and write to output
@@ -195,7 +194,7 @@ public class ConvertDocx {
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
 		new TraversalUtil(part.getContents(), stFinder );
 
-		HashMap<Text,String> textNodes = (HashMap)stFinder.results; 
+		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results; 
 		for(Text text: textNodes.keySet() ) {
 			fontIn = textNodes.get(text);
 			t = fontToTransliteratorMap.get( fontIn );
@@ -238,27 +237,40 @@ public class ConvertDocx {
 			System.exit(0);
 		}
 
-		String system = args[0];
+		String systemIn = args[0];
 		String inputFilepath  = System.getProperty("user.dir") + "/" + args[1];
 		String outputFilepath = System.getProperty("user.dir") + "/" + args[2];
 		File inputFile = new File ( inputFilepath );
 		File outputFile = new File ( outputFilepath );
 
 
-		if( "brana".equals( system ) ) {
-			ConvertDocx converter = new ConvertDocxBrana();
-			converter.process( inputFile, outputFile );
+	    ConvertDocx converter = null;
+		switch( systemIn ) {
+			case "brana":
+				converter = new ConvertDocxBrana();
+				break;
+		
+			case "geeznewab":
+				converter = new ConvertDocxFeedelGeezNewAB();
+				break;
+
+			case "geeztypenet":
+				converter = new ConvertDocxGeezTypeNet();
+				break;
+
+			case "powergeez":
+				converter = new ConvertDocxPowerGeez();
+				break;
+
+			case "visualgeez":
+				converter = new ConvertDocxVisualGeez();
+				break;
+		
+			default:
+				System.err.println( "Unrecognized input system: " + systemIn );
+				System.exit(1);
 		}
-		else if( "geeznewab".equals( system ) ) {
-			ConvertDocx converter = new ConvertDocxFeedelGeezNewAB();
-			converter.process( inputFile, outputFile );
-		}
-		else if( "geeztype".equals( system ) ) {
-			ConvertDocx converter = new ConvertDocxGeezTypeNet();
-			converter.process( inputFile, outputFile );
-		}
-		else {
-			System.err.println( "Unrecognized input system: " + system );
-		}
+		
+		converter.process( inputFile, outputFile );
 	}
 }
