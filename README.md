@@ -17,9 +17,16 @@ encodings systems can be porrted from LibEth as the need arrises. Please feel fr
 
 ## Usage (Executable Jar with GUI)
 
+1. Select one or more Microsoft Word files using the same font *(files must be in .docx format)*.
+2. Select the "Font In"
+3. Select the "Font Out"
+4. Click "Convert File(s)"
+5. Converted files will automatically open.
+
+
 ![v0.v Screenshot](doc/gui-screenshot-v0.5.png)
 
-In the GitHub the "releases" folder you can find and download the "DocxConverter-0.5.0-full-gui.jar" file. This version
+In the GitHub the "[releases](releases/)" folder you can find and download the "DocxConverter-0.5.0-full-gui.jar" file. This version
 contains the converter and all of its dependencies (jar libraries).  Double clicking the jar file will launch a user
 interface where fonts and files may be selected via mouse and menus.
 
