@@ -78,8 +78,8 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		
 		return currentText;
 	}
-	
-	
+
+
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
 			PropertiesFinder prFinder = new PropertiesFinder();
 			new TraversalUtil(part.getContents(), prFinder );
@@ -106,22 +106,22 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocx {
 					R r = (org.docx4j.wml.R)((org.docx4j.wml.RPr)rfonts.getParent()).getParent();
 					List<Object> objects = r.getContent();
 					for ( Object o : objects ) {
-						Object x = XmlUtils.unwrap(o);
-						if ( x instanceof org.docx4j.wml.Text ) {
-							Text txt = (org.docx4j.wml.Text)x;
+						Object txt = XmlUtils.unwrap(o);
+						if ( txt instanceof org.docx4j.wml.Text ) {
+							Text text = (org.docx4j.wml.Text)txt;
 
 							// revisit why we need this first part, maybe it was only necessary for Brana -?
-							if( " ".equals( txt.getValue() ) || "".equals( txt.getValue() )) {
+							if( " ".equals( text.getValue() ) || "".equals( text.getValue() )) {
 								// txt.setSpace( "preserve" );
 							}
 							else {
-								String txtValue = ( (i+1) == size )
-										? txt.getValue()
-										: getQualifiedText( txt, ((Object)(rfontsNodes.get(i+1)).getParent()) )
+								String textValue = ( (i+1) == size )
+										? text.getValue()
+										: getQualifiedText( text, ((Object)(rfontsNodes.get(i+1)).getParent()) )
 								;
-								String out = convertText( txtValue );
-								txt.setValue( out );
-								localCheck( txt );
+								String out = convertText( textValue );
+								text.setValue( out );
+								localCheck( text );
 							}
 						}
 					}

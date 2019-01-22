@@ -213,32 +213,30 @@ public final class DocxConverter extends Application {
     		File outputFile = new File ( outputFilePath );
 
 
-    		if( converter == null ) {
-    			switch( systemIn ) {
-		    		case brana:
-		    			converter = new ConvertDocxBrana();
-		    			break;
+    		switch( systemIn ) {
+		   		case brana:
+		   			converter = new ConvertDocxBrana();
+		   			break;
     			
-		    		case geeznewab:
-		    			converter = new ConvertDocxFeedelGeezNewAB();
-		    			break;
+		   		case geeznewab:
+	    			converter = new ConvertDocxFeedelGeezNewAB();
+	    			break;
 
-		    		case geeztypenet:
-		    			converter = new ConvertDocxGeezTypeNet();
-		    			break;
+		    	case geeztypenet:
+		    		converter = new ConvertDocxGeezTypeNet();
+		   			break;
 
-		    		case powergeez:
-		    			converter = new ConvertDocxPowerGeez();
-		    			break;
+		    	case powergeez:
+		    		converter = new ConvertDocxPowerGeez();
+		   			break;
 
-		    		case visualgeez:
-		    			converter = new ConvertDocxVisualGeez();
-		    			break;
+		    	case visualgeez:
+		    		converter = new ConvertDocxVisualGeez();
+		    		break;
     			
-		    		default:
-		    			System.err.println( "Unrecognized input system: " + systemIn );
-		    			return;
-    			}
+		    	default:
+		    		System.err.println( "Unrecognized input system: " + systemIn );
+		    		return;
     		}
 		
     		converter.setFont( systemOut );
