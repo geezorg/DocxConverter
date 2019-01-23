@@ -126,7 +126,7 @@ The following steps assume that Feedel documents were composed in older versions
 ```
 
 
-### PowerGe'ez
+### Power Ge'ez
 
 **Fonts Supported**
 * Ge'ez-1
@@ -150,7 +150,7 @@ The following steps assume that Power Ge'ez documents were composed in older ver
 
 
 
-### VisualGe'ez
+### Visual Ge'ez
 
 **Fonts Supported**
 * VG2 Main
