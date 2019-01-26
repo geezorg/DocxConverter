@@ -25,7 +25,7 @@ import java.util.List;
 
 
 
-public class ConvertDocxDiacriticalSystem extends ConvertDocx {
+abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	protected final List<String> font1Typefaces = new ArrayList<String>();
 
 	protected ArrayList<String> diacritics = new ArrayList<String>();
