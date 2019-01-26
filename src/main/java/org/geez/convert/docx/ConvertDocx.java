@@ -37,7 +37,7 @@ import java.util.Map;
 import com.ibm.icu.text.*;
 
 
-public class ConvertDocx {
+abstract class ConvertDocx {
 	protected Transliterator t = null;
 	protected String fontOut = null;
 	protected String fontIn = null;
