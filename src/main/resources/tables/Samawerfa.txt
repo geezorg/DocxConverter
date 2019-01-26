@@ -1,0 +1,34 @@
+################################################################################
+#
+# This is a bidirectional mapping file for the Addis98, Addis98w and AddisWP font
+# encoding into the Unicode standard for Ethiopic. The file is intended to be read
+# as input for the International Components for Unicode (ICU) software library. 
+# The mapping syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# Addis98, Addis98w & AddisWP  were provided with the Samawerfa software
+# created by Samawerfa PLC.
+#
+################################################################################
+#
+#
+$kaib  = [ \xfd\xe7\xe6\xe5\xe8 ] ;
+$salis = [ \xe9\xea\xeb\xec\xed ] ;
+$hamis = [ \xee\xef\xf0\xf1\xf2 ] ;
+$diqala_geez = [ \xf9\xf8 ] ;
+$diqala_salis = \xf7 ;
+$diqala_kaib = \xf6 ;
+$diqala_rabi = [ \xf5\xf4\xf3 ] ;
+$diqala_hamis = [ \xfb\xfc ] ;
+
+ሁ ← A$kaib ;
+ሀ ← A;
+
+#
+#
+#define SSAM_B    "\xfa"
+#define SSAM_WS   "\x3a"
+#
+#
+:: ([\x20-\u2122]) ;

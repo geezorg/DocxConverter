@@ -43,6 +43,7 @@ public final class DocxConverter extends Application {
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztypenet = "GeezTypeNet";
 	private static final String powergeez = "Power Ge'ez";
+	private static final String samawerfa = "Samawerfa";
 	private static final String visualgeez = "Visual Ge'ez";
 	private static final String abyssinica = "Abyssinica SIL";
 	private static final String nyala = "Nyala";
@@ -76,7 +77,7 @@ public final class DocxConverter extends Application {
         }
 
         ComboBox<String> fontMenu = new ComboBox<String>();
-        fontMenu.getItems().addAll( brana, geeznewab, geeztypenet, powergeez, visualgeez );       
+        fontMenu.getItems().addAll( brana, geeznewab, geeztypenet, powergeez, samawerfa, visualgeez );       
         fontMenu.setValue( brana );
         fontMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -230,6 +231,10 @@ public final class DocxConverter extends Application {
 		    		converter = new ConvertDocxPowerGeez();
 		   			break;
 
+		    	case samawerfa:
+		    		converter = new ConvertDocxSamawerfa();
+		   			break;
+		   			
 		    	case visualgeez:
 		    		converter = new ConvertDocxVisualGeez();
 		    		break;
