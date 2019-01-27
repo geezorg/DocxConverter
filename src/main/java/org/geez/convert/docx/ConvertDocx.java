@@ -261,6 +261,10 @@ abstract class ConvertDocx {
 			case "powergeez":
 				converter = new ConvertDocxPowerGeez();
 				break;
+				
+			case "samawerfa":
+				converter = new ConvertDocxSamawerfa();
+				break;
 
 			case "visualgeez":
 				converter = new ConvertDocxVisualGeez();

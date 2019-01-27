@@ -8,7 +8,7 @@
 #   http://userguide.icu-project.org/transforms/general
 #
 # Addis98, Addis98w & AddisWP  were provided with the Samawerfa software
-# created by Samawerfa PLC.
+# created by Alts.
 #
 ################################################################################
 #
@@ -22,40 +22,41 @@ $diqala_kaib = \xf6 ;
 $diqala_rabi = [ \xf5\xf4\xf3 ] ;
 $diqala_hamis = [ \xfb\xfc ] ;
 
-ሁ ← A$kaib ;
+ሁ ← \x41$kaib ;
 ሀ ← A;
-
-ሁ ← $\x41kaib ;
-ሀ ← A ;
-ሂ ← $\x42salis ;
-ሄ ← $\x42hamis ;
+ሂ ← \x42$salis ;
+ሄ ← \x42$hamis ;
 ሃ ← B ;
 ህ ← C ;
 ሆ ← D ;
-ሉ ← $\x45kaib ;
-ሊ ← $\x45salis ;
-ሌ ← $\x45hamis ;
-ሎ ← $\x45diqala_geez ;
+ሉ ← \x45$kaib ;
+ሊ ← \x45$salis ;
+ሌ ← \x45$hamis ;
+ሎ ← \x45$diqala_geez ;
 ለ ← E ;
-ሏ ← $\x46diqala_rabi ;
+ሏ ← \x46$diqala_rabi ;
 ላ ← F ;
 ል ← G ;
-ሑ ← $\x48kaib ;
-ሒ ← $\x48salis ;
-ሔ ← $\x48hamis ;
+ሑ ← \x48$kaib ;
+ሒ ← \x48$salis ;
+ሔ ← \x48$hamis ;
 ሐ ← H ;
-ሗ ← $\x49diqala_rabi ;
+ሗ ← \x49$diqala_rabi ;
 ሓ ← I ;
 ሕ ← J ;
 ሖ ← K ;
-ሙ ← $\x4ckaib ;
+ሙ ← \x4c$kaib ;
 መ ← L ;
-ሚ ← $\x4dsalis ;
-ሜ  ← $\x4dhamis ;
-ሟ ← $\x4ddiqala_rabi ;
+ሚ ← \x4d$salis ;
+ሜ  ← \x4d$hamis ;
+ሟ ← \x4d$diqala_rabi ;
 ማ ← M ;
 ም ← N ;
 ሞ ← O ;
+ሡ ← \x50$kaib ;
+ሢ ← \x51$salis ;
+ሤ ← \x51$hamis ;
+ሧ ← \x51$diqala_rabi ;
 ሠ ← P ;
 ሣ ← Q ;
 ሥ ← R ;
@@ -68,14 +69,26 @@ $diqala_hamis = [ \xfb\xfc ] ;
 ር ← Y ;
 ሮ ← Z ;
 ሯ ← \x5b ;
+ሱ ← \x5c$kaib ;
+ሲ ← \x5c$salis ;
+ሴ ← \x5c$hamis ;
 ሰ ← \x5c ;
+ሷ ← \x5d$diqala_rabi ;
 ሳ ← \x5d ;
 ስ ← \x5e ;
 ሶ ← \x5f ;
+ሹ ← \x60$kaib ;
+ሺ ← \x60$salis ;
+ሼ ← \x60$hamis ;
 ሸ ← \x60 ;
+ሿ ← \x61$diqala_rabi ;
 ሻ ← a ;
 ሽ ← b ;
 ሾ ← c ;
+ቈ ← \x64$diqala_geez ;
+ቊ ← \x64$diqala_salis ;
+ቌ ← \x64$diqala_hamis ;
+ቍ ← \x64$diqala_kaib ;
 ቀ ← d ;
 ቁ ← e ;
 ቂ ← f ;
@@ -84,244 +97,219 @@ $diqala_hamis = [ \xfb\xfc ] ;
 ቅ ← i ;
 ቆ ← j ;
 ቋ ← k ;
+ቕ ← \xe4 ;
+ቡ ← \x6c$kaib ;
+ቢ ← \x6c$salis ;
+ቤ ← \x6c$hamis ;
 በ ← l ;
+ቧ ← \x6d$diqala_rabi ;
 ባ ← m ;
 ብ ← n ;
 ቦ ← o ;
+ቩ ← \xdf$kaib ;
+ቪ ← \xdf$salis ;
+ቬ ← \xdf$hamis ;
+ቯ ← \xe0$diqala_rabi ;
+ቫ ← \xe0 ;
+ቭ ← \xe1 ;
+ቮ ← \xe2 ;
+ቱ ← \x70$kaib ;
+ቲ ← \x70$salis ;
+ቴ ← \x70$hamis ;
+ቷ ← \x70$diqala_rabi ;
 ተ ← p ;
 ታ ← q ;
 ት ← r ;
 ቶ ← s ;
+ቹ ← \x74$kaib ;
+ቺ ← \x74$salis ;
+ቼ ← \x74$hamis ;
+ቿ ← \x74$diqala_rabi ;
 ቸ ← t ;
 ቻ ← u ;
 ች ← v ;
 ቾ ← w ;
+ኁ ← \x78$kaib ;
+ኂ ← \x78$salis ;
+ኄ ← \x78$hamis ;
+ኈ ← \x78$diqala_geez ;
+ኊ ← \x78$diqala_salis ;
+ኌ ← \x78$diqala_hamis ;
+ኍ ← \x78$diqala_kaib ;
 ኀ ← x ;
 ኃ ← y ;
 ኅ ← z ;
 ኆ ← \x7b ;
 ኋ ← \x7c ;
+ኑ ← \x7d$kaib ;
+ኒ ← \x7d$salis ;
+ኔ ← \x7d$hamis ;
 ነ ← \x7d ;
+ኗ ← \x7e$diqala_rabi ;
 ና ← \x7e ;
-ኖ ↔ \x81 ;
-ኘ ↔ \x82 ;
-ኛ ↔ \x83 ;
-ኝ ↔ \x84 ;
-ኞ ↔ \x85 ;
-አ ↔ \x86 ;
-ኣ ↔ \x87 ;
-እ ↔ \x88 ;
-ኦ ↔ \x89 ;
-ከ ↔ \x8a ;
-ካ ↔ \x8b ;
-ክ ↔ \x8c ;
-ኮ ↔ \x8d ;
-ኻ ↔ \x8f ;
-ኽ ↔ \x90 ;
-ኾ ↔ \x91 ;
-ወ ↔ \x92 ;
-ዉ ↔ \x93 ;
-ዋ ↔ \x94 ;
-ዎ ↔ \x95 ;
-ዐ ↔ \x96 ;
-ዓ ↔ \x97 ;
-ዕ ↔ \x98 ;
-ዖ ↔ \x99 ;
-ዘ ↔ \x9a ;
-ዛ ↔ \x9b ;
-ዝ ↔ \x9c ;
-ዞ ↔ \x9d ;
-ዣ ↔ \x9f ;
-ዥ ← \x5c ;
-ዦ ← \x5c ;
-የ ← \x5c ;
-ዩ ← \x5c ;
-ዪ ← \x5c ;
-ያ ← \x5c ;
-ዬ ← \x5c ;
-ይ ← \x5c ;
-ዮ ← \x5c ;
-ደ ← \x5c ;
-ዱ ← \x5c ;
-ዴ ← \x5c ;
-ድ ← \x5c ;
-ዶ ← \x5c ;
-ጀ ← \x5c ;
-ጁ ← \x5c ;
-ጃ ← \x5c ;
-ጄ ← \x5c ;
-ጅ ← \x5c ;
-ጆ ← \x5c ;
-ገ ← \x5c ;
-ጋ ← \x5c ;
-ግ ← \x5c ;
-ጎ ← \x5c ;
-ጓ ← \x5c ;
-ጠ ← \x5c ;
-ጣ ← \x5c ;
-ጥ ← \x5c ;
-ጦ ← \x5c ;
-ጨ ← \x5c ;
-ን ← \x5c ;
-ጪ ← \x5c ;
-ጫ ← \x5c ;
-ጬ ← \x5c ;
-ጭ ← \x5c ;
-ጮ ← \x5c ;
-ጯ ← \x5c ;
-ጰ ← \x5c ;
-ጱ ← \x5c ;
-ጳ ← \x5c ;
-ጵ ← \x5c ;
-ጶ ← \x5c ;
-ጸ ← \x5c ;
-ጹ ← \x5c ;
-ጻ ← \x5c ;
-ጽ ← \x5c ;
-ጾ ← \x5c ;
-ፀ ← \x5c ;
-ፃ ← \x5c ;
-ፅ ← \x5c ;
-ፆ ← \x5c ;
-ፈ ← \x5c ;
-ፉ ← \x5c ;
-ፊ ← \x5c ;
-ፋ ← \x5c ;
-ፌ ← \x5c ;
-ፍ ← \x5c ;
-ፎ ← \x5c ;
-ፐ ← \x5c ;
-ፓ ← \x5c ;
-ፕ ← \x5c ;
-ፖ ← \x5c ;
-ቨ ← \x5c ;
-ቫ ← \x5c ;
-ቭ ← \x5c ;
-ቮ ← \x5c ;
-ኧ ← \x5c ;
-ቕ ← \x5c ;
-ኸ ← \x5c ;
-ዠ ← \x5c ;
-ሠሡ ← $\x50kaib ;
-ሣሥ ← $\x51salis ;
-ሣሧ ← $\x51hamis ;
-ሣሪ ← $\x51diqala_rabi ;
-ዠዡ ← $\x5ckaib ;
-ዠዢ ← $\x5csalis ;
-ዠዤ ← $\x5chamis ;
-ሳሺ ← $\x5ddiqala_rabi ;
-ሸሹ ← $\x60kaib ;
-ሸሺ ← $\x60salis ;
-ሸሼ ← $\x60hamis ;
-ሻቂ ← $\x61diqala_rabi ;
-ቀቈ ← $\x64diqala_geez ;
-ቀ቉ ← $\x64diqala_salis ;
-ቀቊ ← $\x64diqala_hamis ;
-ቀቋ ← $\x64diqala_kaib ;
-No Map found for 64\xfa
-No Map found for 64\xfa
-No Map found for 64\xfa
-No Map found for 64\xfa
-በቡ ← $\x6ckaib ;
-በቢ ← $\x6csalis ;
-በቤ ← $\x6chamis ;
-ባቪ ← $\x6ddiqala_rabi ;
-No Map found for df
-No Map found for df
-No Map found for df
-No Map found for e0
-ተቱ ← $\x70kaib ;
-ተቲ ← $\x70salis ;
-ተቴ ← $\x70hamis ;
-ተቷ ← $\x70diqala_rabi ;
-ቸቹ ← $\x74kaib ;
-ቸቺ ← $\x74salis ;
-ቸቼ ← $\x74hamis ;
-ቸቿ ← $\x74diqala_rabi ;
-ኀኁ ← $\x78kaib ;
-ኀኂ ← $\x78salis ;
-ኀኄ ← $\x78hamis ;
-ኀኈ ← $\x78diqala_geez ;
-ኀ኉ ← $\x78diqala_salis ;
-ኀኊ ← $\x78diqala_hamis ;
-ኀኋ ← $\x78diqala_kaib ;
-ነኑ ← $\x7dkaib ;
-ነኒ ← $\x7dsalis ;
-ነኔ ← $\x7dhamis ;
-ናኚ ← $\x7ediqala_rabi ;
-ኘኙ ← $\x82kaib ;
-ኘኚ ← $\x82salis ;
-ኘኜ ← $\x82hamis ;
-ኛኢ ← $\x83diqala_rabi ;
-አኡ ← $\x86kaib ;
-አኢ ← $\x86salis ;
-አኤ ← $\x86hamis ;
-ከኩ ← $\x8akaib ;
-ከኪ ← $\x8asalis ;
-ከኬ ← $\x8ahamis ;
-ከኰ ← $\x8adiqala_geez ;
-ከ኱ ← $\x8adiqala_salis ;
-ካኲ ← $\x8bdiqala_rabi ;
-ካኳ ← $\x8bdiqala_geez ;
-ከኳ ← $\x8adiqala_kaib ;
-No Map found for fe
-No Map found for fe
-ኻ኿ ← $\x8fhamis ;
-No Map found for fe
-No Map found for fe
-ኻዂ ← $\x8fdiqala_rabi ;
-ኻዅ ← $\x8fdiqala_hamis ;
-No Map found for fe
-ዋው ← $\x94salis ;
-ዋዏ ← $\x94hamis ;
-ወዉ ← $\x92kaib ;
-ዐዑ ← $\x96kaib ;
-ዓዕ ← $\x97salis ;
-ዓ዗ ← $\x97hamis ;
-ዘዙ ← $\x9akaib ;
-ዘዚ ← $\x9asalis ;
-ዘዜ ← $\x9ahamis ;
-ዛዢ ← $\x9bdiqala_rabi ;
-No Map found for ff
-No Map found for ff
-No Map found for ff
-ዣዪ ← $\x9fdiqala_rabi ;
-No Map found for ab
-No Map found for aa
-No Map found for ab
-No Map found for aa
-No Map found for b1
-No Map found for af
-No Map found for b5
-No Map found for b5
-No Map found for b5
-No Map found for b5
-No Map found for b5
-No Map found for b5
-No Map found for b5
-No Map found for b5\xfa
-No Map found for b5\xfa
-No Map found for b5\xfa
-No Map found for ba
-No Map found for ba
-No Map found for ba
-No Map found for bb
-No Map found for be
-No Map found for c6
-No Map found for c6
-No Map found for c8
-No Map found for cb
-No Map found for cb
-No Map found for cd
-No Map found for d0
-No Map found for d1
-No Map found for d1
-No Map found for d7
-No Map found for db
-No Map found for db
-No Map found for db
-No Map found for db
-
+ን ← \xbf ;
+ኖ ← \x81 ;
+ኙ ← \u201a$kaib ;
+ኚ ← \u201a$salis ;
+ኜ ← \u201a$hamis ;
+ኘ ← \u201a ;
+ኟ ← \u0192$diqala_rabi ;
+ኛ ← \u0192 ;
+ኝ ← \u201e ;
+ኞ ← \u2026 ;
+ኡ ← \u2020$kaib ;
+ኢ ← \u2020$salis ;
+ኤ ← \u2020$hamis ;
+አ ← \u2020 ;
+ኣ ← \u2021 ;
+እ ← \u02c6 ;
+ኦ ← \u2030 ;
+ኧ ← \xe3 ;
+ኩ ← \u0160$kaib ;
+ኪ ← \u0160$salis ;
+ኬ ← \u0160$hamis ;
+ኰ ← \u0160$diqala_geez ;
+ኲ ← \u0160$diqala_salis ;
+ኵ ← \u0160$diqala_kaib ;
+ኴ ← \u0160$diqala_hamis ;
+ከ ← \u0160 ;
+ኳ ← \u2039$diqala_rabi ;
+ካ ← \u2039 ;
+ክ ← \u0152 ;
+ኮ ← \x8d ;
+ኹ ← \xfe$kaib ;
+ኺ ← \xfe$salis ;
+ዀ ← \xfe$diqala_geez ;
+ዂ዁← \xfe$diqala_salis ;
+ዅ ← \xfe$diqala_kaib ;
+ኼ ← \xfe$hamis ;
+ኸ ← \xfe ;
+ዄ ← \x8f$diqala_hamis ;
+ዃ ← \x8f$diqala_rabi ;
+ኻ ← \x8f ;
+ኽ ← \x90 ;
+ኾ ← \u2018 ;
+ው ← \u2019$kaib ;
+ወ ← \u2019 ;
+ዉ ← \u201c ;
+ዊ ← \u201d$salis ;
+ዌ ← \u201d$hamis ;
+ዋ ← \u201d ;
+ዎ ← \u2022 ;
+ዑ ← \u2013$kaib ;
+ዐ ← \u2013 ;
+ዒ ← \u2014$salis ;
+ዔ ← \u2014$hamis ;
+ዓ ← \u2014 ;
+ዕ ← \u02dc ;
+ዖ ← \u2122 ;
+ዙ ← \u0161$kaib ;
+ዚ ← \u0161$salis ;
+ዜ ← \u0161$hamis ;
+ዘ ← \u0161 ;
+ዟ ← \u203a$diqala_rabi ;
+ዛ ← \u203a ;
+ዝ ← \u0153 ;
+ዞ ← \x9d ;
+ዡ ← \xff$kaib ;
+ዢ ← \xff$salis ;
+ዤ ← \xff$hamis ;
+ዠ ← \xff ;
+ዧ ← \u0178$diqala_rabi ;
+ዣ ← \u0178 ;
+ዥ ← \xa1 ;
+ዦ ← \xa2 ;
+የ ← \xa3 ;
+ዩ ← \xa4 ;
+ዪ ← \xa5 ;
+ያ ← \xa6 ;
+ዬ ← \xa7 ;
+ይ ← \xa8 ;
+ዮ ← \xa9 ;
+ዷ ← \xaa$diqala_rabi ;
+ደ ← \xaa ;
+ዱ ← \xab$kaib ;
+ዲ ← \xab$salis ;
+ዳ ← \xab ;
+ዴ ← \xac ;
+ድ ← \xad ;
+ዶ ← \xae ;
+ጁ ← \xb0 ;
+ጄ ← \xb2 ;
+ጅ ← \xb3 ;
+ጆ ← \xb4 ;
+ጂ ← \xb1$salis ;
+ጃ ← \xb1 ;
+ጇ ← \xaf$diqala_rabi ;
+ጀ ← \xaf ;
+ጋ ← \xb6 ;
+ግ ← \xb7 ;
+ጎ ← \xb8 ;
+ጓ ← \xb9 ;
+ጉ ← \xb5$kaib ;
+ጊ ← \xb5$salis ;
+ጌ ← \xb5$hamis ;
+ጐ ← \xb5$diqala_geez ;
+ጒ ← \xb5$diqala_salis ;
+ጔ ← \xb5$diqala_hamis ;
+ጕ ← \xb5$diqala_kaib ;
+ገ ← \xb5 ;
+ጡ ← \xba$kaib ;
+ጢ ← \xba$salis ;
+ጤ ← \xba$hamis ;
+ጠ ← \xba ;
+ጧ ← \xbb$diqala_rabi ;
+ጣ ← \xbb ;
+ጥ ← \xbc ;
+ጦ ← \xbd ;
+ጩ ← \xbe$kaib ;
+ጨ ← \xbe ;
+ጪ ← \xc0 ;
+ጫ ← \xc1 ;
+ጬ ← \xc2 ;
+ጭ ← \xc3 ;
+ጮ ← \xc4 ;
+ጯ ← \xc5 ;
+ጲ ← \xc6$salis ;
+ጴ ← \xc6$hamis ;
+ጰ ← \xc6 ;
+ጱ ← \xc7 ;
+ጷ ← \xc8$diqala_rabi ;
+ጳ ← \xc8 ;
+ጵ ← \xc9 ;
+ጶ ← \xca ;
+ጺ ← \xcb$salis ;
+ጼ ← \xcb$hamis ;
+ጸ ← \xcb ;
+ጹ ← \xcc ;
+ጿ ← \xcd$diqala_rabi ;
+ጻ ← \xcd ;
+ጽ ← \xce ;
+ጾ ← \xcf ;
+ፁ ← \xd0$kaib ;
+ፀ ← \xd0 ;
+ፂ ← \xd1$salis ;
+ፄ ← \xd1$hamis ;
+ፃ ← \xd1 ;
+ፅ ← \xd2 ;
+ፆ ← \xd3 ;
+ፈ ← \xd4 ;
+ፉ ← \xd5 ;
+ፊ ← \xd6 ;
+ፌ ← \xd8 ;
+ፍ ← \xd9 ;
+ፎ ← \xda ;
+ፏ ← \xd7$diqala_rabi ;
+ፋ ← \xd7 ;
+ፑ ← \xdb$kaib ;
+ፒ ← \xdb$salis ;
+ፔ ← \xdb$hamis ;
+ፗ ← \xdb$diqala_rabi ;
+ፐ ← \xdb ;
+ፓ ← \xdc ;
+ፕ ← \xdd ;
+ፖ ← \xde ;
+#
 « ← \x23 ;
 » ← \x3b ;
 ፣ ← \x26 ;
