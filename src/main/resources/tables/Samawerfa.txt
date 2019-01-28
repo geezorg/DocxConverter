@@ -22,7 +22,8 @@ $diqala_kaib = \xf6 ;
 $diqala_rabi = [ \xf5\xf4\xf3 ] ;
 $diqala_hamis = [ \xfb\xfc ] ;
 $macron = \xfa ;
-
+#
+#
 ሁ ← \x41 $kaib ;
 ሀ ← A;
 ሂ ← \x42 $salis ;
@@ -324,6 +325,7 @@ $macron = \xfa ;
 ፓ ← \xdc ;
 ፕ ← \xdd ;
 ፖ ← \xde ;
+#
 #
 « ← \x23 ;
 » ← \x3b ;
