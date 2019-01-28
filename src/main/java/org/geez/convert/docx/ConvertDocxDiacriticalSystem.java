@@ -111,10 +111,10 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 							Text text = (org.docx4j.wml.Text)txt;
 
 							// revisit why we need this first part, maybe it was only necessary for Brana -?
-							if( " ".equals( text.getValue() ) || "".equals( text.getValue() )) {
+							if( " ".equals( text.getValue() )) {
 								// txt.setSpace( "preserve" );
 							}
-							else {
+							else if(! "".equals( text.getValue() ) ){
 								String textValue = ( (i+1) == size )
 										? text.getValue()
 										: getQualifiedText( text, ((Object)(rfontsNodes.get(i+1)).getParent()) )
