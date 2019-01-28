@@ -12,10 +12,14 @@ package org.geez.convert.docx;
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
 import org.docx4j.finders.ClassFinder;
+import org.docx4j.model.structure.HeaderFooterPolicy;
+import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 // import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
 
@@ -107,10 +111,55 @@ abstract class ConvertDocx {
 	}
 
 
-	public void processObjects( final JaxbXmlPart<?> part) throws Docx4JException
+
+	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
+			PropertiesFinder prFinder = new PropertiesFinder();
+			new TraversalUtil(part.getContents(), prFinder );
+
+			List<RFonts> rfontsNodes = new ArrayList<RFonts>( prFinder.results ); 
+			int size = rfontsNodes.size();
+			
+			for (int i=0; i<size; i++) {
+				RFonts rfonts = rfontsNodes.get(i);
+				t =  getTransliteratorForFont( rfonts );
+				
+				if( t == null ) {
+					continue;
+				}
+				
+				
+				/*
+				 * Check if object at i+1 starts with a diacritic mark that may modify
+				 * the last chart of  object i.  If true, append the i+1 first char to the end
+				 * of the string at i. 
+				 */
+				
+				if (rfonts.getParent() instanceof org.docx4j.wml.RPr) {
+					R r = (org.docx4j.wml.R)((org.docx4j.wml.RPr)rfonts.getParent()).getParent();
+					List<Object> objects = r.getContent();
+					for ( Object o : objects ) {
+						Object txt = XmlUtils.unwrap(o);
+						if ( txt instanceof org.docx4j.wml.Text ) {
+							Text text = (org.docx4j.wml.Text)txt;
+
+							// revisit why we need this first part, maybe it was only necessary for Brana -?
+							if( " ".equals( text.getValue() ) || "".equals( text.getValue() )) {
+								text.setSpace( "preserve" );
+							}
+							else {
+								String textValue = text.getValue() ;
+								String out = convertText( textValue );
+								text.setValue( out );
+							}
+						}
+					}
+				}
+			}
+	}
+	public void processObjectsOld( final JaxbXmlPart<?> part) throws Docx4JException
 	{			
 			ClassFinder finder = new ClassFinder( R.class );
-			new TraversalUtil(part.getContents(), finder);
+			new TraversalUtil (part.getContents(), finder );
 		
 
 			for (Object o : finder.results) {
@@ -192,6 +241,11 @@ abstract class ConvertDocx {
 	
 	
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
+		if(! stFinder.hasStyles() ) {
+			return;
+		}
+		stFinder.clearResults();
+		
 		new TraversalUtil(part.getContents(), stFinder );
 
 		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results; 
@@ -211,17 +265,57 @@ abstract class ConvertDocx {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
        		processObjects( documentPart );
+       		
+       		StyledTextFinder stf = new StyledTextFinder();
+       		stf.readStyles( wordMLPackage, targetTypefaces, fontOut );
+       		processStyledObjects( documentPart, stf );
             
        		if( documentPart.hasFootnotesPart() ) {
 	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
        			processObjects( footnotesPart );
+           		processStyledObjects( footnotesPart, stf );
        		}
+       		
+    		List<SectionWrapper> sectionWrappers = wordMLPackage.getDocumentModel().getSections();
+    		
+    		for (SectionWrapper sw : sectionWrappers) {
+    			HeaderFooterPolicy hfp = sw.getHeaderFooterPolicy();
+    			
 
-       		StyledTextFinder stf = new StyledTextFinder();
-       		stf.readStyles( wordMLPackage, targetTypefaces, fontOut );
-       		if( stf.hasStyles() ) {
-       			processStyledObjects( documentPart, stf );
-       		}
+    			if( hfp.getFirstHeader() != null ) {
+    				HeaderPart headerPart = hfp.getFirstHeader();
+    	       		processObjects( headerPart );
+               		processStyledObjects( headerPart, stf );  
+    			}
+    			if( hfp.getDefaultHeader() != null ) {
+    				HeaderPart headerPart = hfp.getDefaultHeader();
+    	       		processObjects( headerPart );
+               		processStyledObjects( headerPart, stf );  
+    			}
+    			if( hfp.getEvenHeader() != null ) {
+    				HeaderPart headerPart = hfp.getEvenHeader();
+    	       		processObjects( headerPart );
+               		processStyledObjects( headerPart, stf );  
+    			}
+    			
+
+    			if ( hfp.getFirstFooter() != null ) {
+    				FooterPart footerPart = hfp.getFirstFooter();
+    	       		processObjects( footerPart );
+               		processStyledObjects( footerPart, stf ); 
+    			}
+    			if ( hfp.getDefaultFooter() != null ) {
+    				FooterPart footerPart = hfp.getDefaultFooter();
+    	       		processObjects( footerPart );
+               		processStyledObjects( footerPart, stf );
+    			}
+    			if ( hfp.getEvenFooter() != null ) {
+    				FooterPart footerPart = hfp.getEvenFooter();
+    	       		processObjects( footerPart );
+               		processStyledObjects( footerPart, stf );
+    			}
+    			
+    		}
        		
        		wordMLPackage.save( outputFile );
 		}

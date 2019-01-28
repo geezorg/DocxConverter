@@ -22,7 +22,7 @@ import org.docx4j.wml.Text;
 public class  StyledTextFinder extends CallbackImpl {
     
     private Map<String,String> fontToIdMap = new HashMap<String,String>();
-    public Map<Text,String> results   = new HashMap<Text,String>();
+    public Map<Text,String> results = new HashMap<Text,String>();
     
     public void readStyles( WordprocessingMLPackage  wordMLPackage,  List<String> targetTypefaces, String fontOut ) {
     	StyleDefinitionsPart sdp = wordMLPackage.getMainDocumentPart().getStyleDefinitionsPart();	
@@ -79,6 +79,10 @@ public class  StyledTextFinder extends CallbackImpl {
     
     public boolean hasStyles() { 
     	return !( fontToIdMap.isEmpty() );
+    }
+    
+    public void clearResults() {
+    	results.clear();
     }
     
     
