@@ -1,6 +1,6 @@
 ################################################################################
 #
-# This is a bidirectional mapping file for the Addis98, Addis98w and AddisWP font
+# This is a mono-directional mapping file for the Addis98, Addis98w and AddisWP font
 # encoding into the Unicode standard for Ethiopic. The file is intended to be read
 # as input for the International Components for Unicode (ICU) software library. 
 # The mapping syntax is documented at the following URL:
