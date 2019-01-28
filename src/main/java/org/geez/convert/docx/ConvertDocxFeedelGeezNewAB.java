@@ -19,7 +19,6 @@ import java.util.Arrays;
 
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
-	private final List<String> font1Typefaces = new ArrayList<String>();
 	private final List<String> font2Typefaces = new ArrayList<String>();
 
 	public ConvertDocxFeedelGeezNewAB() {

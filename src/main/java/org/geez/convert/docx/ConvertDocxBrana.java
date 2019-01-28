@@ -9,26 +9,6 @@ package org.geez.convert.docx;
  *
  */
 
-/*
-import org.docx4j.TraversalUtil;
-import org.docx4j.XmlUtils;
-import org.docx4j.finders.ClassFinder;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-// import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
-import org.docx4j.openpackaging.parts.JaxbXmlPart;
-
-import org.docx4j.wml.R;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.RFonts;
-import org.docx4j.wml.Text;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-
-
-import com.ibm.icu.text.*;
-*/
 
 
 public class ConvertDocxBrana extends ConvertDocx {
