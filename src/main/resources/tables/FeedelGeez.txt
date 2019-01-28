@@ -7,8 +7,7 @@
 #
 #   http://userguide.icu-project.org/transforms/general
 #
-# GeezNewA and GeezNewB were provided with the Feedel software created by
-# Fekade Mesfin.
+# Geez and GeezII were provided with the Feedel software created by Fekade Mesfin.
 #
 ################################################################################
 #
@@ -22,9 +21,9 @@ $diqala_kaib = [\x8b\xca ] ;
 $diqala_rabi = [ \xd0\x5f ] ;
 $diqala_hamis = \x9d ;
 $macron = \x99 ;
-
-#define SFDLG_P   "\xea"
-
+$plosive = \xea
+#
+#
 ሀ ← h ;
 ሁ ← \x80 ;
 ሂ ← \xa3 ;
@@ -91,7 +90,6 @@ $macron = \x99 ;
 ቁ ← \x71 $kaib ;
 ቂ ← \x71 $salis ;
 ቄ ← \x71 $hamis ;
-ቊ ← \x71 $diqala_geez ;
 ቊ ← \x71 $diqala_salis ;
 ቌ ← \x71 $diqala_hamis ;
 ቀ ← q ;
@@ -101,10 +99,18 @@ $macron = \x99 ;
 ቈ ← \x84 ;
 ቋ ← \x92 ;
 ቍ ← \xcc ;
-#
-# add with butterfly
-#
+ቑ ← \x71 $macron $kaib ;
+ቒ ← \x71 $macron $salis ;
+ቔ ← \x71 $macron $hamis ;
+ቚ ← \x71 $macron $diqala_salis ;
+ቜ ← \x71 $macron $diqala_hamis ;
+ቐ ← q $macron ;
+ቓ ← $macron \x94 ;
 ቕ ← \x9b ;
+ቖ ← $macron \xf6 ;
+ቘ ← $macron \x84 ;
+ቛ ← $macron \x92 ;
+ቝ ← $macron \xcc ;
 ቡ ← \x62 $kaib ;
 ቢ ← \x62 $salis ;
 ቤ ← \x62 $hamis ;
@@ -237,6 +243,14 @@ $macron = \x99 ;
 ዴ ← \xc1 ;
 ድ ← D ;
 ዶ ← \xec ;
+ዿ ← \x64 $plosive $diqala_rabi ;
+ዸ ← d $plosive ;
+ዹ ← \xbb $plosive ;
+ዺ ← \xde $plosive ;
+ዻ ← \xc4 $plosive ;
+ዼ ← \xc1 $plosive ;
+ዽ ← D $plosive ;
+ዾ ← \xec $plosive ;
 ጇ ← \x6a $diqala_rabi ;
 ጀ ← j ;
 ጁ ← \xb0 ;
@@ -313,13 +327,13 @@ $macron = \x99 ;
 ፖ ← \xb1 ;
 #
 #
+« ← \xc7 ;
+» ← \xc8 ;
 ። ← \x23\x23 ;
 ፡ ← \x23 ;
 ፤ ← \x25 ;
 ፥ ← \x24 ;
 ? ← \x40 ;
-« ← \xc7 ;
-» ← \xc8 ;
 #
 #
 :: ([\x20-\xff]) ;
