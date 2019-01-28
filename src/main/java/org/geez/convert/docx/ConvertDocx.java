@@ -17,6 +17,7 @@ import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
@@ -143,10 +144,10 @@ abstract class ConvertDocx {
 							Text text = (org.docx4j.wml.Text)txt;
 
 							// revisit why we need this first part, maybe it was only necessary for Brana -?
-							if( " ".equals( text.getValue() ) || "".equals( text.getValue() )) {
+							if( " ".equals( text.getValue() ) ) {
 								text.setSpace( "preserve" );
 							}
-							else {
+							else if (! "".equals( text.getValue() ) ) {
 								String textValue = text.getValue() ;
 								String out = convertText( textValue );
 								text.setValue( out );
@@ -239,7 +240,6 @@ abstract class ConvertDocx {
 	}
 	
 	
-	
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
 		if(! stFinder.hasStyles() ) {
 			return;
@@ -275,13 +275,17 @@ abstract class ConvertDocx {
        			processObjects( footnotesPart );
            		processStyledObjects( footnotesPart, stf );
        		}
+       		if( documentPart.hasEndnotesPart() ) {
+	            EndnotesPart endnotesPart = documentPart.getEndNotesPart();
+       			processObjects( endnotesPart );
+           		processStyledObjects( endnotesPart, stf );		
+       		}
        		
     		List<SectionWrapper> sectionWrappers = wordMLPackage.getDocumentModel().getSections();
     		
     		for (SectionWrapper sw : sectionWrappers) {
     			HeaderFooterPolicy hfp = sw.getHeaderFooterPolicy();
     			
-
     			if( hfp.getFirstHeader() != null ) {
     				HeaderPart headerPart = hfp.getFirstHeader();
     	       		processObjects( headerPart );

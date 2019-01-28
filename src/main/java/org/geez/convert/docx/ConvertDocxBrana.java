@@ -14,7 +14,7 @@ package org.geez.convert.docx;
 public class ConvertDocxBrana extends ConvertDocx {
 
 	public ConvertDocxBrana() {
-		this.initialize( "BranaITable.txt", "BranaIITable.txt", "Brana I", "Brana II" );
+		this.initialize( "BranaI.txt", "BranaII.txt", "Brana I", "Brana II" );
 	}
 
 }
