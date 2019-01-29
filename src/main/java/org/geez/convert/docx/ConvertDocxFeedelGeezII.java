@@ -23,7 +23,7 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 	private final List<String> font2Typefaces = new ArrayList<String>();
 
 	public ConvertDocxFeedelGeezII() {
-		this.initialize( "FeedelGeezTable.txt", "FeedelGeezIITable.txt", "Geez", "GeezII" );
+		this.initialize( "FeedelGeez.txt", "FeedelGeezII.txt", "Geez", "GeezII" );
 		huletNeteb = '\uf023';
 		
 		diacritics.addAll (
