@@ -63,7 +63,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < text.length(); i++) {
 			int x =  ( 0x00ff & (int)text.charAt(i) );
-			sb.append(  (char)x );
+			sb.append( (char)x );
 		}
 		return t.transliterate( sb.toString() );
 	}

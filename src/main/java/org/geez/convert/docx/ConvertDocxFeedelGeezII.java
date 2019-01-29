@@ -14,20 +14,29 @@ import org.docx4j.wml.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.Arrays;
 
 
 
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
-	private final List<String> font1Typefaces = new ArrayList<String>();
-	private final List<String> font2Typefaces = new ArrayList<String>();
 
 	public ConvertDocxFeedelGeezII() {
 		this.initialize( "FeedelGeez.txt", "FeedelGeezII.txt", "Geez", "GeezII" );
 		huletNeteb = '\uf023';
-		
+
+				
 		diacritics.addAll (
 				Arrays.asList( "\uf0b3", "\uf090", "\uf0f9", "\uf03e", "\uf0c0", "\uf03f", "\uf0d6", "\uf08a", "\uf08b", "\uf0ca", "\uf0d0", "\uf05f", "\uf09d" )
+		);
+		
+		StringBuilder sb = new StringBuilder();
+		for (String s : diacritics) {
+			sb.append(s);
+		}
+		
+		diacriticsRE = Pattern.compile(
+				"([" + sb + "])([" + sb + "])"
 		);
 		
 	}
@@ -35,9 +44,10 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 
 	public String convertText( String text ) {
 		StringBuilder sb = new StringBuilder();
+		text = diacriticsRE.matcher(text).replaceAll( "$1" );
 		for(int i = 0; i < text.length(); i++) {
 			int x =  ( 0x00ff & (int)text.charAt(i) );
-			sb.append(  (char)x );
+			sb.append( (char)x );
 		}
 		return t.transliterate( sb.toString() );
 	}

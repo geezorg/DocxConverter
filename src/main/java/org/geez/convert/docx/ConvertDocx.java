@@ -77,7 +77,7 @@ abstract class ConvertDocx {
 	
 	public Transliterator getTransliteratorForFont( RFonts rfonts ) {
 		
-		if(  rfonts == null ) {
+		if( rfonts == null ) {
 			return null;
 		}
 	
@@ -92,18 +92,21 @@ abstract class ConvertDocx {
 		if( targetTypefaces.contains( rfonts.getHAnsi() ) ) {
 			if(! isSet ) {
 				fontIn = rfonts.getHAnsi();
+				isSet = true;
 			}
 			rfonts.setHAnsi( fontOut );
 		}
 		if( targetTypefaces.contains( rfonts.getCs() ) ) {
 			if(! isSet ) {
 				fontIn = rfonts.getCs();
+				isSet = true;
 			}
 			rfonts.setCs( fontOut );
 		}
 		if( targetTypefaces.contains( rfonts.getEastAsia() ) ) {
 			if(! isSet ) {
 				fontIn = rfonts.getEastAsia();
+				isSet = true;
 			}
 			rfonts.setEastAsia( fontOut );
 		}
@@ -113,9 +116,25 @@ abstract class ConvertDocx {
 
 
 
+	public void processUnstyledObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
+			UnstyledTextFinder ustFinder = new UnstyledTextFinder(targetTypefaces, fontOut);
+			new TraversalUtil( part.getContents(), ustFinder );
+
+
+			HashMap<Text,String> textNodes = (HashMap<Text,String>)ustFinder.results; 
+			for(Text text: textNodes.keySet() ) {
+				fontIn = textNodes.get(text);
+				t = fontToTransliteratorMap.get( fontIn );
+				String out = convertText( text.getValue() );
+				text.setValue( out );
+			}
+	}
+
+
 	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
 			PropertiesFinder prFinder = new PropertiesFinder();
 			new TraversalUtil(part.getContents(), prFinder );
+			
 
 			List<RFonts> rfontsNodes = new ArrayList<RFonts>( prFinder.results ); 
 			int size = rfontsNodes.size();
@@ -157,8 +176,7 @@ abstract class ConvertDocx {
 				}
 			}
 	}
-	public void processObjectsOld( final JaxbXmlPart<?> part) throws Docx4JException
-	{			
+	public void processObjectsOlder( final JaxbXmlPart<?> part) throws Docx4JException {			
 			ClassFinder finder = new ClassFinder( R.class );
 			new TraversalUtil (part.getContents(), finder );
 		
@@ -246,7 +264,7 @@ abstract class ConvertDocx {
 		}
 		stFinder.clearResults();
 		
-		new TraversalUtil(part.getContents(), stFinder );
+		new TraversalUtil( part.getContents(), stFinder );
 
 		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results; 
 		for(Text text: textNodes.keySet() ) {
@@ -259,25 +277,35 @@ abstract class ConvertDocx {
 	}
 
 
+	// make this an abstract method
+	public void normalizeText( final JaxbXmlPart<?> part, Map<String,String> styleIdToFont ) throws Docx4JException {
+		return;
+	}
+	
+	
 	public void process( final File inputFile, final File outputFile )
 	{
 		try {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-       		processObjects( documentPart );
+			
+       		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
+			normalizeText( documentPart, styleIdToFont );
+       		processUnstyledObjects( documentPart );
        		
-       		StyledTextFinder stf = new StyledTextFinder();
-       		stf.readStyles( wordMLPackage, targetTypefaces, fontOut );
+       		StyledTextFinder stf = new StyledTextFinder( styleIdToFont );
        		processStyledObjects( documentPart, stf );
             
        		if( documentPart.hasFootnotesPart() ) {
 	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
-       			processObjects( footnotesPart );
+				normalizeText( footnotesPart, styleIdToFont );
+       			processUnstyledObjects( footnotesPart );
            		processStyledObjects( footnotesPart, stf );
        		}
        		if( documentPart.hasEndnotesPart() ) {
 	            EndnotesPart endnotesPart = documentPart.getEndNotesPart();
-       			processObjects( endnotesPart );
+				normalizeText( endnotesPart, styleIdToFont );
+       			processUnstyledObjects( endnotesPart );
            		processStyledObjects( endnotesPart, stf );		
        		}
        		
@@ -288,33 +316,39 @@ abstract class ConvertDocx {
     			
     			if( hfp.getFirstHeader() != null ) {
     				HeaderPart headerPart = hfp.getFirstHeader();
-    	       		processObjects( headerPart );
+    				normalizeText( headerPart, styleIdToFont );
+    	       		processUnstyledObjects( headerPart );
                		processStyledObjects( headerPart, stf );  
     			}
     			if( hfp.getDefaultHeader() != null ) {
     				HeaderPart headerPart = hfp.getDefaultHeader();
-    	       		processObjects( headerPart );
+    				normalizeText( headerPart, styleIdToFont );
+    	       		processUnstyledObjects( headerPart );
                		processStyledObjects( headerPart, stf );  
     			}
     			if( hfp.getEvenHeader() != null ) {
     				HeaderPart headerPart = hfp.getEvenHeader();
-    	       		processObjects( headerPart );
+    				normalizeText( headerPart, styleIdToFont );
+    	       		processUnstyledObjects( headerPart );
                		processStyledObjects( headerPart, stf );  
     			}
     			
 
     			if ( hfp.getFirstFooter() != null ) {
     				FooterPart footerPart = hfp.getFirstFooter();
+    				normalizeText( footerPart, styleIdToFont );
     	       		processObjects( footerPart );
                		processStyledObjects( footerPart, stf ); 
     			}
     			if ( hfp.getDefaultFooter() != null ) {
     				FooterPart footerPart = hfp.getDefaultFooter();
+    				normalizeText( footerPart, styleIdToFont );
     	       		processObjects( footerPart );
                		processStyledObjects( footerPart, stf );
     			}
     			if ( hfp.getEvenFooter() != null ) {
     				FooterPart footerPart = hfp.getEvenFooter();
+    				normalizeText( footerPart, styleIdToFont );
     	       		processObjects( footerPart );
                		processStyledObjects( footerPart, stf );
     			}

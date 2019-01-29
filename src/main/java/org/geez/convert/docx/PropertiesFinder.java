@@ -15,6 +15,9 @@ public class  PropertiesFinder extends CallbackImpl {
     
     public List<RFonts> results = new ArrayList<RFonts>(); 
     
+    /* update this class like StyledTextFinder where the constructor receives a list
+     * of target fonts, and retrieves any w:text nodes for runs that apply the font
+     */
     @Override
     public List<Object> apply(Object o) {
     	if (o instanceof org.docx4j.wml.R) {
