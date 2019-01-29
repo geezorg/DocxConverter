@@ -21,7 +21,7 @@ $diqala_kaib = [\x8b\xca ] ;
 $diqala_rabi = [ \xd0\x5f ] ;
 $diqala_hamis = \x9d ;
 $macron = \x99 ;
-$plosive = \xea
+$plosive = \xea ;
 #
 #
 ሀ ← h ;
@@ -34,17 +34,17 @@ $plosive = \xea
 ሉ ← \x6c $kaib ;
 ሊ ← \x6c $salis ;
 ሌ ← \x6c $hamis ;
-ሎ ← \xa7 $diqala_rabi ;
+ሎ ← \x6c $diqala_geez ;
 ለ ← l ;
-ሏ ← \x6c $diqala_geez ;
+ሏ ← \xa7 $diqala_rabi ;
 ላ ← \xa7 ;
 ል ← L ;
-ሐ ← \x27 ;
 ሑ ← \x27 $kaib ;
 ሒ ← \x27 $salis ;
 ሔ ← \x27 $hamis ;
-ሓ ← \x8c ;
+ሐ ← \x27 ;
 ሗ ← \x8c $diqala_rabi ;
+ሓ ← \x8c ;
 ሕ ← \x22 ;
 ሖ ← \x81 ;
 መ ← m ;
@@ -55,8 +55,8 @@ $plosive = \xea
 ም ← M ;
 ሞ ← \xe4 ;
 ሟ ← \xe0 ;
-ሠ ← \x5c ;
 ሡ ← \x5c $kaib ;
+ሠ ← \x5c ;
 ሢ ← \x8d $salis ;
 ሤ ← \x8d $hamis ;
 ሧ ← \x8d $diqala_rabi ;
@@ -87,18 +87,6 @@ $plosive = \xea
 ሽ ← V ;
 ሾ ← \xeb ;
 ሿ ← \x8e ;
-ቁ ← \x71 $kaib ;
-ቂ ← \x71 $salis ;
-ቄ ← \x71 $hamis ;
-ቊ ← \x71 $diqala_salis ;
-ቌ ← \x71 $diqala_hamis ;
-ቀ ← q ;
-ቃ ← \x94 ;
-ቅ ← Q ;
-ቆ ← \xf6 ;
-ቈ ← \x84 ;
-ቋ ← \x92 ;
-ቍ ← \xcc ;
 ቑ ← \x71 $macron $kaib ;
 ቒ ← \x71 $macron $salis ;
 ቔ ← \x71 $macron $hamis ;
@@ -111,6 +99,18 @@ $plosive = \xea
 ቘ ← $macron \x84 ;
 ቛ ← $macron \x92 ;
 ቝ ← $macron \xcc ;
+ቁ ← \x71 $kaib ;
+ቂ ← \x71 $salis ;
+ቄ ← \x71 $hamis ;
+ቊ ← \x71 $diqala_salis ;
+ቌ ← \x71 $diqala_hamis ;
+ቀ ← q ;
+ቃ ← \x94 ;
+ቅ ← Q ;
+ቆ ← \xf6 ;
+ቈ ← \x84 ;
+ቋ ← \x92 ;
+ቍ ← \xcc ;
 ቡ ← \x62 $kaib ;
 ቢ ← \x62 $salis ;
 ቤ ← \x62 $hamis ;
@@ -235,14 +235,6 @@ $plosive = \xea
 ዬ ← \xfc ;
 ይ ← Y ;
 ዮ ← \xd7 ;
-ዷ ← \x64 $diqala_rabi ;
-ደ ← d ;
-ዱ ← \xbb ;
-ዲ ← \xde ;
-ዳ ← \xc4 ;
-ዴ ← \xc1 ;
-ድ ← D ;
-ዶ ← \xec ;
 ዿ ← \x64 $plosive $diqala_rabi ;
 ዸ ← d $plosive ;
 ዹ ← \xbb $plosive ;
@@ -251,6 +243,14 @@ $plosive = \xea
 ዼ ← \xc1 $plosive ;
 ዽ ← D $plosive ;
 ዾ ← \xec $plosive ;
+ዷ ← \x64 $diqala_rabi ;
+ደ ← d ;
+ዱ ← \xbb ;
+ዲ ← \xde ;
+ዳ ← \xc4 ;
+ዴ ← \xc1 ;
+ድ ← D ;
+ዶ ← \xec ;
 ጇ ← \x6a $diqala_rabi ;
 ጀ ← j ;
 ጁ ← \xb0 ;
@@ -333,7 +333,7 @@ $plosive = \xea
 ፡ ← \x23 ;
 ፤ ← \x25 ;
 ፥ ← \x24 ;
-? ← \x40 ;
+\x3f ← \x40 ;
 #
 #
 :: ([\x20-\xff]) ;
