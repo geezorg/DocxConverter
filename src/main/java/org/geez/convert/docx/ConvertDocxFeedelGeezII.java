@@ -42,18 +42,22 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 	}
 
 
-	public String convertText( String text ) {
+	public String convertText( Text text ) {
+		localCheck( text );
+		String value = text.getValue();
 		StringBuilder sb = new StringBuilder();
-		text = diacriticsRE.matcher(text).replaceAll( "$1" );
-		for(int i = 0; i < text.length(); i++) {
-			int x =  ( 0x00ff & (int)text.charAt(i) );
+
+		for(int i = 0; i < value.length(); i++) {
+			int x =  ( 0x00ff & (int)value.charAt(i) );
 			sb.append( (char)x );
 		}
+		
 		return t.transliterate( sb.toString() );
 	}
 	
 	
 	public void localCheck( Text text ) {
+		super.localCheck( text );
 		if( " ".equals( text.getValue() ) ) {
 			text.setSpace( "preserve" );
 		}

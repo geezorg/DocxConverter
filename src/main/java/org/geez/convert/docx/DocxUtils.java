@@ -26,7 +26,7 @@ public class DocxUtils {
 	    	List<Style> styleList = sdp.getJaxbElement().getStyle();
 	    	for (Style style : styleList) {
 	    		String name = style.getName().getVal();
-	    		String id = sdp.getIDForStyleName(name);
+	    		String id = sdp.getIDForStyleName( name );
 	    		RPr rpr = style.getRPr();
 	    		if( (rpr != null) && (rpr.getRFonts() != null) ) {
 	    			RFonts rfonts = rpr.getRFonts();
