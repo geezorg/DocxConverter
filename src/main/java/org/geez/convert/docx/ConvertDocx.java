@@ -149,7 +149,16 @@ abstract class ConvertDocx {
 
 	// make this an abstract method
 	public void normalizeText( final JaxbXmlPart<?> part, StyledTextFinder stFinder, UnstyledTextFinder ustFinder ) throws Docx4JException {
-		return;
+		if( stFinder.hasStyles() ) {
+			stFinder.clearResults();
+		
+			new TraversalUtil( part.getContents(), stFinder );
+
+		}
+		
+		ustFinder.clearResults();
+		new TraversalUtil( part.getContents(), ustFinder );
+
 	}
 	
 	
