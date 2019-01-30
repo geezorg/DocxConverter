@@ -9,9 +9,8 @@ package org.geez.convert.docx;
  *
  */
 
+import org.docx4j.wml.Text;
 import org.docx4j.TraversalUtil;
-import org.docx4j.XmlUtils;
-import org.docx4j.finders.ClassFinder;
 import org.docx4j.model.structure.HeaderFooterPolicy;
 import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
@@ -21,13 +20,8 @@ import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
-// import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
 
-import org.docx4j.wml.R;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.RFonts;
-import org.docx4j.wml.Text;
 
 import java.io.BufferedReader;
 import java.io.File;
