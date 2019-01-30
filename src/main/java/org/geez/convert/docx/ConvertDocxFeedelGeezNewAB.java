@@ -1,5 +1,9 @@
 package org.geez.convert.docx;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -11,11 +15,6 @@ package org.geez.convert.docx;
 
 
 import org.docx4j.wml.Text;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.Arrays;
 
 
 
@@ -61,15 +60,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 				Arrays.asList( "\uf023", "\uf025", "\uf026", "\uf02a", "\uf02b", "\uf02c", "\uf03a", "\uf03b", "\uf03c", "\uf03d", "\uf03e", "\uf040" )
 		);
 			
-		
-		StringBuilder sb = new StringBuilder();
-		for (String s : diacritics) {
-			sb.append(s);
-		}
-		
-		diacriticsRE = Pattern.compile(
-				"([" + sb + "])([" + sb + "])"
-		);
+		buildRE();
 		
 	}
 

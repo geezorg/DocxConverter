@@ -1,5 +1,13 @@
 package org.geez.convert.docx;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+import org.docx4j.TraversalUtil;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.parts.JaxbXmlPart;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -10,13 +18,6 @@ package org.geez.convert.docx;
  */
 
 import org.docx4j.wml.Text;
-import org.docx4j.TraversalUtil;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.parts.JaxbXmlPart;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
 
 
@@ -27,6 +28,20 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	protected Pattern diacriticsRE = null;
 	
 
+	protected void buildRE() {
+		
+		StringBuilder sb = new StringBuilder();
+		for (String s : diacritics) {
+			sb.append(s);
+		}
+		
+		diacriticsRE = Pattern.compile(
+				"([" + sb + "])([" + sb + "])"
+		);
+		
+	}
+	
+	
 	public boolean isDiacritic(String fontName, String text) {
 		if ( text.equals( "" ) ) {
 			return false;
@@ -34,11 +49,13 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		return diacritics.contains( text.substring( text.length()-1 ) );
 	}
 	
+	
 	public void localCheck( Text text ) {
 		String value = text.getValue();
 		value = diacriticsRE.matcher(value).replaceAll( "$1" ); // this could be put into the normalizer
 		text.setValue (value );
 	}
+	
 	
 	public String convertText( Text text ) {
 		localCheck( text );
