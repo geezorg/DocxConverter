@@ -31,8 +31,9 @@ import java.util.regex.Pattern;
 abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	protected final List<String> font1Typefaces = new ArrayList<String>();
 
-	protected ArrayList<String> diacritics = new ArrayList<String>();
+	protected final ArrayList<String> diacritics = new ArrayList<String>();
 	protected Pattern diacriticsRE = null;
+	
 
 	public boolean isDiacritic(String fontName, String text) {
 		if ( text.equals( "" ) ) {
@@ -41,9 +42,15 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		return diacritics.contains( text.substring( text.length()-1 ) );
 	}
 	
-	
 	public void localCheck( Text text ) {
-		return;
+		String value = text.getValue();
+		value = diacriticsRE.matcher(value).replaceAll( "$1" ); // this could be put into the normalizer
+		text.setValue (value );
+	}
+	
+	public String convertText( Text text ) {
+		localCheck( text );
+		return t.transliterate( text.getValue() );
 	}
 	
 	
@@ -89,29 +96,37 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	 * </w:p>
 	 * 
 	 */
-	public void normalizeText( UnstyledTextFinder ustFinder, StyledTextFinder stFinder ) throws Docx4JException {
+	public void normalizeText( final JaxbXmlPart<?> part, StyledTextFinder stFinder, UnstyledTextFinder ustFinder ) throws Docx4JException {
+
+		if( stFinder.hasStyles() ) {
+			stFinder.clearResults();
 		
-		// fix styled text nodes:
+			new TraversalUtil( part.getContents(), stFinder );
+			// fix styled text nodes:
 		
-		List<Text> styledText = stFinder.resultsOrdered;
-		int size = styledText.size();
-		for ( int i=1; i<size; i++ ) {
-			Text text1 = styledText.get(i);
-			String value1 = text1.getValue();
-			char firstChar = value1.charAt(0);
-			if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
-				Text text0 = styledText.get( i-1 );
-				String value0 = text0.getValue();
+			List<Text> styledText = stFinder.resultsOrdered;
+			int size = styledText.size();
+			for ( int i=1; i<size; i++ ) {
+				Text text1 = styledText.get(i);
+				String value1 = text1.getValue();
+				char firstChar = value1.charAt(0);
+				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
+					Text text0 = styledText.get( i-1 );
+					String value0 = text0.getValue();
 				
-				text0.setValue( value0 + firstChar );   // append to previous node as last char
-				text1.setValue( value1.substring(1) );  // remove from current node
+					text0.setValue( value0 + firstChar );   // append to previous node as last char
+					text1.setValue( value1.substring(1) );  // remove from current node
+				}
 			}
 		}
 		
+		ustFinder.clearResults();
+		new TraversalUtil( part.getContents(), ustFinder );
+		
 		List<Text> unstyledText = ustFinder.resultsOrdered;
-		size = styledText.size();
+		int size = unstyledText.size();
 		for ( int i=1; i<size; i++ ) {
-			Text text1 = styledText.get(i);
+			Text text1 = unstyledText.get(i);
 			String value1 = text1.getValue();
 			char firstChar = value1.charAt(0);
 			if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
@@ -124,111 +139,5 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		}
 	}
 	
-	/*
-	 * The following handles the scenario when a base letter and a diacritical mark are split across separate
-	 * "run" elements (w:r).  This checking only works when a font is specified for the run with an w:rFonts
-	 * element:
-	 * 
-	 * <w:r>
-	 *  <w:rPr>
-	 *    <w:rFonts w:ascii="..." w:ansi="..."/>
-	 *  <w:rPr>
-	 *  <w:t>b</w:t>
-	 * </w:r>
-	 * <w:r>
-	 *  <w:rPr>
-	 *    <w:rFonts w:ascii="..." w:ansi="..."/>
-	 *  <w:rPr>
-	 *  <w:t>u</w:t>
-	 * </w:r>
-	 * 
-	 */
-	public String getQualifiedText( Text text, Object obj ) {
-		if (! (obj instanceof org.docx4j.wml.RPr)) {
-			return text.getValue();
-		}
-		
-		String currentText = text.getValue();
-
-		RPr rpr = (org.docx4j.wml.RPr)obj;
-		if(! ((rpr.getParent()) instanceof org.docx4j.wml.R) ) {
-			return text.getValue();	
-		}
-		R r = (org.docx4j.wml.R)rpr.getParent();
-		List<Object> objects = r.getContent();
-		for ( Object o : objects ) {
-			Object x = XmlUtils.unwrap(o);
-			if ( x instanceof org.docx4j.wml.Text ) {
-				// we expect only one instance, so we'll return on the first one encountered
-				Text nextText = (org.docx4j.wml.Text)x;
-				String nextString =  nextText.getValue();
-				char firstChar = nextString.charAt(0);
-				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
-					nextText.setValue( nextString.substring(1) );
-					return currentText + firstChar  ;
-				}
-				else if ( (huletNeteb == firstChar) 
-					 && ( huletNeteb == currentText.charAt( currentText.length() - 1 ) ) ) {
-						nextText.setValue( nextString.substring(1) );
-						return currentText + firstChar  ;
-				}
-				break;
-			}
-		}
-		
-		return currentText;
-	}
-
-
-	public void processObjects( final JaxbXmlPart<?> part ) throws Docx4JException {
-			PropertiesFinder prFinder = new PropertiesFinder();
-			new TraversalUtil(part.getContents(), prFinder );
-
-			List<RFonts> rfontsNodes = new ArrayList<RFonts>( prFinder.results ); 
-			// int size = rfontsNodes.size();
-			
-			for (RFonts rfonts: rfontsNodes) {
-				// RFonts rfonts = rfontsNodes.get(i);
-				t =  getTransliteratorForFont( rfonts );
-				
-				if( t == null ) {
-					continue;
-				}
-				
-				
-				/*
-				 * Check if object at i+1 starts with a diacritic mark that may modify
-				 * the last chart of  object i.  If true, append the i+1 first char to the end
-				 * of the string at i. 
-				 */
-				
-				if (rfonts.getParent() instanceof org.docx4j.wml.RPr) {
-					R r = (org.docx4j.wml.R)((org.docx4j.wml.RPr)rfonts.getParent()).getParent();
-					List<Object> objects = r.getContent();
-					for ( Object o : objects ) {
-						Object txt = XmlUtils.unwrap(o);
-						if ( txt instanceof org.docx4j.wml.Text ) {
-							Text text = (org.docx4j.wml.Text)txt;
-
-							// revisit why we need this first part, maybe it was only necessary for Brana -?
-							if( " ".equals( text.getValue() )) {
-								// txt.setSpace( "preserve" );
-							}
-							else if(! "".equals( text.getValue() ) ){
-								/*
-								String textValue = ( (i+1) == size )
-										? text.getValue()
-										: getQualifiedText( text, ((Object)(rfontsNodes.get(i+1)).getParent()) )
-								;
-								*/
-								String out = convertText( text.getValue() );
-								text.setValue( out );
-								localCheck( text );
-							}
-						}
-					}
-				}
-			}
-	}
 
 }

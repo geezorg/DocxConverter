@@ -30,6 +30,11 @@ public class  UnstyledTextFinder extends CallbackImpl {
     }
     
     
+    public void clearResults() {
+    	results.clear();
+    }
+    
+    
 	public String checkTargetFont( RFonts rfonts ) {
 		
 		if( rfonts == null ) {
@@ -105,6 +110,7 @@ public class  UnstyledTextFinder extends CallbackImpl {
 				return null;
 			}
 			
+			/*
 			List<Object> pObjects = p.getContent();
 			for(Object pobj: pObjects) {
 				if( pobj instanceof org.docx4j.wml.R ) {
@@ -126,7 +132,8 @@ public class  UnstyledTextFinder extends CallbackImpl {
 						resultsOrdered.add( (org.docx4j.wml.Text)tobj );
 					}
 				}
-			}
+				
+			} */
 		}
     	
         return null;
