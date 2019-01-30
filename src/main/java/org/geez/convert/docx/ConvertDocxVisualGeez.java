@@ -10,12 +10,15 @@ package org.geez.convert.docx;
  */
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 
 public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxVisualGeez() {
+		
 		this.initialize( "VisualGeez.txt", "VisualGeezNumbers.txt", "VG2 Main", "VG Geez Numbers" );
+		
 		huletNeteb = '\u003a';
 		
 		font1Typefaces.add( "VG2 Main" );
@@ -41,6 +44,17 @@ public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 		diacritics.addAll (
 				Arrays.asList( "\u0021", "\u0023", "\u0024", "\u0026", "\u002a", "\u0040", "\u0045", "\u00a4", "\u00ba", "\u00d6" )
 		);
+				
+		
+		StringBuilder sb = new StringBuilder();
+		for (String s : diacritics) {
+			sb.append(s);
+		}
+		
+		diacriticsRE = Pattern.compile(
+				"([" + sb + "])([" + sb + "])"
+		);
+		
 	}
 
 }
