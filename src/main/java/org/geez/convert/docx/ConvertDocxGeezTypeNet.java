@@ -10,8 +10,6 @@ package org.geez.convert.docx;
  */
 
 import java.util.Arrays;
-import java.util.regex.Pattern;
-
 
 
 public class ConvertDocxGeezTypeNet extends ConvertDocxDiacriticalSystem {
@@ -29,15 +27,7 @@ public class ConvertDocxGeezTypeNet extends ConvertDocxDiacriticalSystem {
 		
 		translit2 = null;
 		
-		
-		StringBuilder sb = new StringBuilder();
-		for (String s : diacritics) {
-			sb.append(s);
-		}
-		
-		diacriticsRE = Pattern.compile(
-				"([" + sb + "])([" + sb + "])"
-		);
+		buildRE();
 	}
 
 	

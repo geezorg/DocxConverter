@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.docx4j.XmlUtils;
 import org.docx4j.TraversalUtil.CallbackImpl;
+import org.docx4j.XmlUtils;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.PStyle;
