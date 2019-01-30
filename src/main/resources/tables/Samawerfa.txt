@@ -123,6 +123,7 @@ $macron = \xfa ;
 ቩ ← \xdf $kaib ;
 ቪ ← \xdf $salis ;
 ቬ ← \xdf $hamis ;
+ቨ ← \xdf;
 ቯ ← \xe0 $diqala_rabi ;
 ቫ ← \xe0 ;
 ቭ ← \xe1 ;
