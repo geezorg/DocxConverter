@@ -27,6 +27,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -77,26 +82,123 @@ public final class DocxConverter extends Application {
             com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage(logoImage, null) );      
         }
 
-        ComboBox<String> fontMenu = new ComboBox<String>();
-        fontMenu.getItems().addAll( brana, geezii, geeznewab, geeztypenet, powergeez, samawerfa, visualgeez );       
-        fontMenu.setValue( brana );
-        fontMenu.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String oldFont, String newFont) {
-                systemIn = newFont;
-            } 
-        });
+        Menu inFontMenu = new Menu( "Font _In" );
+        RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + brana );
+        RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + geezii );
+        RadioMenuItem inMenuItem3 = new RadioMenuItem( "Geez_NewA/B" );
+        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geez_TypeNet" );
+        RadioMenuItem inMenuItem5 = new RadioMenuItem( "_" + powergeez );
+        RadioMenuItem inMenuItem6 = new RadioMenuItem( "_" + samawerfa );
+        RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + visualgeez );
+        ToggleGroup groupInMenu = new ToggleGroup();
         
+        inMenuItem1.setOnAction(
+        	new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    systemIn = brana;
+                }
+            }
+        );
+        inMenuItem1.setSelected(true);
+        inMenuItem1.setToggleGroup( groupInMenu );
+        
+        inMenuItem2.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemIn = geezii;
+                    }
+                }
+         );
+        inMenuItem2.setToggleGroup( groupInMenu );
+        inMenuItem3.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemIn = geeznewab;
+                    }
+                }
+            );
+        inMenuItem3.setToggleGroup( groupInMenu );
+        inMenuItem4.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemIn = geeztypenet;
+                    }
+                }
+            );
+        inMenuItem4.setToggleGroup( groupInMenu );
+        inMenuItem5.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemIn = powergeez;
+                    }
+                }
+            );
+        inMenuItem5.setToggleGroup( groupInMenu );
+        inMenuItem6.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemIn = samawerfa;
+                    }
+                }
+            );
+        inMenuItem6.setToggleGroup( groupInMenu );
+        inMenuItem7.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemIn = visualgeez;
+                    }
+                }
+            );
+        inMenuItem7.setToggleGroup( groupInMenu );
+        
+        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7 );
 
-        ComboBox<String> uniFontMenu = new ComboBox<String>();
-        uniFontMenu.getItems().addAll( abyssinica, kefa, nyala );       
-        uniFontMenu.setValue( abyssinica );
-        uniFontMenu.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String oldFont, String newFont) {
-                systemOut = newFont;
-            } 
-        });
+
+        Menu outFontMenu = new Menu( "Font _Out" );
+        RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
+        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_Kefa" );
+        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_" + nyala );
+        ToggleGroup groupOutMenu = new ToggleGroup();
+        
+        
+        outMenuItem1.setOnAction(
+        	new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                    systemOut = abyssinica;
+                }
+            }
+        );
+        outMenuItem1.setSelected(true);
+        outMenuItem1.setToggleGroup( groupOutMenu );
+        
+        outMenuItem2.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemOut = kefa;
+                    }
+                }
+            );
+        outMenuItem2.setToggleGroup( groupOutMenu );
+        outMenuItem3.setOnAction(
+            	new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        systemOut = nyala;
+                    }
+                }
+            );
+        outMenuItem3.setToggleGroup( groupOutMenu );
+        
+        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3 );
         
 
         ListView<Label> listView = new ListView<Label>();
@@ -135,32 +237,40 @@ public final class DocxConverter extends Application {
         );
 
 
-        final Button openFilesButton  = new Button("Select Files...");
+        final Menu fileMenu = new Menu("_File"); 
         final FileChooser fileChooser = new FileChooser();
         
-        openFilesButton.setOnAction(
-            new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                	listView.getItems().clear();
-                	configureFileChooser(fileChooser);    
-                    inputList = fileChooser.showOpenMultipleDialog( stage );
-                    
-                    if ( inputList != null ) {
-                    	for( File file: inputList) {
-                    		Label rowLabel = new Label( file.getName() );
-                    		data.add( rowLabel );
-                    		Tooltip tooltip = new Tooltip( file.getPath() );
-                    		rowLabel.setTooltip( tooltip );
-                    	} 
-                    	listView.setItems( data );
-                    	convertButton.setDisable( false );
+        // create menuitems 
+        final MenuItem fileMenuItem1 = new MenuItem("Select Files..."); 
+        fileMenuItem1.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                    	listView.getItems().clear();
+                    	configureFileChooser(fileChooser);    
+                        inputList = fileChooser.showOpenMultipleDialog( stage );
+                        
+                        if ( inputList != null ) {
+                        	for( File file: inputList) {
+                        		Label rowLabel = new Label( file.getName() );
+                        		data.add( rowLabel );
+                        		Tooltip tooltip = new Tooltip( file.getPath() );
+                        		rowLabel.setTooltip( tooltip );
+                        	} 
+                        	listView.setItems( data );
+                        	convertButton.setDisable( false );
+                        }
                     }
                 }
-            }
-        );
-
+            );
+        fileMenu.getItems().add( fileMenuItem1 ); 
         
+        // create a menubar 
+        MenuBar menuBar = new MenuBar(); 
+  
+        // add menu to menubar 
+        menuBar.getMenus().addAll( fileMenu, inFontMenu, outFontMenu );
+
         
         CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after conversion?");
         openFilesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -173,29 +283,18 @@ public final class DocxConverter extends Application {
  
         final GridPane inputGridPane = new GridPane();
  
-        GridPane.setConstraints(label, 0, 0, 3, 1);
-        Text fontIn = new Text( "Font In" );
-        fontIn.setStyle( "-fx-font-style: italic;" );
-        Text fontOut = new Text( "Font Out" );
-        fontOut.setStyle( "-fx-font-style: italic;" );
-        GridPane.setConstraints( fontIn, 0, 1);                  GridPane.setConstraints( fontOut, 1, 1);
-        GridPane.setConstraints(fontMenu, 0, 2);                 GridPane.setConstraints(uniFontMenu, 1, 2);               GridPane.setConstraints(openFilesButton, 2, 2);
-        GridPane.setHalignment(fontMenu, HPos.LEFT);             GridPane.setHalignment(uniFontMenu, HPos.CENTER);         GridPane.setHalignment(openFilesButton, HPos.RIGHT);
-        
-        GridPane.setConstraints(listVBox, 0, 3, 3, 1);
-        GridPane.setConstraints(openFilesCheckbox, 0, 4, 2, 1);  GridPane.setConstraints(convertButton, 2, 4);
+        GridPane.setConstraints(label, 0, 0, 3, 1); 
+        GridPane.setConstraints(listVBox, 0, 1, 3, 1);
+        GridPane.setConstraints(openFilesCheckbox, 0, 2, 2, 1);  GridPane.setConstraints(convertButton, 2, 4);
         GridPane.setHalignment(openFilesCheckbox, HPos.LEFT);    GridPane.setHalignment(convertButton, HPos.RIGHT);
         GridPane.setValignment(openFilesCheckbox, VPos.TOP);
         
-        // ColumnConstraints col1 = new ColumnConstraints();
-        // col1.setPercentWidth(40);
-        // inputGridPane.getColumnConstraints().addAll(col1);
-        
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(label, fontIn, fontOut, fontMenu, uniFontMenu, openFilesButton, listVBox, openFilesCheckbox, convertButton);
+        inputGridPane.getChildren().addAll( listVBox, openFilesCheckbox, convertButton );
  
         final Pane rootGroup = new VBox(12);
+        rootGroup.getChildren().add( menuBar );
         rootGroup.getChildren().addAll(inputGridPane);
         rootGroup.setPadding( new Insets(12, 12, 12, 12) );
  
@@ -221,8 +320,8 @@ public final class DocxConverter extends Application {
 		   			break;
 	    			
 			   	case geezii:
-		    			converter = new ConvertDocxFeedelGeezII();
-		    			break;
+		    		converter = new ConvertDocxFeedelGeezII();
+		    		break;
 		    			
 		   		case geeznewab:
 	    			converter = new ConvertDocxFeedelGeezNewAB();
