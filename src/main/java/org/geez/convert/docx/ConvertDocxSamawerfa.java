@@ -17,10 +17,13 @@ import java.util.regex.Pattern;
 public class ConvertDocxSamawerfa extends ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxSamawerfa() {
+		
 		this.initialize( "Samawerfa.txt", "Samawerfa.txt", "Addis98", "Blknwt98" );
+		
 		huletNeteb = '\u003a';
 
 		translit2 = null;
+		
 		fontToTransliteratorMap.put( "Blknwt98", translit1 );
 
 		diacritics.addAll (

@@ -22,6 +22,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -30,11 +32,16 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -146,6 +153,11 @@ public final class DocxConverter extends Application {
                 }
             );
         inMenuItem6.setToggleGroup( groupInMenu );
+        
+		//Tooltip tooltip6 = new Tooltip( "Addis98, Blknwt98" );
+		//Tooltip.install( inMenuItem6, tooltip6 );
+		
+		
         inMenuItem7.setOnAction(
             	new EventHandler<ActionEvent>() {
                     @Override
@@ -215,7 +227,7 @@ public final class DocxConverter extends Application {
                 @Override
                 public void handle(final ActionEvent e) {
                     if ( inputList != null ) {
-                       convertButton.setDisable( true );
+                       // convertButton.setDisable( true );
                        int i = 0;
                        ObservableList<Label> itemList = listView.getItems();
                        for (File file : inputList) {
@@ -239,7 +251,7 @@ public final class DocxConverter extends Application {
         final FileChooser fileChooser = new FileChooser();
         
         // create menuitems 
-        final MenuItem fileMenuItem1 = new MenuItem("Select Files..."); 
+        final MenuItem fileMenuItem1 = new MenuItem( "Select Files..." ); 
         fileMenuItem1.setOnAction(
                 new EventHandler<ActionEvent>() {
                     @Override
@@ -262,12 +274,36 @@ public final class DocxConverter extends Application {
                 }
             );
         fileMenu.getItems().add( fileMenuItem1 ); 
+        fileMenu.getItems().add( new SeparatorMenuItem() );
+        
+        MenuItem exitMenuItem = new MenuItem("Exit");
+        exitMenuItem.setOnAction(actionEvent -> Platform.exit());
+        fileMenu.getItems().add( exitMenuItem ); 
+        
+        
+        final Menu helpMenu = new Menu( "Help" );
+        final MenuItem aboutMenuItem = new MenuItem( "About" );
+        helpMenu.getItems().add( aboutMenuItem );
+        
+        aboutMenuItem.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle( "About Docx Converter" );
+        alert.setHeaderText( "Information Alert" );
+        String s ="This is an example of JavaFX 8 Dialogs... ";
+        alert.setContentText(s);
+        alert.show();
+                    }
+                });
+        
         
         // create a menubar 
-        MenuBar menuBar = new MenuBar(); 
+        MenuBar leftBar = new MenuBar(); 
   
         // add menu to menubar 
-        menuBar.getMenus().addAll( fileMenu, inFontMenu, outFontMenu );
+        leftBar.getMenus().addAll( fileMenu, inFontMenu, outFontMenu );
 
         
         CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after conversion?");
@@ -279,9 +315,10 @@ public final class DocxConverter extends Application {
         });
         openFilesCheckbox.setSelected(true);
  
+        /*
         final GridPane inputGridPane = new GridPane();
  
-        GridPane.setConstraints(label, 0, 0, 3, 1); 
+       // GridPane.setConstraints(label, 0, 0, 3, 1); 
         GridPane.setConstraints(listVBox, 0, 1, 3, 1);
         GridPane.setConstraints(openFilesCheckbox, 0, 2, 2, 1);  GridPane.setConstraints(convertButton, 2, 4);
         GridPane.setHalignment(openFilesCheckbox, HPos.LEFT);    GridPane.setHalignment(convertButton, HPos.RIGHT);
@@ -290,13 +327,29 @@ public final class DocxConverter extends Application {
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
         inputGridPane.getChildren().addAll( listVBox, openFilesCheckbox, convertButton );
+        */
+        
+        Region bottomSpacer = new Region();
+        // bottomSpacer.getStyleClass().add("menu-bar");
+        HBox.setHgrow(bottomSpacer, Priority.SOMETIMES);
+        HBox bottomBox = new HBox(openFilesCheckbox, bottomSpacer, convertButton);
+        
+        
+        MenuBar rightBar = new MenuBar();
+        rightBar.getMenus().addAll( helpMenu );
+        Region spacer = new Region();
+        spacer.getStyleClass().add("menu-bar");
+        HBox.setHgrow(spacer, Priority.SOMETIMES);
+        HBox menubars = new HBox(leftBar, spacer, rightBar);
+        
  
-        final Pane rootGroup = new VBox(12);
-        rootGroup.getChildren().add( menuBar );
-        rootGroup.getChildren().addAll(inputGridPane);
+        final BorderPane rootGroup =new BorderPane();
+        rootGroup.setTop( menubars );
+        rootGroup.setCenter( listVBox );
+        rootGroup.setBottom( bottomBox );
         rootGroup.setPadding( new Insets(12, 12, 12, 12) );
  
-        stage.setScene(new Scene(rootGroup, 420, 260) );
+        stage.setScene(new Scene(rootGroup, 420, 220) );
         stage.show();
     }
  

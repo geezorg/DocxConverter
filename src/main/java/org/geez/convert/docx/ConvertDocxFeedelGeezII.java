@@ -20,7 +20,9 @@ import java.util.Arrays;
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxFeedelGeezII() {
+		
 		this.initialize( "FeedelGeez.txt", "FeedelGeezII.txt", "Geez", "GeezII" );
+		
 		huletNeteb = '\uf023';
 
 				
