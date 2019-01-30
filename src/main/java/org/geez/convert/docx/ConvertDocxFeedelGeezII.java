@@ -12,8 +12,6 @@ package org.geez.convert.docx;
 
 import org.docx4j.wml.Text;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.Arrays;
 
