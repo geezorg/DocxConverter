@@ -1,5 +1,6 @@
 package org.geez.convert.docx;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -27,7 +28,10 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	protected final ArrayList<String> diacritics = new ArrayList<String>();
 	protected Pattern diacriticsRE = null;
 	
-
+	public ConvertDocxDiacriticalSystem( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
+	}
+	
 	protected void buildRE() {
 		
 		StringBuilder sb = new StringBuilder();

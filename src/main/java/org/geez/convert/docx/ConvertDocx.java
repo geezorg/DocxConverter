@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import org.docx4j.TraversalUtil;
 import org.docx4j.model.structure.HeaderFooterPolicy;
@@ -35,13 +36,39 @@ import org.docx4j.wml.Text;
 
 import com.ibm.icu.text.Transliterator;
 
+// StatusBar Imports:
 
-abstract class ConvertDocx {
+import org.controlsfx.control.StatusBar;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.concurrent.Task;
+
+
+abstract class ConvertDocx  implements Callable<Void> {
 	protected Transliterator t = null;
 	protected String fontOut = null;
 	protected String fontIn = null;
 	protected char huletNeteb = 0x0;
+	double totalNodes = 0;
+	private boolean setProgress = true;
 
+    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
+
+    private File inputFile = null, outputFile = null;
+    
+    public ConvertDocx( final File inputFile, final File outputFile ) {
+    	this.inputFile  = inputFile;
+    	this.outputFile = outputFile;
+    }
+
+    public ReadOnlyDoubleProperty progressProperty() {
+        return progress.getReadOnlyProperty() ;
+    }   
+    
+    public final double getProgress() {
+        return progressProperty().get();
+    }
+    
 	public void setFont(String fontOut) {
 		this.fontOut = fontOut;
 	}
@@ -111,6 +138,7 @@ abstract class ConvertDocx {
 		return t.transliterate( text );
 	}
 	
+	
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
 		if(! stFinder.hasStyles() ) {
 			return;
@@ -119,12 +147,26 @@ abstract class ConvertDocx {
 		
 		new TraversalUtil( part.getContents(), stFinder );
 
-		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results; 
-		for(Text text: textNodes.keySet() ) {
-			fontIn = textNodes.get(text);
-			t = fontToTransliteratorMap.get( fontIn );
-			String out = convertText( text );
-			text.setValue( out );
+		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results;
+		
+		if( setProgress ) {
+			double i = progress.get() * totalNodes;
+			for(Text text: textNodes.keySet() ) {
+				fontIn = textNodes.get(text);
+				t = fontToTransliteratorMap.get( fontIn );
+				String out = convertText( text );
+				text.setValue( out );
+				progress.set( i / totalNodes);
+				i++;
+			}
+		}
+		else {
+			for(Text text: textNodes.keySet() ) {
+				fontIn = textNodes.get(text);
+				t = fontToTransliteratorMap.get( fontIn );
+				String out = convertText( text );
+				text.setValue( out );
+			}
 		}
 	
 	}
@@ -132,11 +174,25 @@ abstract class ConvertDocx {
 
 	public void processUnstyledObjects( final JaxbXmlPart<?> part, UnstyledTextFinder ustFinder ) throws Docx4JException {
 			HashMap<Text,String> textNodes = (HashMap<Text,String>)ustFinder.results; 
-			for(Text text: textNodes.keySet() ) {
-				fontIn = textNodes.get(text);
-				t = fontToTransliteratorMap.get( fontIn );
-				String out = convertText( text );
-				text.setValue( out );
+
+			if( setProgress ) {
+				double i = 0.0;
+				for(Text text: textNodes.keySet() ) {
+					fontIn = textNodes.get(text);
+					t = fontToTransliteratorMap.get( fontIn );
+					String out = convertText( text );
+					text.setValue( out );
+					progress.set( i / totalNodes);
+					i++;
+				}		
+			}
+			else {
+				for(Text text: textNodes.keySet() ) {
+					fontIn = textNodes.get(text);
+					t = fontToTransliteratorMap.get( fontIn );
+					String out = convertText( text );
+					text.setValue( out );
+				}
 			}
 	}
 	
@@ -155,10 +211,17 @@ abstract class ConvertDocx {
 
 	}
 	
-	
+	@Override
+	public Void call() {
+		process( inputFile, outputFile );
+        return null;
+	}
 	public void process( final File inputFile, final File outputFile )
 	{
 		try {
+			setProgress = true;
+			totalNodes = 0.0;
+			progress.set( 0.0 );
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 			
@@ -166,13 +229,19 @@ abstract class ConvertDocx {
        		StyledTextFinder stf = new StyledTextFinder( styleIdToFont );
     		UnstyledTextFinder ustf = new UnstyledTextFinder(targetTypefaces, fontOut);
     		
+    		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
+
+			normalizeText( documentPart, stf, ustf );
+    		totalNodes = stf.results.size() + ustf.results.size();
+            
     		/*
     		 * Normalize text will extract the styled and unstyled text nodes and store them
     		 * in the stf and ustf arrays accordingly:
     		 */
-			normalizeText( documentPart, stf, ustf );
+
        		processUnstyledObjects( documentPart, ustf );
        		processStyledObjects( documentPart, stf );
+       		setProgress = false;
             
        		if( documentPart.hasFootnotesPart() ) {
 	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
@@ -234,6 +303,7 @@ abstract class ConvertDocx {
     		}
        		
        		wordMLPackage.save( outputFile );
+
 		}
 		catch ( Exception ex ) {
 			System.err.println( ex );
@@ -257,27 +327,31 @@ abstract class ConvertDocx {
 	    ConvertDocx converter = null;
 		switch( systemIn ) {
 			case "brana":
-				converter = new ConvertDocxBrana();
+				converter = new ConvertDocxBrana( inputFile, outputFile );
+				break;
+					
+			case "geezii":
+				converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
 				break;
 		
 			case "geeznewab":
-				converter = new ConvertDocxFeedelGeezNewAB();
+				converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
 				break;
 
 			case "geeztypenet":
-				converter = new ConvertDocxGeezTypeNet();
+				converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
 				break;
 
 			case "powergeez":
-				converter = new ConvertDocxPowerGeez();
+				converter = new ConvertDocxPowerGeez( inputFile, outputFile );
 				break;
 				
 			case "samawerfa":
-				converter = new ConvertDocxSamawerfa();
+				converter = new ConvertDocxSamawerfa( inputFile, outputFile );
 				break;
 
 			case "visualgeez":
-				converter = new ConvertDocxVisualGeez();
+				converter = new ConvertDocxVisualGeez( inputFile, outputFile );
 				break;
 		
 			default:

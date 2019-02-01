@@ -1,5 +1,7 @@
 package org.geez.convert.docx;
 
+import java.io.File;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -14,8 +16,8 @@ import java.util.Arrays;
 
 public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 
-	public ConvertDocxVisualGeez() {
-		
+	public ConvertDocxVisualGeez( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
 		this.initialize( "VisualGeez.txt", "VisualGeezNumbers.txt", "VG2 Main", "VG Geez Numbers" );
 		
 		huletNeteb = '\u003a';

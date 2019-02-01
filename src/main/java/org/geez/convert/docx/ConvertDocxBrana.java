@@ -1,5 +1,7 @@
 package org.geez.convert.docx;
 
+import java.io.File;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -13,7 +15,8 @@ package org.geez.convert.docx;
 
 public class ConvertDocxBrana extends ConvertDocx {
 
-	public ConvertDocxBrana() {
+	public ConvertDocxBrana( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
 		this.initialize( "BranaI.txt", "BranaII.txt", "Brana I", "Brana II" );
 	}
 

@@ -1,6 +1,8 @@
 package org.geez.convert.docx;
 
 
+import java.io.File;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -15,8 +17,8 @@ import java.util.Arrays;
 
 public class ConvertDocxSamawerfa extends ConvertDocxDiacriticalSystem {
 
-	public ConvertDocxSamawerfa() {
-		
+	public ConvertDocxSamawerfa( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
 		this.initialize( "Samawerfa.txt", "Samawerfa.txt", "Addis98", "Blknwt98" );
 		
 		huletNeteb = '\u003a';

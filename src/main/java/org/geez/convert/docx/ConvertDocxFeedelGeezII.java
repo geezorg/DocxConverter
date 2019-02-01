@@ -1,5 +1,6 @@
 package org.geez.convert.docx;
 
+import java.io.File;
 import java.util.Arrays;
 
 /*
@@ -18,8 +19,8 @@ import org.docx4j.wml.Text;
 
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 
-	public ConvertDocxFeedelGeezII() {
-		
+	public ConvertDocxFeedelGeezII( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
 		this.initialize( "FeedelGeez.txt", "FeedelGeezII.txt", "Geez", "GeezII" );
 		
 		huletNeteb = '\uf023';
