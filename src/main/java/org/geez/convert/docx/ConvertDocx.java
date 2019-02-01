@@ -38,10 +38,8 @@ import com.ibm.icu.text.Transliterator;
 
 // StatusBar Imports:
 
-import org.controlsfx.control.StatusBar;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
-import javafx.concurrent.Task;
 
 
 abstract class ConvertDocx  implements Callable<Void> {
@@ -156,7 +154,7 @@ abstract class ConvertDocx  implements Callable<Void> {
 				t = fontToTransliteratorMap.get( fontIn );
 				String out = convertText( text );
 				text.setValue( out );
-				progress.set( i / totalNodes);
+				progress.set( i / totalNodes );
 				i++;
 			}
 		}
@@ -182,7 +180,7 @@ abstract class ConvertDocx  implements Callable<Void> {
 					t = fontToTransliteratorMap.get( fontIn );
 					String out = convertText( text );
 					text.setValue( out );
-					progress.set( i / totalNodes);
+					progress.set( i / totalNodes );
 					i++;
 				}		
 			}
