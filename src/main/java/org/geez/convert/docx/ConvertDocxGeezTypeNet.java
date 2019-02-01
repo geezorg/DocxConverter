@@ -1,5 +1,7 @@
 package org.geez.convert.docx;
 
+import java.io.File;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -14,8 +16,8 @@ import java.util.Arrays;
 
 public class ConvertDocxGeezTypeNet extends ConvertDocxDiacriticalSystem {
 	
-	public ConvertDocxGeezTypeNet() {
-		
+	public ConvertDocxGeezTypeNet( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
 		this.initialize( "GeezTypeNet.txt", "GeezTypeNet.txt", "GeezTypeNet", "GeezTypeNet" );
 		
 		huletNeteb = ':';

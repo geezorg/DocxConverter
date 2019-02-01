@@ -1,11 +1,15 @@
 package org.geez.convert.docx;
 
 
+
 import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.controlsfx.control.StatusBar;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,10 +17,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -28,6 +35,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -37,6 +45,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
  
@@ -58,6 +68,7 @@ public final class DocxConverter extends Application {
 	private String systemOut = abyssinica;
 	private boolean openOutput = true;
 	private List<File> inputList = null;
+	protected StatusBar statusBar = new StatusBar();
 	
 	
     private static void configureFileChooser( final FileChooser fileChooser ) {      
@@ -90,75 +101,25 @@ public final class DocxConverter extends Application {
         RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + visualgeez );
         ToggleGroup groupInMenu = new ToggleGroup();
         
-        inMenuItem1.setOnAction(
-        	new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    systemIn = brana;
-                }
-            }
-        );
+        inMenuItem1.setOnAction( evt -> setSystemIn( brana ) );
         inMenuItem1.setSelected(true);
         inMenuItem1.setToggleGroup( groupInMenu );
-        
-        inMenuItem2.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemIn = geezii;
-                    }
-                }
-         );
+        inMenuItem2.setOnAction( evt -> setSystemIn( geezii ) );
         inMenuItem2.setToggleGroup( groupInMenu );
-        inMenuItem3.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemIn = geeznewab;
-                    }
-                }
-            );
+        inMenuItem3.setOnAction( evt -> setSystemIn( geeznewab ) );
         inMenuItem3.setToggleGroup( groupInMenu );
-        inMenuItem4.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemIn = geeztypenet;
-                    }
-                }
-            );
+        inMenuItem4.setOnAction( evt -> setSystemIn( geeztypenet ) );
         inMenuItem4.setToggleGroup( groupInMenu );
-        inMenuItem5.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemIn = powergeez;
-                    }
-                }
-            );
+        inMenuItem5.setOnAction( evt -> setSystemIn( powergeez ) );
         inMenuItem5.setToggleGroup( groupInMenu );
-        inMenuItem6.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemIn = samawerfa;
-                    }
-                }
-            );
+        inMenuItem6.setOnAction( evt -> setSystemIn( samawerfa ) );
         inMenuItem6.setToggleGroup( groupInMenu );
         
 		//Tooltip tooltip6 = new Tooltip( "Addis98, Blknwt98" );
 		//Tooltip.install( inMenuItem6, tooltip6 );
 		
 		
-        inMenuItem7.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemIn = visualgeez;
-                    }
-                }
-            );
+        inMenuItem7.setOnAction( evt -> setSystemIn( visualgeez ) );
         inMenuItem7.setToggleGroup( groupInMenu );
         
         inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7 );
@@ -171,34 +132,16 @@ public final class DocxConverter extends Application {
         ToggleGroup groupOutMenu = new ToggleGroup();
         
         
-        outMenuItem1.setOnAction(
-        	new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    systemOut = abyssinica;
-                }
-            }
-        );
+        outMenuItem1.setOnAction( evt -> setSystemOut( abyssinica ) );
+
         outMenuItem1.setSelected(true);
         outMenuItem1.setToggleGroup( groupOutMenu );
         
-        outMenuItem2.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemOut = kefa;
-                    }
-                }
-            );
+        outMenuItem2.setOnAction( evt -> setSystemOut( kefa ) );
+
         outMenuItem2.setToggleGroup( groupOutMenu );
-        outMenuItem3.setOnAction(
-            	new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                        systemOut = nyala;
-                    }
-                }
-            );
+        outMenuItem3.setOnAction( evt -> setSystemOut( nyala ) );
+
         outMenuItem3.setToggleGroup( groupOutMenu );
         
         outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3 );
@@ -215,7 +158,8 @@ public final class DocxConverter extends Application {
         
         final Button convertButton = new Button("Convert File(s)");
         convertButton.setDisable( true );
-        convertButton.setOnAction(
+        convertButton.setOnAction(evt -> convertFiles(listView));
+        /*
         	new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(final ActionEvent e) {
@@ -238,6 +182,7 @@ public final class DocxConverter extends Application {
                 }
             }
         );
+        */
 
 
         final Menu fileMenu = new Menu("_File"); 
@@ -325,7 +270,16 @@ public final class DocxConverter extends Application {
         Region bottomSpacer = new Region();
         // bottomSpacer.getStyleClass().add("menu-bar");
         HBox.setHgrow(bottomSpacer, Priority.SOMETIMES);
-        HBox bottomBox = new HBox(openFilesCheckbox, bottomSpacer, convertButton);
+        HBox hbottomBox = new HBox( openFilesCheckbox, bottomSpacer, convertButton );
+        hbottomBox.setPadding(new Insets(4, 0, 4, 0));
+        hbottomBox.setAlignment( Pos.CENTER_LEFT );
+        VBox vbottomBox = new VBox( hbottomBox, statusBar );
+        // vbottomBox.setPadding(new Insets(4, 0, 2, 4));
+        // vbottomBox.setSpacing(4);
+        //statusBar.setText( "In: " + systemIn + " Out: " + systemOut  );
+        statusBar.setText( "" );
+        updateStatusMessage();
+
         
         
         MenuBar rightBar = new MenuBar();
@@ -339,8 +293,9 @@ public final class DocxConverter extends Application {
         final BorderPane rootGroup =new BorderPane();
         rootGroup.setTop( menubars );
         rootGroup.setCenter( listVBox );
-        rootGroup.setBottom( bottomBox );
-        rootGroup.setPadding( new Insets(12, 12, 12, 12) );
+        rootGroup.setBottom( vbottomBox );
+        // rootGroup.setPadding( new Insets(12, 12, 12, 12) );
+        rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
         stage.setScene(new Scene(rootGroup, 420, 220) );
         stage.show();
@@ -350,6 +305,23 @@ public final class DocxConverter extends Application {
         Application.launch(args);
     }
  
+    private void convertFiles(ListView<Label> listView) {
+        if ( inputList != null ) {
+            int i = 0;
+            ObservableList<Label> itemList = listView.getItems();
+            for (File file : inputList) {
+                 processFile( file );
+                 Label label = itemList.get(i);
+                 Platform.runLater(() -> label.setText("\u2713 " + label.getText() ));
+                 label.setStyle( "-fx-font-style: italic;" );
+                 listView.refresh();
+                 // Platform.runLater(() -> listView.refresh() );
+                 i++;
+             }
+         } 
+    }
+    
+    
     ConvertDocx converter = null;
     private void processFile(File inputFile) {
         try {
@@ -360,31 +332,31 @@ public final class DocxConverter extends Application {
     		
     		switch( systemIn ) {
 		   		case brana:
-		   			converter = new ConvertDocxBrana();
+		   			converter = new ConvertDocxBrana( inputFile, outputFile );
 		   			break;
 	    			
 			   	case geezii:
-		    		converter = new ConvertDocxFeedelGeezII();
+		    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
 		    		break;
 		    			
 		   		case geeznewab:
-	    			converter = new ConvertDocxFeedelGeezNewAB();
+	    			converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
 	    			break;
 
 		    	case geeztypenet:
-		    		converter = new ConvertDocxGeezTypeNet();
+		    		converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
 		   			break;
 
 		    	case powergeez:
-		    		converter = new ConvertDocxPowerGeez();
+		    		converter = new ConvertDocxPowerGeez( inputFile, outputFile );
 		   			break;
 
 		    	case samawerfa:
-		    		converter = new ConvertDocxSamawerfa();
+		    		converter = new ConvertDocxSamawerfa( inputFile, outputFile );
 		   			break;
 		   			
 		    	case visualgeez:
-		    		converter = new ConvertDocxVisualGeez();
+		    		converter = new ConvertDocxVisualGeez( inputFile, outputFile );
 		    		break;
     			
 		    	default:
@@ -393,19 +365,92 @@ public final class DocxConverter extends Application {
     		}
 		
     		converter.setFont( systemOut );
-    		converter.process( inputFile, outputFile );
-    		if ( openOutput ) {
-    			if ( outputFile.exists() ) {
-    				desktop.open( outputFile );
-    			}
-    			else {
-    				// add a popup dialog to indicate file not found
-    			}
-    		}
+
+    		
+    		// try again with: https://stackoverflow.com/questions/49222017/javafx-make-threads-wait-and-threadsave-gui-update
+    		
+    		// https://stackoverflow.com/questions/47419949/propagate-progress-information-from-callable-to-task
+            Task<Void> task = new Task<Void>() {
+                @Override protected Void call() throws Exception {
+                	
+                	updateProgress(0, 0);
+                	converter.progressProperty().addListener( 
+                			(obs, oldProgress, newProgress) -> updateProgress( newProgress.doubleValue(), 1.0 )
+                	);
+                	converter.call();
+
+    				done();
+            		return null;
+                } 
+            };
+            
+            statusBar.progressProperty().bind( task.progressProperty() );
+            
+           	// remove bindings again
+            task.setOnSucceeded( event -> { 
+            	statusBar.progressProperty().unbind();
+            	if ( openOutput ) {
+            		if ( outputFile.exists() ) { try { 
+            			desktop.open( outputFile ); } catch(IOException ex) {}
+            		}
+            		else {
+            			// add a popup dialog to indicate file not found
+            		}
+            	}
+            
+            });
+            Thread convertThread = new Thread(task);
+            convertThread.start();
+            
+            //convertThread.join();
+
         }
         catch (Exception ex) {
         	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
         }
+        
+    }
+    
+
+    Text systemInText = new Text( systemIn );
+    Text systemOutText = new Text( systemOut );
+    private void updateStatusMessage() {
+        TextFlow flowIn = new TextFlow();
+        TextFlow flowOut = new TextFlow();
+
+        Text in  = new Text("In: ");
+        in.setStyle("-fx-font-weight: bold");
+
+
+        Text out = new Text(" Out: ");
+        out.setStyle("-fx-font-weight: bold");
+
+        flowIn.getChildren().addAll(in, systemInText );
+        flowOut.getChildren().addAll(out, systemOutText );
+        //statusBar.setStyle( "" );
+        
+        Separator separator1 = new Separator();
+        separator1.setOrientation(Orientation.VERTICAL);
+        
+        Separator separator2 = new Separator();
+        separator2.setOrientation(Orientation.VERTICAL);
+        HBox hbox = new HBox();
+        //hbox.getChildren().addAll( flowIn, separator1, flowOut, separator2 );
+        hbox.getChildren().addAll( flowIn, flowOut );
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        
+        // statusBar.getLeftItems().add( hbox ); //.addAll( flowIn, separator1, flowOut, separator2 );
+        statusBar.getLeftItems().add( new Text("OK") );
+       // statusBar.setStyleText( );
+        statusBar.setText( "OK" );
+    }
+    private void setSystemIn(String systemIn) {
+    	this.systemIn = systemIn;
+    	systemInText.setText( systemIn );
+    }
+    private void setSystemOut(String systemOut) {
+    	this.systemOut = systemOut;
+    	systemOutText.setText( systemOut );
     }
 
 }
