@@ -5,6 +5,7 @@ package org.geez.convert.docx;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
@@ -41,6 +43,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -157,7 +160,7 @@ public final class DocxConverter extends Application {
         final Menu fileMenu = new Menu("_File"); 
         final FileChooser fileChooser = new FileChooser();
         
-        // create menuitems 
+        // create menu items 
         final MenuItem fileMenuItem1 = new MenuItem( "Select Files..." ); 
         fileMenuItem1.setOnAction(
             new EventHandler<ActionEvent>() {
@@ -197,11 +200,27 @@ public final class DocxConverter extends Application {
                 @Override
                 public void handle(final ActionEvent e) {
 			        Alert alert = new Alert(AlertType.INFORMATION);
-			        alert.setTitle( "About Docx Converter" );
-			        alert.setHeaderText( "Information Alert" );
-			        String s = "This is an example of JavaFX 8 Dialogs... ";
-			        alert.setContentText(s);
-			        alert.show();
+			        alert.setTitle( "About Legacy Ethiopic Docx Converter" );
+			        alert.setHeaderText( "Legacy Ethiopic Font Docx Converter v0.5" );
+			        
+			        FlowPane fp = new FlowPane();
+			        Label label = new Label( "Visit the project homepage on" );
+			        Hyperlink link = new Hyperlink("GitHub");
+			        fp.getChildren().addAll( label, link);
+
+			        link.setOnAction( (event) -> {
+	                    alert.close();
+	                    try {
+		                    URI uri = new URI( "https://github.com/geezorg/DocxConverter/" );
+		                    Desktop.getDesktop().browse( uri );
+	                    }
+	                    catch(Exception ex) {
+	                    	
+	                    }
+			        });
+
+			        alert.getDialogPane().contentProperty().set( fp );
+			        alert.showAndWait();
                 }
             }
         );
@@ -224,7 +243,6 @@ public final class DocxConverter extends Application {
         openFilesCheckbox.setSelected(true);
         
         Region bottomSpacer = new Region();
-        // bottomSpacer.getStyleClass().add("menu-bar");
         HBox.setHgrow(bottomSpacer, Priority.SOMETIMES);
         HBox hbottomBox = new HBox( openFilesCheckbox, bottomSpacer, convertButton );
         hbottomBox.setPadding(new Insets(4, 0, 4, 0));
@@ -247,7 +265,6 @@ public final class DocxConverter extends Application {
         rootGroup.setTop( menubars );
         rootGroup.setCenter( listVBox );
         rootGroup.setBottom( vbottomBox );
-        // rootGroup.setPadding( new Insets(12, 12, 12, 12) );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
         stage.setScene(new Scene(rootGroup, 420, 220) );
@@ -262,7 +279,7 @@ public final class DocxConverter extends Application {
     	
         if ( inputList != null ) {
         	if( converted ) {
-        		// reset file names;
+        		// this is a re-run, reset file names;
         		for(Label label: listView.getItems()) {
         			label.setStyle( "" );
         			label.setText( label.getText().substring(2) );
@@ -271,19 +288,8 @@ public final class DocxConverter extends Application {
         		converted = false;
         	}
             int i = 0;
-            ObservableList<Label> itemList = listView.getItems();
             for (File file : inputList) {
-                Label label = itemList.get(i);
                 processFile( file, convertButton, listView, i );
-
-                // Platform.runLater(() -> label.setText("\u2713 " + label.getText() ));
-                // Platform.runLater(() -> label.setText("\u2713 " + label.getText() ));
-                /*
-                label.setText("\u2713 " + label.getText() );
-                label.setStyle( "-fx-font-style: italic;" );
-                listView.refresh();
-                */
-                // Platform.runLater(() -> listView.refresh() );
                 i++;
              }
             converted = true;
@@ -437,7 +443,7 @@ public final class DocxConverter extends Application {
         
         // working with a single flow leads to bad visual effects when the app size changes when the
         // font name changes, so we use an hbox instead
-       // flow.getChildren().addAll( in, systemInText, separator1, out, systemOutText, separator2 );
+        // flow.getChildren().addAll( in, systemInText, separator1, out, systemOutText, separator2 );
         
         statusBar.getLeftItems().add( hbox );
     }
