@@ -40,11 +40,17 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -114,11 +120,6 @@ public final class DocxConverter extends Application {
         inMenuItem5.setToggleGroup( groupInMenu );
         inMenuItem6.setOnAction( evt -> setSystemIn( samawerfa ) );
         inMenuItem6.setToggleGroup( groupInMenu );
-        
-		//Tooltip tooltip6 = new Tooltip( "Addis98, Blknwt98" );
-		//Tooltip.install( inMenuItem6, tooltip6 );
-		
-		
         inMenuItem7.setOnAction( evt -> setSystemIn( visualgeez ) );
         inMenuItem7.setToggleGroup( groupInMenu );
         
@@ -130,20 +131,15 @@ public final class DocxConverter extends Application {
         RadioMenuItem outMenuItem2 = new RadioMenuItem( "_Kefa" );
         RadioMenuItem outMenuItem3 = new RadioMenuItem( "_" + nyala );
         ToggleGroup groupOutMenu = new ToggleGroup();
-        
-        
-        outMenuItem1.setOnAction( evt -> setSystemOut( abyssinica ) );
-
+              
+        outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
         outMenuItem1.setSelected(true);
-        outMenuItem1.setToggleGroup( groupOutMenu );
-        
-        outMenuItem2.setOnAction( evt -> setSystemOut( kefa ) );
-
+        outMenuItem1.setToggleGroup( groupOutMenu );        
+        outMenuItem2.setOnAction( event -> setSystemOut( kefa ) );
         outMenuItem2.setToggleGroup( groupOutMenu );
-        outMenuItem3.setOnAction( evt -> setSystemOut( nyala ) );
-
+        outMenuItem3.setOnAction( event -> setSystemOut( nyala ) );
         outMenuItem3.setToggleGroup( groupOutMenu );
-        
+       
         outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3 );
         
 
@@ -158,32 +154,7 @@ public final class DocxConverter extends Application {
         
         final Button convertButton = new Button("Convert File(s)");
         convertButton.setDisable( true );
-        convertButton.setOnAction(evt -> convertFiles(listView));
-        /*
-        	new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(final ActionEvent e) {
-                    if ( inputList != null ) {
-                       // convertButton.setDisable( true );
-                       int i = 0;
-                       ObservableList<Label> itemList = listView.getItems();
-                       for (File file : inputList) {
-                            processFile( file );
-                            Label label = itemList.get(i);
-                            label.setText("\u2713 " + label.getText() );
-                            label.setStyle( "-fx-font-style: italic;" );
-                            // itemList.set(i, oldValue );
-                            Platform.runLater(() -> listView.refresh() );
-                        	// listView.fireEvent(new ListView.EditEvent<>(listView, ListView.editCommitEvent(), label, i));
-                            i++;
-                        }
-                    } 
-                    inputList = null;
-                }
-            }
-        );
-        */
-
+        convertButton.setOnAction( event -> convertFiles(listView) );
 
         final Menu fileMenu = new Menu("_File"); 
         final FileChooser fileChooser = new FileChooser();
@@ -191,26 +162,26 @@ public final class DocxConverter extends Application {
         // create menuitems 
         final MenuItem fileMenuItem1 = new MenuItem( "Select Files..." ); 
         fileMenuItem1.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-                    	listView.getItems().clear();
-                    	configureFileChooser(fileChooser);    
-                        inputList = fileChooser.showOpenMultipleDialog( stage );
-                        
-                        if ( inputList != null ) {
-                        	for( File file: inputList) {
-                        		Label rowLabel = new Label( file.getName() );
-                        		data.add( rowLabel );
-                        		Tooltip tooltip = new Tooltip( file.getPath() );
-                        		rowLabel.setTooltip( tooltip );
-                        	} 
-                        	listView.setItems( data );
-                        	convertButton.setDisable( false );
-                        }
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+                	listView.getItems().clear();
+                	configureFileChooser(fileChooser);    
+                    inputList = fileChooser.showOpenMultipleDialog( stage );
+                    
+                    if ( inputList != null ) {
+                    	for( File file: inputList) {
+                    		Label rowLabel = new Label( file.getName() );
+                    		data.add( rowLabel );
+                    		Tooltip tooltip = new Tooltip( file.getPath() );
+                    		rowLabel.setTooltip( tooltip );
+                    	} 
+                    	listView.setItems( data );
+                    	convertButton.setDisable( false );
                     }
                 }
-            );
+            }
+        );
         fileMenu.getItems().add( fileMenuItem1 ); 
         fileMenu.getItems().add( new SeparatorMenuItem() );
         
@@ -224,17 +195,18 @@ public final class DocxConverter extends Application {
         helpMenu.getItems().add( aboutMenuItem );
         
         aboutMenuItem.setOnAction(
-                new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(final ActionEvent e) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle( "About Docx Converter" );
-        alert.setHeaderText( "Information Alert" );
-        String s ="This is an example of JavaFX 8 Dialogs... ";
-        alert.setContentText(s);
-        alert.show();
-                    }
-                });
+            new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(final ActionEvent e) {
+			        Alert alert = new Alert(AlertType.INFORMATION);
+			        alert.setTitle( "About Docx Converter" );
+			        alert.setHeaderText( "Information Alert" );
+			        String s ="This is an example of JavaFX 8 Dialogs... ";
+			        alert.setContentText(s);
+			        alert.show();
+                }
+            }
+        );
         
         
         // create a menubar 
@@ -252,20 +224,6 @@ public final class DocxConverter extends Application {
             }
         });
         openFilesCheckbox.setSelected(true);
- 
-        /*
-        final GridPane inputGridPane = new GridPane();
- 
-       // GridPane.setConstraints(label, 0, 0, 3, 1); 
-        GridPane.setConstraints(listVBox, 0, 1, 3, 1);
-        GridPane.setConstraints(openFilesCheckbox, 0, 2, 2, 1);  GridPane.setConstraints(convertButton, 2, 4);
-        GridPane.setHalignment(openFilesCheckbox, HPos.LEFT);    GridPane.setHalignment(convertButton, HPos.RIGHT);
-        GridPane.setValignment(openFilesCheckbox, VPos.TOP);
-        
-        inputGridPane.setHgap(6);
-        inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll( listVBox, openFilesCheckbox, convertButton );
-        */
         
         Region bottomSpacer = new Region();
         // bottomSpacer.getStyleClass().add("menu-bar");
@@ -280,7 +238,6 @@ public final class DocxConverter extends Application {
         statusBar.setText( "" );
         updateStatusMessage();
 
-        
         
         MenuBar rightBar = new MenuBar();
         rightBar.getMenus().addAll( helpMenu );
@@ -367,15 +324,14 @@ public final class DocxConverter extends Application {
     		converter.setFont( systemOut );
 
     		
-    		// try again with: https://stackoverflow.com/questions/49222017/javafx-make-threads-wait-and-threadsave-gui-update
-    		
+    		// references:
+    		// https://stackoverflow.com/questions/49222017/javafx-make-threads-wait-and-threadsave-gui-update
     		// https://stackoverflow.com/questions/47419949/propagate-progress-information-from-callable-to-task
             Task<Void> task = new Task<Void>() {
                 @Override protected Void call() throws Exception {
                 	
-                	updateProgress(0, 0);
                 	converter.progressProperty().addListener( 
-                			(obs, oldProgress, newProgress) -> updateProgress( newProgress.doubleValue(), 1.0 )
+                		(obs, oldProgress, newProgress) -> updateProgress( newProgress.doubleValue(), 1.0 )
                 	);
                 	converter.call();
 
@@ -414,35 +370,44 @@ public final class DocxConverter extends Application {
 
     Text systemInText = new Text( systemIn );
     Text systemOutText = new Text( systemOut );
+    // status bar reference:
+    // https://jar-download.com/artifacts/org.controlsfx/controlsfx-samples/8.40.14/source-code/org/controlsfx/samples/HelloStatusBar.java
     private void updateStatusMessage() {
-        TextFlow flowIn = new TextFlow();
+        
+    	TextFlow flowIn = new TextFlow();
         TextFlow flowOut = new TextFlow();
 
         Text in  = new Text("In: ");
-        in.setStyle("-fx-font-weight: bold");
-
-
-        Text out = new Text(" Out: ");
-        out.setStyle("-fx-font-weight: bold");
-
+        in.setStyle("-fx-font-weight: bold; position:absolute; top: 0;");
+       
+        Text out = new Text("Out: ");
+        out.setStyle("-fx-font-weight: bold; position:absolute; bottom: 0;");
+        
+        
         flowIn.getChildren().addAll(in, systemInText );
         flowOut.getChildren().addAll(out, systemOutText );
-        //statusBar.setStyle( "" );
+       
         
         Separator separator1 = new Separator();
         separator1.setOrientation(Orientation.VERTICAL);
+        separator1.setPadding( new Insets(0,0,0,6) );
         
         Separator separator2 = new Separator();
         separator2.setOrientation(Orientation.VERTICAL);
-        HBox hbox = new HBox();
-        //hbox.getChildren().addAll( flowIn, separator1, flowOut, separator2 );
-        hbox.getChildren().addAll( flowIn, flowOut );
-        hbox.setAlignment(Pos.CENTER_LEFT);
+        separator2.setPadding( new Insets(0,0,0,6) );
         
-        // statusBar.getLeftItems().add( hbox ); //.addAll( flowIn, separator1, flowOut, separator2 );
-        statusBar.getLeftItems().add( new Text("OK") );
-       // statusBar.setStyleText( );
-        statusBar.setText( "OK" );
+        
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll( flowIn, separator1, flowOut, separator2 );
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        hbox.setPadding( new Insets(2,0,0,0) );
+        hbox.setSpacing(0.0);
+        
+        // working with a single flow leads to bad visual effects when the app size changes when the
+        // font name changes, so we use an hbox instead
+       // flow.getChildren().addAll( in, systemInText, separator1, out, systemOutText, separator2 );
+        
+        statusBar.getLeftItems().add( hbox );
     }
     private void setSystemIn(String systemIn) {
     	this.systemIn = systemIn;

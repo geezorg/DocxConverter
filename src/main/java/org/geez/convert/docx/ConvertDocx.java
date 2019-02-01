@@ -222,6 +222,7 @@ abstract class ConvertDocx  implements Callable<Void> {
 			setProgress = true;
 			totalNodes = 0.0;
 			progress.set( 0.0 );
+			Thread.sleep(100);
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 			
