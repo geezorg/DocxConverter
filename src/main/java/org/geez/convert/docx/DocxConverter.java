@@ -40,17 +40,11 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -75,6 +69,7 @@ public final class DocxConverter extends Application {
 	private boolean openOutput = true;
 	private List<File> inputList = null;
 	protected StatusBar statusBar = new StatusBar();
+	private boolean converted = false;
 	
 	
     private static void configureFileChooser( final FileChooser fileChooser ) {      
@@ -154,7 +149,10 @@ public final class DocxConverter extends Application {
         
         final Button convertButton = new Button("Convert File(s)");
         convertButton.setDisable( true );
-        convertButton.setOnAction( event -> convertFiles(listView) );
+        convertButton.setOnAction( event -> {
+        	convertButton.setDisable( true );
+        	convertFiles( convertButton, listView ); 
+        });
 
         final Menu fileMenu = new Menu("_File"); 
         final FileChooser fileChooser = new FileChooser();
@@ -201,7 +199,7 @@ public final class DocxConverter extends Application {
 			        Alert alert = new Alert(AlertType.INFORMATION);
 			        alert.setTitle( "About Docx Converter" );
 			        alert.setHeaderText( "Information Alert" );
-			        String s ="This is an example of JavaFX 8 Dialogs... ";
+			        String s = "This is an example of JavaFX 8 Dialogs... ";
 			        alert.setContentText(s);
 			        alert.show();
                 }
@@ -232,9 +230,7 @@ public final class DocxConverter extends Application {
         hbottomBox.setPadding(new Insets(4, 0, 4, 0));
         hbottomBox.setAlignment( Pos.CENTER_LEFT );
         VBox vbottomBox = new VBox( hbottomBox, statusBar );
-        // vbottomBox.setPadding(new Insets(4, 0, 2, 4));
-        // vbottomBox.setSpacing(4);
-        //statusBar.setText( "In: " + systemIn + " Out: " + systemOut  );
+
         statusBar.setText( "" );
         updateStatusMessage();
 
@@ -262,25 +258,41 @@ public final class DocxConverter extends Application {
         Application.launch(args);
     }
  
-    private void convertFiles(ListView<Label> listView) {
+    private void convertFiles(Button convertButton, ListView<Label> listView) {
+    	
         if ( inputList != null ) {
+        	if( converted ) {
+        		// reset file names;
+        		for(Label label: listView.getItems()) {
+        			label.setStyle( "" );
+        			label.setText( label.getText().substring(2) );
+        		}
+        		listView.refresh();
+        		converted = false;
+        	}
             int i = 0;
             ObservableList<Label> itemList = listView.getItems();
             for (File file : inputList) {
-                 processFile( file );
-                 Label label = itemList.get(i);
-                 Platform.runLater(() -> label.setText("\u2713 " + label.getText() ));
-                 label.setStyle( "-fx-font-style: italic;" );
-                 listView.refresh();
-                 // Platform.runLater(() -> listView.refresh() );
-                 i++;
+                Label label = itemList.get(i);
+                processFile( file, convertButton, listView, i );
+
+                // Platform.runLater(() -> label.setText("\u2713 " + label.getText() ));
+                // Platform.runLater(() -> label.setText("\u2713 " + label.getText() ));
+                /*
+                label.setText("\u2713 " + label.getText() );
+                label.setStyle( "-fx-font-style: italic;" );
+                listView.refresh();
+                */
+                // Platform.runLater(() -> listView.refresh() );
+                i++;
              }
+            converted = true;
          } 
     }
     
     
     ConvertDocx converter = null;
-    private void processFile(File inputFile) {
+    private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
         try {
         	String inputFilePath = inputFile.getPath();
         	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
@@ -330,10 +342,13 @@ public final class DocxConverter extends Application {
             Task<Void> task = new Task<Void>() {
                 @Override protected Void call() throws Exception {
                 	
+                	updateProgress(0.0,1.0);
                 	converter.progressProperty().addListener( 
                 		(obs, oldProgress, newProgress) -> updateProgress( newProgress.doubleValue(), 1.0 )
                 	);
+                	updateMessage("[" +  (listIndex+1) + "/" + listView.getItems().size() + "]" );
                 	converter.call();
+                	updateProgress(1.0, 1.0);
 
     				done();
             		return null;
@@ -341,18 +356,35 @@ public final class DocxConverter extends Application {
             };
             
             statusBar.progressProperty().bind( task.progressProperty() );
+            statusBar.textProperty().bind( task.messageProperty() );
             
            	// remove bindings again
             task.setOnSucceeded( event -> { 
             	statusBar.progressProperty().unbind();
             	if ( openOutput ) {
-            		if ( outputFile.exists() ) { try { 
-            			desktop.open( outputFile ); } catch(IOException ex) {}
+            		if ( outputFile.exists() ) {
+            			try { 
+            				desktop.open( outputFile ); 
+            			}
+            			catch(IOException ex) {
+                			Alert errorAlert = new Alert(AlertType.ERROR);
+                			errorAlert.setHeaderText( "File IO Exception" );
+                			errorAlert.setContentText( "An error has occured opening the file:\n" + ex );
+                			errorAlert.showAndWait();
+            			}
             		}
             		else {
-            			// add a popup dialog to indicate file not found
+            			Alert errorAlert = new Alert(AlertType.ERROR);
+            			errorAlert.setHeaderText( "Output file not found" );
+            			errorAlert.setContentText( "The output file \"" + outputFile.getPath() + "\" could not be found.  Conversation has likely failed." );
+            			errorAlert.showAndWait();
             		}
             	}
+            	Label label = listView.getItems().get( listIndex );
+                label.setText("\u2713 " + label.getText() );
+                label.setStyle( "-fx-font-style: italic;" );
+                listView.refresh();
+                convertButton.setDisable( false );
             
             });
             Thread convertThread = new Thread(task);
