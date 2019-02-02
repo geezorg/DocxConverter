@@ -56,6 +56,7 @@ import javafx.stage.Stage;
  
 public final class DocxConverter extends Application {
  
+	private static final String VERSION = "v0.6.0-beta1";
     private Desktop desktop = Desktop.getDesktop();
 	private static final String brana = "Brana I/II";
 	private static final String geezii = "Geez, GeezII";
@@ -144,7 +145,7 @@ public final class DocxConverter extends Application {
 
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable(false);
-        listView.setPrefHeight( 125 );
+        listView.setPrefHeight( 125 ); // 190 for screenshots
         listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
@@ -202,7 +203,7 @@ public final class DocxConverter extends Application {
                 public void handle(final ActionEvent e) {
 			        Alert alert = new Alert(AlertType.INFORMATION);
 			        alert.setTitle( "About Legacy Ethiopic Docx Converter" );
-			        alert.setHeaderText( "Legacy Ethiopic Font Docx Converter v0.5" );
+			        alert.setHeaderText( "Legacy Ethiopic Font Converter for Docx " + VERSION );
 			        
 			        FlowPane fp = new FlowPane();
 			        Label label = new Label( "Visit the project homepage on" );
@@ -213,7 +214,7 @@ public final class DocxConverter extends Application {
 	                    alert.close();
 	                    try {
 		                    URI uri = new URI( "https://github.com/geezorg/DocxConverter/" );
-		                    Desktop.getDesktop().browse( uri );
+		                    desktop.browse( uri );
 	                    }
 	                    catch(Exception ex) {
 	                    	
@@ -268,7 +269,7 @@ public final class DocxConverter extends Application {
         rootGroup.setBottom( vbottomBox );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
-        stage.setScene(new Scene(rootGroup, 420, 220) );
+        stage.setScene(new Scene(rootGroup, 420, 220) ); // 290 for screenshots
         stage.show();
     }
  
@@ -412,6 +413,8 @@ public final class DocxConverter extends Application {
     // status bar reference:
     // https://jar-download.com/artifacts/org.controlsfx/controlsfx-samples/8.40.14/source-code/org/controlsfx/samples/HelloStatusBar.java
     private void updateStatusMessage() {
+    	systemInText.setStyle( "-fx-font-weight: bold;" );
+    	systemOutText.setStyle( "-fx-font-weight: bold;" );
     	systemInText.setFill( Color.RED );
     	systemOutText.setFill( Color.GREEN );
         
