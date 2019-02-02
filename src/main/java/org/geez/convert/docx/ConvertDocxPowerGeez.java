@@ -1,5 +1,7 @@
 package org.geez.convert.docx;
 
+import java.io.File;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -16,8 +18,10 @@ import java.util.Arrays;
 
 public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 
-	public ConvertDocxPowerGeez() {
+	public ConvertDocxPowerGeez( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
 		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez-1 Numbers" );
+		
 		huletNeteb = ':';
 		
 		font1Typefaces.add( "Ge'ez-1" );
@@ -41,6 +45,9 @@ public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 		diacritics.addAll(
 				Arrays.asList( "\u003c", "\u003d", "\u003e", "\u003f", "\u0040", "\u0041", "\u0042", "\u0043", "\u0044", "\u0045", "\u0046" )
 		);
+			
+		buildRE();
+		
 	}
 	private ArrayList<String> diacriticsNumbers = new ArrayList<String>(
 			Arrays.asList( "\u002b", "\u002c" )
