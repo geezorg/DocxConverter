@@ -48,6 +48,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -411,15 +412,17 @@ public final class DocxConverter extends Application {
     // status bar reference:
     // https://jar-download.com/artifacts/org.controlsfx/controlsfx-samples/8.40.14/source-code/org/controlsfx/samples/HelloStatusBar.java
     private void updateStatusMessage() {
+    	systemInText.setFill( Color.RED );
+    	systemOutText.setFill( Color.GREEN );
         
     	TextFlow flowIn = new TextFlow();
         TextFlow flowOut = new TextFlow();
 
         Text in  = new Text("In: ");
-        in.setStyle("-fx-font-weight: bold; position:absolute; top: 0;");
+        in.setStyle("-fx-font-weight: bold;");
        
         Text out = new Text("Out: ");
-        out.setStyle("-fx-font-weight: bold; position:absolute; bottom: 0;");
+        out.setStyle("-fx-font-weight: bold;");
         
         
         flowIn.getChildren().addAll(in, systemInText );
