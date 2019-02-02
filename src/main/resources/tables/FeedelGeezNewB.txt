@@ -1,6 +1,6 @@
 ################################################################################
 #
-# This is a bidirectional mapping file for the GeezNewA font encoding into the
+# This is a bidirectional mapping file for the GeezNewB font encoding into the
 # Unicode standard for Ethiopic. The file is intended to be read as input for
 # the International Components for Unicode (ICU) software library. The mapping
 # syntax is documented at the following URL:

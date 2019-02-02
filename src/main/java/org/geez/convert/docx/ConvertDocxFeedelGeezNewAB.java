@@ -1,5 +1,10 @@
 package org.geez.convert.docx;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * The non-maven way to build the jar file:
  *
@@ -12,18 +17,15 @@ package org.geez.convert.docx;
 
 import org.docx4j.wml.Text;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-
 
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
-	private final List<String> font1Typefaces = new ArrayList<String>();
 	private final List<String> font2Typefaces = new ArrayList<String>();
 
-	public ConvertDocxFeedelGeezNewAB() {
-		this.initialize( "GeezNewATable.txt", "GeezNewBTable.txt", "GeezNewA", "GeezNewB" );
+	public ConvertDocxFeedelGeezNewAB( final File inputFile, final File outputFile ) {
+		super( inputFile, outputFile );
+		this.initialize( "FeedelGeezNewA.txt", "FeedelGeezNewB.txt", "GeezNewA", "GeezNewB" );
+		
 		huletNeteb = '\uf022';
 		
 		font1Typefaces.add( "GeezA" );
@@ -53,24 +55,33 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 		for(String key: font2Typefaces) {
 			fontToTransliteratorMap.put( key, translit2 );			
 		}
+		
+		
 		diacritics.addAll (
 				Arrays.asList( "\uf023", "\uf025", "\uf026", "\uf02a", "\uf02b", "\uf02c", "\uf03a", "\uf03b", "\uf03c", "\uf03d", "\uf03e", "\uf040" )
 		);
+			
+		buildRE();
 		
 	}
 
 
-	public String convertText( String text ) {
+	public String convertText( Text text ) {
+		localCheck( text );
+		String value = text.getValue();
 		StringBuilder sb = new StringBuilder();
-		for(int i = 0; i < text.length(); i++) {
-			int x =  ( 0x00ff & (int)text.charAt(i) );
-			sb.append(  (char)x );
+		
+		for(int i = 0; i < value.length(); i++) {
+			int x =  ( 0x00ff & (int)value.charAt(i) );
+			sb.append( (char)x );
 		}
+		
 		return t.transliterate( sb.toString() );
 	}
 	
 	
 	public void localCheck( Text text ) {
+		super.localCheck( text );
 		if( " ".equals( text.getValue() ) ) {
 			text.setSpace( "preserve" );
 		}

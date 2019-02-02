@@ -1,29 +1,5 @@
 package org.geez.convert.docx;
 
-/*
- * The non-maven way to build the jar file:
- *
- * javac -Xlint:deprecation -cp docx4j-6.0.1.jar:dependencies/commons-io-2.5.jar:../icu4j-63_1.jar:dependencies/slf4j-api-1.7.25.jar:slf4j-1.7.25 *.java
- * jar -cvf convert.jar org/geez/convert/docx/*.class org/geez/convert/tables/
- * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana myFile-In.docx myFile-Out.docx
- *
- */
-
-import org.docx4j.TraversalUtil;
-import org.docx4j.XmlUtils;
-import org.docx4j.finders.ClassFinder;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
-import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
-// import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
-import org.docx4j.openpackaging.parts.JaxbXmlPart;
-
-import org.docx4j.wml.R;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.RFonts;
-import org.docx4j.wml.Text;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -33,16 +9,64 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
-import com.ibm.icu.text.*;
+import org.docx4j.TraversalUtil;
+import org.docx4j.model.structure.HeaderFooterPolicy;
+import org.docx4j.model.structure.SectionWrapper;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.JaxbXmlPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.EndnotesPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+
+/*
+ * The non-maven way to build the jar file:
+ *
+ * javac -Xlint:deprecation -cp docx4j-6.0.1.jar:dependencies/commons-io-2.5.jar:../icu4j-63_1.jar:dependencies/slf4j-api-1.7.25.jar:slf4j-1.7.25 *.java
+ * jar -cvf convert.jar org/geez/convert/docx/*.class org/geez/convert/tables/
+ * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana myFile-In.docx myFile-Out.docx
+ *
+ */
+
+import org.docx4j.wml.Text;
+
+import com.ibm.icu.text.Transliterator;
+
+// StatusBar Imports:
+
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 
-abstract class ConvertDocx {
+abstract class ConvertDocx  implements Callable<Void> {
 	protected Transliterator t = null;
 	protected String fontOut = null;
 	protected String fontIn = null;
 	protected char huletNeteb = 0x0;
+	double totalNodes = 0;
+	private boolean setProgress = true;
 
+    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
+
+    private File inputFile = null, outputFile = null;
+    
+    public ConvertDocx( final File inputFile, final File outputFile ) {
+    	this.inputFile  = inputFile;
+    	this.outputFile = outputFile;
+    }
+
+    public ReadOnlyDoubleProperty progressProperty() {
+        return progress.getReadOnlyProperty() ;
+    }   
+    
+    public final double getProgress() {
+        return progressProperty().get();
+    }
+    
 	public void setFont(String fontOut) {
 		this.fontOut = fontOut;
 	}
@@ -62,96 +86,6 @@ abstract class ConvertDocx {
 		}
 		ruleFile.close();
 		return rules;
-	}
-
-
-	public String convertText( String text ) {
-		return t.transliterate( text );
-	}
-
-	
-	public Transliterator getTransliteratorForFont( RFonts rfonts ) {
-		
-		if(  rfonts == null ) {
-			return null;
-		}
-	
-		fontIn = null;
-		// We assume one of these fields will be set, and not more then one legacy typeface is set per RFonts element.
-		boolean isSet = false;
-		if( targetTypefaces.contains( rfonts.getAscii() ) ) {
-			fontIn = rfonts.getAscii();
-			rfonts.setAscii( fontOut );
-			isSet = true;
-		}
-		if( targetTypefaces.contains( rfonts.getHAnsi() ) ) {
-			if(! isSet ) {
-				fontIn = rfonts.getHAnsi();
-			}
-			rfonts.setHAnsi( fontOut );
-		}
-		if( targetTypefaces.contains( rfonts.getCs() ) ) {
-			if(! isSet ) {
-				fontIn = rfonts.getCs();
-			}
-			rfonts.setCs( fontOut );
-		}
-		if( targetTypefaces.contains( rfonts.getEastAsia() ) ) {
-			if(! isSet ) {
-				fontIn = rfonts.getEastAsia();
-			}
-			rfonts.setEastAsia( fontOut );
-		}
-
-		return fontToTransliteratorMap.get(fontIn) ;
-	}
-
-
-	public void processObjects( final JaxbXmlPart<?> part) throws Docx4JException
-	{			
-			ClassFinder finder = new ClassFinder( R.class );
-			new TraversalUtil(part.getContents(), finder);
-		
-
-			for (Object o : finder.results) {
-				Object o2 = XmlUtils.unwrap(o);
-						
-				// this is ok, provided the results of the Callback
-				// won't be marshalled			
-			
-				if (o2 instanceof org.docx4j.wml.R) {
-					R r = (org.docx4j.wml.R)o2;
-					RPr rpr = r.getRPr();
-					if (rpr == null ) {
-						continue;
-					}
-					RFonts rfonts = rpr.getRFonts();
-				
-					t =  getTransliteratorForFont(  rfonts );
-					
-					if( t == null ) {
-						continue;
-					}
-
-					List<Object> objects = r.getContent();
-					for ( Object x : objects ) {
-						Object x2 = XmlUtils.unwrap(x);
-						if ( x2 instanceof org.docx4j.wml.Text ) {
-							Text txt = (org.docx4j.wml.Text)x2;
-							String out = convertText( txt.getValue() );
-							txt.setValue( out );
-							if ( " ".equals( out ) ) {	
-								txt.setSpace( "preserve" );
-							}
-						}
-						else {
-							// System.err.println( "Found: " + x2.getClass() );
-						}
-					}
-				} else {
-					System.err.println( XmlUtils.marshaltoString(o, true, true) );
-				}
-			}
 	}
 
 
@@ -189,41 +123,186 @@ abstract class ConvertDocx {
 		}
 	}
 	
+	protected void localCheck( Text text ) {
+		return;
+	}
+
+	public String convertText( Text text ) {
+		localCheck( text );
+		return t.transliterate( text.getValue() );
+	}
+
+	public String convertText( String text ) {
+		return t.transliterate( text );
+	}
 	
 	
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
-		new TraversalUtil(part.getContents(), stFinder );
+		if(! stFinder.hasStyles() ) {
+			return;
+		}
+		stFinder.clearResults();
+		
+		new TraversalUtil( part.getContents(), stFinder );
 
-		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results; 
-		for(Text text: textNodes.keySet() ) {
-			fontIn = textNodes.get(text);
-			t = fontToTransliteratorMap.get( fontIn );
-			String out = convertText( text.getValue() );
-			text.setValue( out );
+		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results;
+		
+		if( setProgress ) {
+			double i = progress.get() * totalNodes;
+			for(Text text: textNodes.keySet() ) {
+				fontIn = textNodes.get(text);
+				t = fontToTransliteratorMap.get( fontIn );
+				String out = convertText( text );
+				text.setValue( out );
+				progress.set( i / totalNodes );
+				i++;
+			}
+		}
+		else {
+			for(Text text: textNodes.keySet() ) {
+				fontIn = textNodes.get(text);
+				t = fontToTransliteratorMap.get( fontIn );
+				String out = convertText( text );
+				text.setValue( out );
+			}
 		}
 	
 	}
+	
 
+	public void processUnstyledObjects( final JaxbXmlPart<?> part, UnstyledTextFinder ustFinder ) throws Docx4JException {
+			HashMap<Text,String> textNodes = (HashMap<Text,String>)ustFinder.results; 
 
+			if( setProgress ) {
+				double i = 0.0;
+				for(Text text: textNodes.keySet() ) {
+					fontIn = textNodes.get(text);
+					t = fontToTransliteratorMap.get( fontIn );
+					String out = convertText( text );
+					text.setValue( out );
+					progress.set( i / totalNodes );
+					i++;
+				}		
+			}
+			else {
+				for(Text text: textNodes.keySet() ) {
+					fontIn = textNodes.get(text);
+					t = fontToTransliteratorMap.get( fontIn );
+					String out = convertText( text );
+					text.setValue( out );
+				}
+			}
+	}
+	
+
+	// make this an abstract method
+	public void normalizeText( final JaxbXmlPart<?> part, StyledTextFinder stFinder, UnstyledTextFinder ustFinder ) throws Docx4JException {
+		if( stFinder.hasStyles() ) {
+			stFinder.clearResults();
+		
+			new TraversalUtil( part.getContents(), stFinder );
+
+		}
+		
+		ustFinder.clearResults();
+		new TraversalUtil( part.getContents(), ustFinder );
+
+	}
+	
+	@Override
+	public Void call() {
+		process( inputFile, outputFile );
+        return null;
+	}
 	public void process( final File inputFile, final File outputFile )
 	{
 		try {
+			setProgress = true;
+			totalNodes = 0.0;
+			progress.set( 0.0 );
+			Thread.sleep(100);
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-       		processObjects( documentPart );
+			
+       		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
+       		StyledTextFinder stf = new StyledTextFinder( styleIdToFont );
+    		UnstyledTextFinder ustf = new UnstyledTextFinder(targetTypefaces, fontOut);
+    		
+    		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
+
+			normalizeText( documentPart, stf, ustf );
+    		totalNodes = stf.results.size() + ustf.results.size();
+            
+    		/*
+    		 * Normalize text will extract the styled and unstyled text nodes and store them
+    		 * in the stf and ustf arrays accordingly:
+    		 */
+
+       		processUnstyledObjects( documentPart, ustf );
+       		processStyledObjects( documentPart, stf );
+       		setProgress = false;
             
        		if( documentPart.hasFootnotesPart() ) {
 	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
-       			processObjects( footnotesPart );
+				normalizeText( footnotesPart, stf, ustf );
+       			processUnstyledObjects( footnotesPart, ustf );
+           		processStyledObjects( footnotesPart, stf );
        		}
-
-       		StyledTextFinder stf = new StyledTextFinder();
-       		stf.readStyles( wordMLPackage, targetTypefaces, fontOut );
-       		if( stf.hasStyles() ) {
-       			processStyledObjects( documentPart, stf );
+       		if( documentPart.hasEndnotesPart() ) {
+	            EndnotesPart endnotesPart = documentPart.getEndNotesPart();
+				normalizeText( endnotesPart, stf, ustf );
+       			processUnstyledObjects( endnotesPart, ustf );
+           		processStyledObjects( endnotesPart, stf );		
        		}
        		
+    		List<SectionWrapper> sectionWrappers = wordMLPackage.getDocumentModel().getSections();
+    		
+    		for (SectionWrapper sw : sectionWrappers) {
+    			HeaderFooterPolicy hfp = sw.getHeaderFooterPolicy();
+    			
+    			if( hfp.getFirstHeader() != null ) {
+    				HeaderPart headerPart = hfp.getFirstHeader();
+    				normalizeText( headerPart, stf, ustf );
+    	       		processUnstyledObjects( headerPart, ustf );
+               		processStyledObjects( headerPart, stf );  
+    			}
+    			if( hfp.getDefaultHeader() != null ) {
+    				HeaderPart headerPart = hfp.getDefaultHeader();
+    				normalizeText( headerPart, stf, ustf );
+    	       		processUnstyledObjects( headerPart, ustf );
+               		processStyledObjects( headerPart, stf );  
+    			}
+    			if( hfp.getEvenHeader() != null ) {
+    				HeaderPart headerPart = hfp.getEvenHeader();
+    				normalizeText( headerPart, stf, ustf );
+    	       		processUnstyledObjects( headerPart, ustf );
+               		processStyledObjects( headerPart, stf );  
+    			}
+    			
+
+    			if ( hfp.getFirstFooter() != null ) {
+    				FooterPart footerPart = hfp.getFirstFooter();
+    				normalizeText( footerPart, stf, ustf );
+    	       		processUnstyledObjects( footerPart, ustf );
+               		processStyledObjects( footerPart, stf ); 
+    			}
+    			if ( hfp.getDefaultFooter() != null ) {
+    				FooterPart footerPart = hfp.getDefaultFooter();
+    				normalizeText( footerPart, stf, ustf );
+    	       		processUnstyledObjects( footerPart, ustf );
+               		processStyledObjects( footerPart, stf );
+    			}
+    			if ( hfp.getEvenFooter() != null ) {
+    				FooterPart footerPart = hfp.getEvenFooter();
+    				normalizeText( footerPart, stf, ustf );
+    	       		processUnstyledObjects( footerPart, ustf );
+               		processStyledObjects( footerPart, stf );
+    			}
+    			
+    		}
+       		
        		wordMLPackage.save( outputFile );
+
 		}
 		catch ( Exception ex ) {
 			System.err.println( ex );
@@ -247,23 +326,31 @@ abstract class ConvertDocx {
 	    ConvertDocx converter = null;
 		switch( systemIn ) {
 			case "brana":
-				converter = new ConvertDocxBrana();
+				converter = new ConvertDocxBrana( inputFile, outputFile );
+				break;
+					
+			case "geezii":
+				converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
 				break;
 		
 			case "geeznewab":
-				converter = new ConvertDocxFeedelGeezNewAB();
+				converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
 				break;
 
 			case "geeztypenet":
-				converter = new ConvertDocxGeezTypeNet();
+				converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
 				break;
 
 			case "powergeez":
-				converter = new ConvertDocxPowerGeez();
+				converter = new ConvertDocxPowerGeez( inputFile, outputFile );
+				break;
+				
+			case "samawerfa":
+				converter = new ConvertDocxSamawerfa( inputFile, outputFile );
 				break;
 
 			case "visualgeez":
-				converter = new ConvertDocxVisualGeez();
+				converter = new ConvertDocxVisualGeez( inputFile, outputFile );
 				break;
 		
 			default:
