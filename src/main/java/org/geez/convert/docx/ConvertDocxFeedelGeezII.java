@@ -51,7 +51,7 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 	
 	public void localCheck( Text text ) {
 		super.localCheck( text );
-		if( " ".equals( text.getValue() ) ) {
+		if( "\uf020".equals( text.getValue() ) ) {
 			text.setSpace( "preserve" );
 		}
 	}
