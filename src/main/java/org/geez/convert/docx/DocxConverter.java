@@ -284,7 +284,7 @@ public final class DocxConverter extends Application {
         		// this is a re-run, reset file names;
         		for(Label label: listView.getItems()) {
         			label.setStyle( "" );
-        			label.setText( label.getText().substring(2) );
+        			label.setText( label.getText().replaceFirst( "\u2713 ", "" ) );
         		}
         		listView.refresh();
         		converted = false;
@@ -389,7 +389,7 @@ public final class DocxConverter extends Application {
             		}
             	}
             	Label label = listView.getItems().get( listIndex );
-                label.setText("\u2713 " + label.getText() );
+                label.setText( "\u2713 " + label.getText() );
                 label.setStyle( "-fx-font-style: italic;" );
                 listView.refresh();
                 convertButton.setDisable( false );
