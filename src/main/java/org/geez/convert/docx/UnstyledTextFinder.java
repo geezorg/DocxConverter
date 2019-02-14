@@ -34,6 +34,7 @@ public class  UnstyledTextFinder extends CallbackImpl {
     
     public void clearResults() {
     	results.clear();
+    	resultsOrdered.clear();
     	symResults.clear();
     }
     
