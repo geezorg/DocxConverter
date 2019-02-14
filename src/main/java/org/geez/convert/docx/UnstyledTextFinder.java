@@ -19,6 +19,8 @@ import org.docx4j.wml.Text;
 public class  UnstyledTextFinder extends CallbackImpl {
     
     public Map<Text,String> results = new HashMap<Text,String>();
+    public Map<R.Sym,String> symResults = new HashMap<R.Sym,String>();
+
     public List<Text> resultsOrdered = new ArrayList<Text>();
     private String fontOut = null;
     List<String> targetTypefaces= null;
@@ -95,6 +97,13 @@ public class  UnstyledTextFinder extends CallbackImpl {
 				if ( tobj instanceof org.docx4j.wml.Text ) {
 					results.put( (org.docx4j.wml.Text)tobj, fontIn );
 					resultsOrdered.add( (org.docx4j.wml.Text)tobj );
+				}
+				else if( tobj instanceof org.docx4j.wml.R.Sym ) {
+					R.Sym sym = (org.docx4j.wml.R.Sym)tobj;
+					if(! targetTypefaces.contains( sym.getFont() ) ) {
+						return null;
+					}
+					symResults.put( sym, sym.getFont() );
 				}
 			}
 		}
