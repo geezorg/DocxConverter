@@ -26,12 +26,16 @@ public class  StyledTextFinder extends CallbackImpl {
     	super();
     	this.styleIdToFont = styleIdToFont;
     }
+    
+    
     public boolean hasStyles() { 
     	return !( styleIdToFont.isEmpty() );
     }
     
+    
     public void clearResults() {
     	results.clear();
+    	resultsOrdered.clear();
     }
     
     
