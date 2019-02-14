@@ -56,6 +56,7 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	
 	public void localCheck( Text text ) {
 		String value = text.getValue();
+		// remove extra diacritical symbol
 		value = diacriticsRE.matcher(value).replaceAll( "$1" ); // this could be put into the normalizer
 		text.setValue (value );
 	}
@@ -122,13 +123,16 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 			for ( int i=1; i<size; i++ ) {
 				Text text1 = styledText.get(i);
 				String value1 = text1.getValue();
-				char firstChar = value1.charAt(0);
-				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
-					Text text0 = styledText.get( i-1 );
-					String value0 = text0.getValue();
-				
-					text0.setValue( value0 + firstChar );   // append to previous node as last char
-					text1.setValue( value1.substring(1) );  // remove from current node
+				if( value1.length() > 0 ) {
+					char firstChar = value1.charAt(0);
+					if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
+						Text text0 = styledText.get( i-1 );
+						String value0 = text0.getValue();
+					
+						text0.setValue( value0 + firstChar );   // append to previous node as last char
+						int len = value1.length();
+						text1.setValue( value1.substring(1) );  // remove from current node
+					}
 				}
 			}
 		}
@@ -141,13 +145,15 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		for ( int i=1; i<size; i++ ) {
 			Text text1 = unstyledText.get(i);
 			String value1 = text1.getValue();
-			char firstChar = value1.charAt(0);
-			if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
-				Text text0 = unstyledText.get( i-1 );
-				String value0 = text0.getValue();
-				
-				text0.setValue( value0 + firstChar );   // append to previous node as last char
-				text1.setValue( value1.substring(1) );  // remove from current node
+			if( value1.length() > 0 ) {
+				char firstChar = value1.charAt(0);
+				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
+					Text text0 = unstyledText.get( i-1 );
+					String value0 = text0.getValue();
+					
+					text0.setValue( value0 + firstChar );   // append to previous node as last char
+					text1.setValue( value1.substring(1) );  // remove from current node
+				}
 			}
 		}
 	}
