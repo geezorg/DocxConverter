@@ -132,12 +132,20 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 				String value1 = text1.getValue();
 				if( value1.length() > 0 ) {
 					char firstChar = value1.charAt(0);
-					if( isContinuant(fontIn, String.valueOf(firstChar) ) )  {
+					if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
 						Text text0 = styledText.get( i-1 );
 						String value0 = text0.getValue();
 					
 						text0.setValue( value0 + firstChar );   // append to previous node as last char
 						text1.setValue( value1.substring(1) );  // remove from current node
+					}
+					else if( firstChar == huletNeteb ) {
+						Text text0 = styledText.get( i-1 );
+						String value0 = text0.getValue();
+						if( (value0.length() > 0 ) && (value0.charAt( value0.length() - 1) ) == huletNeteb ) {
+							text0.setValue( value0 + firstChar );   // append to previous node as last char
+							text1.setValue( value1.substring(1) );  // remove from current node	
+						}
 					}
 				}
 			}
@@ -153,12 +161,20 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 			String value1 = text1.getValue();
 			if( value1.length() > 0 ) {
 				char firstChar = value1.charAt(0);
-				if( isContinuant(fontIn, String.valueOf(firstChar) ) )  {
+				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
 					Text text0 = unstyledText.get( i-1 );
 					String value0 = text0.getValue();
 					
 					text0.setValue( value0 + firstChar );   // append to previous node as last char
 					text1.setValue( value1.substring(1) );  // remove from current node
+				}
+				else if( firstChar == huletNeteb ) {
+					Text text0 = unstyledText.get( i-1 );
+					String value0 = text0.getValue();
+					if( (value0.length() > 0 ) && (value0.charAt( value0.length() - 1) ) == huletNeteb ) {
+						text0.setValue( value0 + firstChar );   // append to previous node as last char
+						text1.setValue( value1.substring(1) );  // remove from current node	
+					}
 				}
 			}
 		}
