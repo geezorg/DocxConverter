@@ -40,17 +40,24 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		}
 		
 		diacriticsRE = Pattern.compile(
-				"([" + sb + "])([" + sb + "])"
+			"([" + sb + "])([" + sb + "])"
 		);
 		
 	}
-	
+
 	
 	public boolean isDiacritic(String fontName, String text) {
 		if ( text.equals( "" ) ) {
 			return false;
 		}
 		return diacritics.contains( text.substring( text.length()-1 ) );
+	}
+	
+	
+	public boolean isContinuant(String fontName, String text) {
+		
+		return ( isDiacritic(fontName, text) || (text.charAt(0) == huletNeteb) );
+		
 	}
 	
 	
@@ -125,12 +132,11 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 				String value1 = text1.getValue();
 				if( value1.length() > 0 ) {
 					char firstChar = value1.charAt(0);
-					if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
+					if( isContinuant(fontIn, String.valueOf(firstChar) ) )  {
 						Text text0 = styledText.get( i-1 );
 						String value0 = text0.getValue();
 					
 						text0.setValue( value0 + firstChar );   // append to previous node as last char
-						int len = value1.length();
 						text1.setValue( value1.substring(1) );  // remove from current node
 					}
 				}
@@ -147,7 +153,7 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 			String value1 = text1.getValue();
 			if( value1.length() > 0 ) {
 				char firstChar = value1.charAt(0);
-				if( isDiacritic(fontIn, String.valueOf(firstChar) ) )  {
+				if( isContinuant(fontIn, String.valueOf(firstChar) ) )  {
 					Text text0 = unstyledText.get( i-1 );
 					String value0 = text0.getValue();
 					
