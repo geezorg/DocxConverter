@@ -72,7 +72,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 		StringBuilder sb = new StringBuilder();
 		
 		for(int i = 0; i < value.length(); i++) {
-			int x =  ( 0x00ff & (int)value.charAt(i) );
+			int x = ( 0x00ff & (int)value.charAt(i) );
 			sb.append( (char)x );
 		}
 		
@@ -82,7 +82,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 	
 	public void localCheck( Text text ) {
 		super.localCheck( text );
-		if( " ".equals( text.getValue() ) ) {
+		if( "\uf020".equals( text.getValue() ) ) {
 			text.setSpace( "preserve" );
 		}
 	}
