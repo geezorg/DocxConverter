@@ -68,6 +68,7 @@ public final class DocxConverter extends Application {
 	private static final String abyssinica = "Abyssinica SIL";
 	private static final String nyala = "Nyala";
 	private static final String kefa = "Kefa";
+	private static final String brana_uni = "Brana";
 
 	private String systemIn  = brana; // alphabetic based default
 	private String systemOut = abyssinica;
@@ -128,19 +129,22 @@ public final class DocxConverter extends Application {
 
         Menu outFontMenu = new Menu( "Font _Out" );
         RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
-        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_Kefa" );
-        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_" + nyala );
+        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_" + brana );
+        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_Kefa" );
+        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_" + nyala );
         ToggleGroup groupOutMenu = new ToggleGroup();
               
         outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
         outMenuItem1.setSelected(true);
         outMenuItem1.setToggleGroup( groupOutMenu );        
-        outMenuItem2.setOnAction( event -> setSystemOut( kefa ) );
+        outMenuItem2.setOnAction( event -> setSystemOut( brana_uni ) );
         outMenuItem2.setToggleGroup( groupOutMenu );
-        outMenuItem3.setOnAction( event -> setSystemOut( nyala ) );
+        outMenuItem3.setOnAction( event -> setSystemOut( kefa ) );
         outMenuItem3.setToggleGroup( groupOutMenu );
+        outMenuItem4.setOnAction( event -> setSystemOut( nyala ) );
+        outMenuItem4.setToggleGroup( groupOutMenu );
        
-        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3 );
+        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4 );
         
 
         ListView<Label> listView = new ListView<Label>();
