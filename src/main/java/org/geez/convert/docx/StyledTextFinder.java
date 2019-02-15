@@ -18,9 +18,11 @@ import org.docx4j.wml.Text;
 
 public class  StyledTextFinder extends CallbackImpl {
     
-    private Map<String,String> styleIdToFont = null;
     public Map<Text,String> results = new HashMap<Text,String>();
+    public Map<R.Sym,String> symResults = new HashMap<R.Sym,String>();
+    
     public List<Text> resultsOrdered = new ArrayList<Text>();
+    private Map<String,String> styleIdToFont = null;
     
     public StyledTextFinder( Map<String,String> styleIdToFont ) {
     	super();
@@ -71,6 +73,10 @@ public class  StyledTextFinder extends CallbackImpl {
 							if ( tobj instanceof org.docx4j.wml.Text ) {
 								results.put( (org.docx4j.wml.Text)tobj, styleIdToFont.get(styleName) );
 								resultsOrdered.add( (org.docx4j.wml.Text)tobj );
+							}
+							else if( tobj instanceof org.docx4j.wml.R.Sym ) {
+								// add support for <w:sym w:font="..." w:char="..." /> once we have an example to work with
+								System.out.println( "Yay! A use case was found for w:sym within styled text." );
 							}
 						}
 					}
