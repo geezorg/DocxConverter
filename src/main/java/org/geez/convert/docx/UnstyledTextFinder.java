@@ -102,14 +102,13 @@ public class  UnstyledTextFinder extends CallbackImpl {
 				}
 				else if( tobj instanceof org.docx4j.wml.R.Sym ) {
 					R.Sym sym = (org.docx4j.wml.R.Sym)tobj;
-					if(! targetTypefaces.contains( sym.getFont() ) ) {
-						return null;
+					if( targetTypefaces.contains( sym.getFont() ) ) {
+						symResults.put( sym, sym.getFont() );
 					}
-					symResults.put( sym, sym.getFont() );
 				}
 			}
 		}
-		else if  (o instanceof org.docx4j.wml.P) {
+		else if (o instanceof org.docx4j.wml.P) {
 			P p = (org.docx4j.wml.P)o;
 			PPr ppr = p.getPPr();
 			if (ppr == null ) return null;
