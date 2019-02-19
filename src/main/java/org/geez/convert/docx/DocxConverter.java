@@ -129,7 +129,7 @@ public final class DocxConverter extends Application {
 
         Menu outFontMenu = new Menu( "Font _Out" );
         RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
-        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_" + brana );
+        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_" + brana_uni );
         RadioMenuItem outMenuItem3 = new RadioMenuItem( "_Kefa" );
         RadioMenuItem outMenuItem4 = new RadioMenuItem( "_" + nyala );
         ToggleGroup groupOutMenu = new ToggleGroup();
