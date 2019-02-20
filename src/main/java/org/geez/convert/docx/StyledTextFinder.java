@@ -75,8 +75,10 @@ public class  StyledTextFinder extends CallbackImpl {
 								resultsOrdered.add( (org.docx4j.wml.Text)tobj );
 							}
 							else if( tobj instanceof org.docx4j.wml.R.Sym ) {
-								// add support for <w:sym w:font="..." w:char="..." /> once we have an example to work with
-								System.out.println( "Yay! A use case was found for w:sym within styled text." );
+								R.Sym sym = (org.docx4j.wml.R.Sym)tobj;
+								if( styleIdToFont.containsValue( sym.getFont() ) ) {
+									symResults.put( sym, sym.getFont() );
+								}
 							}
 						}
 					}

@@ -55,5 +55,10 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 			text.setSpace( "preserve" );
 		}
 	}
+	
+	
+	protected boolean combinesWithHuletNeteb(char symbol) {
+		return ( (symbol == huletNeteb) || ( symbol == 0xf02d ) );
+	}
 
 }
