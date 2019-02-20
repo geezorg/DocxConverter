@@ -119,31 +119,6 @@ public class  UnstyledTextFinder extends CallbackImpl {
 			if ( fontIn == null ) {
 				return null;
 			}
-			
-			/*
-			List<Object> pObjects = p.getContent();
-			for(Object pobj: pObjects) {
-				if( pobj instanceof org.docx4j.wml.R ) {
-					R r = (org.docx4j.wml.R)pobj;
-					List<Object> rObjects = r.getContent();
-					for(Object robj: rObjects) {
-						Object tobj = XmlUtils.unwrap(robj);
-						if ( tobj instanceof org.docx4j.wml.Text ) {
-							results.put( (org.docx4j.wml.Text)tobj, fontIn );
-							resultsOrdered.add( (org.docx4j.wml.Text)tobj );
-						}
-					}
-				}
-				else {
-					// w:t node is a direct child of the w:p node:
-					Object tobj = XmlUtils.unwrap(pobj);
-					if( tobj instanceof org.docx4j.wml.Text ) {
-						results.put( (org.docx4j.wml.Text)tobj, fontIn );
-						resultsOrdered.add( (org.docx4j.wml.Text)tobj );
-					}
-				}
-				
-			} */
 		}
     	
         return null;

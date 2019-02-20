@@ -168,6 +168,39 @@ abstract class ConvertDocx  implements Callable<Void> {
 				text.setValue( out );
 			}
 		}
+		if(! stFinder.symResults.isEmpty() ) {
+			HashMap<R.Sym,String> symNodes = (HashMap<R.Sym,String>)stFinder.symResults; 
+			for(R.Sym sym: symNodes.keySet() ) {
+				fontIn = symNodes.get(sym);
+				t = fontToTransliteratorMap.get( fontIn );
+				String symChar = sym.getChar();
+				int decimal = Integer.parseInt( symChar, 16 );
+				char ch = (char)decimal;
+				
+				// create a new text node, set the value, and remove the sym
+				R r = (R)sym.getParent();
+				List<Object> rObjects = r.getContent();
+				int size = rObjects.size();
+				for( int  i=0; i<size; i++ ) {
+					Object robj = rObjects.get(i);
+					Object tobj = XmlUtils.unwrap(robj);
+					if( tobj instanceof org.docx4j.wml.R.Sym ) {
+						R.Sym iSym = (org.docx4j.wml.R.Sym)tobj;
+						if( symChar.equals( iSym.getChar() ) ) {
+							// an R  may have more than one R.Sym child,
+							// assume we are working with the same child if they have the same value
+							// since we replace the child, it shouldn't matter if the child is different
+							// so long as the value is the same
+							Text text = new Text();
+							text.setValue( String.valueOf( ch ) );
+							String out = convertText( text );
+							text.setValue( out );
+							rObjects.set(i, text);
+					}
+					}
+				}
+			}
+		}
 	}
 	
 

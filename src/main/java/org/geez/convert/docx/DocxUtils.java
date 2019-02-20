@@ -65,7 +65,7 @@ public class DocxUtils {
 	    		if( style.getBasedOn() != null ) {
 	    			String basedOn = style.getBasedOn().getVal();
 	    			if( styleIdToFont.containsKey( basedOn ) ) {
-	    				styleIdToFont.put( basedOn, styleIdToFont.get( basedOn ) );
+	    				styleIdToFont.put( id, styleIdToFont.get( basedOn ) );
 	    			}
 	    		}
 	    	}
