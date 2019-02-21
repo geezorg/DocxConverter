@@ -13,13 +13,13 @@
 ################################################################################
 #
 #
-$kaib  = [  \x23 \x25 ] ;
-$salis = [ \x26\x2a ] ;
-$hamis = [ \x2b\x2c ] ;
+$kaib  = [ \x23 \x25 ] ;
+$salis = [ \x26 \x2a ] ;
+$hamis = [ \x2b \x2c ] ;
 $diqala_geez  = \x3a ;
-$diqala_salis = [ \x3d\x40 ] ;
+$diqala_salis = [ \x3d \x40 ] ;
 $diqala_kaib  = \x3e ;
-$diqala_rabi  = [ \x3b\x3c ] ;
+$diqala_rabi  = [ \x3b \x3c ] ;
 $diqala_hamis = \x85 ;
 $diqala_hamis_left = \xff ;
 $macron  = q ;
