@@ -19,7 +19,7 @@ public class ConvertDocxSamawerfa extends ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxSamawerfa( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "Samawerfa.txt", "Samawerfa.txt", "Addis98", "Blknwt98" );
+		this.initialize( "monodirectional/Samawerfa.txt", "monodirectional/Samawerfa.txt", "Addis98", "Blknwt98" );
 		
 		huletNeteb = '\u003a';
 

@@ -18,7 +18,7 @@ public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxVisualGeez( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "VisualGeez.txt", "VisualGeezNumbers.txt", "VG2 Main", "VG Geez Numbers" );
+		this.initialize( "monodirectional/VisualGeez.txt", "bidirectional/VisualGeezNumbers.txt", "VG2 Main", "VG Geez Numbers" );
 		
 		huletNeteb = '\u003a';
 		

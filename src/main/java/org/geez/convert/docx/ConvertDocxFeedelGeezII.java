@@ -21,7 +21,7 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxFeedelGeezII( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "FeedelGeez.txt", "FeedelGeezII.txt", "Geez", "GeezII" );
+		this.initialize( "monodirectional/FeedelGeez.txt", "bidirectional/FeedelGeezII.txt", "Geez", "GeezII" );
 		
 		huletNeteb = '\uf023';
 
