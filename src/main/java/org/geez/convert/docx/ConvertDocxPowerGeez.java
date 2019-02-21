@@ -20,7 +20,7 @@ public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 
 	public ConvertDocxPowerGeez( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "PowerGeez.txt", "PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez-1 Numbers" );
+		this.initialize( "monodirectional/PowerGeez.txt", "bidirectional/PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez-1 Numbers" );
 		
 		huletNeteb = ':';
 		

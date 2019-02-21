@@ -17,7 +17,7 @@ public class ConvertDocxBrana extends ConvertDocx {
 
 	public ConvertDocxBrana( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "BranaI.txt", "BranaII.txt", "Brana I", "Brana II" );
+		this.initialize( "bidirectional/BranaI.txt", "bidirectional/BranaII.txt", "Brana I", "Brana II" );
 	}
 
 }

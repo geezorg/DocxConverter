@@ -18,7 +18,7 @@ public class ConvertDocxGeezTypeNet extends ConvertDocxDiacriticalSystem {
 	
 	public ConvertDocxGeezTypeNet( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "GeezTypeNet.txt", "GeezTypeNet.txt", "GeezTypeNet", "GeezTypeNet" );
+		this.initialize( "monodirectional/GeezTypeNet.txt", "monodirectional/GeezTypeNet.txt", "GeezTypeNet", "GeezTypeNet" );
 		
 		huletNeteb = ':';
 		
