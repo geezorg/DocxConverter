@@ -15,12 +15,12 @@
 $kaib  = [ \xb3\x90 ] ;
 $salis = [ \xf9\x3e ] ;
 $hamis = [ \xc0\x3f ] ;
-$diqala_geez = \xd6 ;
+$diqala_geez  = \xd6 ;
 $diqala_salis = \x8a ;
-$diqala_kaib = [\x8b\xca ] ;
-$diqala_rabi = [ \xd0\x5f ] ;
+$diqala_kaib  = [\x8b\xca ] ;
+$diqala_rabi  = [ \xd0\x5f ] ;
 $diqala_hamis = \x9d ;
-$macron = \x99 ;
+$macron  = \x99 ;
 $plosive = \xea ;
 #
 #
