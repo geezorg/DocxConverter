@@ -12,7 +12,6 @@ import java.io.File;
  */
 
 
-
 public class ConvertDocxBrana extends ConvertDocx {
 
 	public ConvertDocxBrana( final File inputFile, final File outputFile ) {

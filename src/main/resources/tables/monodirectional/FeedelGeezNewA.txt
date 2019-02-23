@@ -353,4 +353,9 @@ $plosive = \xc9 ;
 \u201d ← \xc8 ;
 #
 #
+# Strip away any remaining diacritical marks
+# 
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron $plosive $diqala_hamis_left ] ;
+#
+#
 :: ([\x20-\xff ]) ;

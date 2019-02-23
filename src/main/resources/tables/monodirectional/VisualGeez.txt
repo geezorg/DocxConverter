@@ -341,4 +341,9 @@ I → ዕ ;
 '?' ← \x29 ;
 #
 #
+# Strip away any remaining diacritical marks
+# 
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron $diqala_hamis_left ] ;
+#
+#
 :: ([\x20-\u2122]) ;

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import org.docx4j.TraversalUtil;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
+import org.docx4j.wml.Text;
 
 /*
  * The non-maven way to build the jar file:
@@ -17,9 +18,6 @@ import org.docx4j.openpackaging.parts.JaxbXmlPart;
  * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab myFile-In.docx myFile-Out.docx
  *
  */
-
-import org.docx4j.wml.Text;
-
 
 
 abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
@@ -64,7 +62,7 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	public void localCheck( Text text ) {
 		String value = text.getValue();
 		// remove extra diacritical symbol
-		value = diacriticsRE.matcher(value).replaceAll( "$1" ); // this could be put into the normalizer
+		// value = diacriticsRE.matcher(value).replaceAll( "$1" ); // this could be put into the normalizer
 		text.setValue (value );
 	}
 	

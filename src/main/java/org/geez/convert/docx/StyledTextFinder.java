@@ -1,6 +1,5 @@
 package org.geez.convert.docx;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.docx4j.wml.ParaRPr;
 import org.docx4j.wml.R;
 import org.docx4j.wml.RPr;
 import org.docx4j.wml.Text;
+
 
 public class  StyledTextFinder extends CallbackImpl {
     

@@ -340,9 +340,10 @@ $plosive = \xea ;
 \x24 ← \x5e ;
 \x27 ← \x2a ; 
 #
+#
 # Strip away any remaining diacritical marks
 # 
- ← [$kaib$salis$hamis$diqala_geez$diqala_salis$diqala_kaib$diqala_rabi$diqala_hamis$macron$plosive] ;
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron $plosive ] ;
 #
 #
 :: ([\x20-\xff]) ;

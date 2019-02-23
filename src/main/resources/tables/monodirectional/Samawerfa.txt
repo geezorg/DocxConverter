@@ -337,9 +337,10 @@ $macron = \xfa ;
 ፡ ← \x3a ;
 ፤ ← \x40 ;
 #
+#
 # Strip away any remaining diacritical marks
 # 
- ← [$kaib$salis$hamis$diqala_geez$diqala_salis$diqala_kaib$diqala_rabi$diqala_hamis$macron] ;
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron ] ;
 #
 #
 :: ([\x20-\u2122]) ;
