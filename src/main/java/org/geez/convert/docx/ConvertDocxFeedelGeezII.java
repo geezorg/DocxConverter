@@ -2,6 +2,7 @@ package org.geez.convert.docx;
 
 import java.io.File;
 import java.util.Arrays;
+import org.docx4j.wml.Text;
 
 /*
  * The non-maven way to build the jar file:
@@ -11,10 +12,6 @@ import java.util.Arrays;
  * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab myFile-In.docx myFile-Out.docx
  *
  */
-
-
-import org.docx4j.wml.Text;
-
 
 
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {

@@ -1,7 +1,5 @@
 package org.geez.convert.docx;
 
-
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +7,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.controlsfx.control.StatusBar;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -53,7 +49,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import org.controlsfx.control.StatusBar;
  
+
 public final class DocxConverter extends Application {
  
 	private static final String VERSION = "v0.6.0-beta1";

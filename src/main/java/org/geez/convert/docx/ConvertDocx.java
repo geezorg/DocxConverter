@@ -24,6 +24,14 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.R;
+import org.docx4j.wml.Text;
+
+import com.ibm.icu.text.Transliterator;
+
+// StatusBar Imports:
+
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 /*
  * The non-maven way to build the jar file:
@@ -33,15 +41,6 @@ import org.docx4j.wml.R;
  * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx brana myFile-In.docx myFile-Out.docx
  *
  */
-
-import org.docx4j.wml.Text;
-
-import com.ibm.icu.text.Transliterator;
-
-// StatusBar Imports:
-
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 
 abstract class ConvertDocx  implements Callable<Void> {
