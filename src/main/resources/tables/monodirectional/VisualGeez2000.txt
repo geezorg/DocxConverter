@@ -20,6 +20,9 @@ $diqala_geez  = \xd6 ;
 $diqala_salis = \u201c ;
 $diqala_kaib  = \x26 ;
 $diqala_rabi  = \x2a ;
+#
+# Uncertain if VG2000 supports Diqala Hamis form as VG2 did.
+#
 # $diqala_hamis_left = \xdc ;
 #
 #
