@@ -167,7 +167,7 @@ public final class DocxConverter extends Application {
         listView.autosize();
         
         
-        final Button convertButton = new Button("Convert File(s)");
+        final Button convertButton = new Button("Convert");
         convertButton.setDisable( true );
         convertButton.setOnAction( event -> {
         	convertButton.setDisable( true );
