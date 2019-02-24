@@ -417,6 +417,10 @@ abstract class ConvertDocx  implements Callable<Void> {
 			case "visualgeez":
 				converter = new ConvertDocxVisualGeez( inputFile, outputFile );
 				break;
+				
+			case "visualgeez2000":
+				converter = new ConvertDocxVisualGeez2000( inputFile, outputFile );
+				break;
 		
 			default:
 				System.err.println( "Unrecognized input system: " + systemIn );
