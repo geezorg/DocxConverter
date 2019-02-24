@@ -4,7 +4,6 @@
 ## About
 
 Migrate Microsoft Word documents in pre-Unicode Ethiopic fonts into a Unicode font supporting Ethiopic script.
-
 The converter presently provides support for seven legacy (non-Unicode) systems and their respective fonts:
 
  * Brana 90 
@@ -62,8 +61,11 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 4. Click "Convert File(s)"
 5. Converted files will automatically open.
 
-
 ![v0.6 Screenshot](doc/gui-screenshot-v0.6.png)
+
+If your document contains more than one legacy font system, you may convert the fonts one at a time where
+the output document of the first conversion is used as the input document of the 2nd conversion and so on.
+
 
 In the GitHub the "[releases](https://github.com/geezorg/DocxConverter/releases/)" folder you can find and download the
 "DocxConverter-0.6.0-full-gui.jar" file. This version contains the converter and all of its dependencies (jar libraries).
