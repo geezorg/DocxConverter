@@ -29,7 +29,7 @@ public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 		font1Typefaces.add( "Ge'ez-2 Normal" );
 		font1Typefaces.add( "Ge'ez-3 Normal" );
 		
-		targetTypefaces.add( "Ge'ez 2" );
+		targetTypefaces.add( "Ge'ez-2" );
 		targetTypefaces.add( "Ge'ez-3" );
 		targetTypefaces.add( "Ge'ez-1 Normal" );
 		targetTypefaces.add( "Ge'ez-2 Normal" );
