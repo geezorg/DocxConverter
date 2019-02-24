@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.RFonts;
 import org.docx4j.wml.RPr;
@@ -21,7 +22,15 @@ public class DocxUtils {
 	    */
 	    public static Map<String,String> readStyles( WordprocessingMLPackage wordMLPackage, List<String> targetTypefaces, String fontOut ) {
 	    	
-	    	StyleDefinitionsPart sdp = wordMLPackage.getMainDocumentPart().getStyleDefinitionsPart();	
+	    	MainDocumentPart mdp = wordMLPackage.getMainDocumentPart();
+	    	if( mdp == null ) {
+	    		return styleIdToFont;
+	    	}
+	    	StyleDefinitionsPart sdp = mdp.getStyleDefinitionsPart();
+	    	if( sdp == null ) {
+	    		return styleIdToFont;
+	    	}
+
 	    	boolean isSet = false;
 	    	List<Style> styleList = sdp.getJaxbElement().getStyle();
 	    	for (Style style : styleList) {

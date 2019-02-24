@@ -55,8 +55,10 @@ import org.controlsfx.control.StatusBar;
 
 public final class DocxConverter extends Application {
  
-	private static final String VERSION = "v0.6.0-beta1";
+	private static final String VERSION = "v0.6.0-beta5";
     private Desktop desktop = Desktop.getDesktop();
+    
+    // Input Fonts
 	private static final String brana = "Brana I/II";
 	private static final String geezii = "Geez, GeezII";
 	private static final String geeznewab = "GeezNewA/B";
@@ -64,10 +66,13 @@ public final class DocxConverter extends Application {
 	private static final String powergeez = "Power Ge'ez";
 	private static final String samawerfa = "Samawerfa";
 	private static final String visualgeez = "Visual Ge'ez";
+	private static final String visualgeez2000 = "VG2000 Main";
+	// Output Fonts
 	private static final String abyssinica = "Abyssinica SIL";
 	private static final String nyala = "Nyala";
 	private static final String kefa = "Kefa";
 	private static final String brana_uni = "Brana";
+	private static final String powergeez_uni = "Power Geez Unicode1";
 
 	private String systemIn  = brana; // alphabetic based default
 	private String systemOut = abyssinica;
@@ -105,6 +110,7 @@ public final class DocxConverter extends Application {
         RadioMenuItem inMenuItem5 = new RadioMenuItem( "_" + powergeez );
         RadioMenuItem inMenuItem6 = new RadioMenuItem( "_" + samawerfa );
         RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + visualgeez );
+        RadioMenuItem inMenuItem8 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
         inMenuItem1.setOnAction( evt -> setSystemIn( brana ) );
@@ -122,8 +128,10 @@ public final class DocxConverter extends Application {
         inMenuItem6.setToggleGroup( groupInMenu );
         inMenuItem7.setOnAction( evt -> setSystemIn( visualgeez ) );
         inMenuItem7.setToggleGroup( groupInMenu );
+        inMenuItem8.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem8.setToggleGroup( groupInMenu );
         
-        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7 );
+        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8 );
 
 
         Menu outFontMenu = new Menu( "Font _Out" );
@@ -131,6 +139,7 @@ public final class DocxConverter extends Application {
         RadioMenuItem outMenuItem2 = new RadioMenuItem( "_" + brana_uni );
         RadioMenuItem outMenuItem3 = new RadioMenuItem( "_Kefa" );
         RadioMenuItem outMenuItem4 = new RadioMenuItem( "_" + nyala );
+        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_" + powergeez_uni );
         ToggleGroup groupOutMenu = new ToggleGroup();
               
         outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
@@ -142,8 +151,11 @@ public final class DocxConverter extends Application {
         outMenuItem3.setToggleGroup( groupOutMenu );
         outMenuItem4.setOnAction( event -> setSystemOut( nyala ) );
         outMenuItem4.setToggleGroup( groupOutMenu );
+        outMenuItem5.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem5.setToggleGroup( groupOutMenu );
+
        
-        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4 );
+        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5 );
         
 
         ListView<Label> listView = new ListView<Label>();
@@ -337,6 +349,10 @@ public final class DocxConverter extends Application {
 		   			
 		    	case visualgeez:
 		    		converter = new ConvertDocxVisualGeez( inputFile, outputFile );
+		    		break;
+		   			
+		    	case visualgeez2000:
+		    		converter = new ConvertDocxVisualGeez2000( inputFile, outputFile );
 		    		break;
     			
 		    	default:

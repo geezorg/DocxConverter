@@ -41,7 +41,7 @@ public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 		
 		fontToTransliteratorMap.put( "Ge'ez-1 Numbers, etc" , translit2 );
 		diacritics.addAll(
-				Arrays.asList( "\u003c", "\u003d", "\u003e", "\u003f", "\u0040", "\u0041", "\u0042", "\u0043", "\u0044", "\u0045", "\u0046" )
+			Arrays.asList( "\u003c", "\u003d", "\u003e", "\u003f", "\u0040", "\u0041", "\u0042", "\u0043", "\u0044", "\u0045", "\u0046" )
 		);
 			
 		buildRE();

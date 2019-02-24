@@ -71,6 +71,7 @@ public class  StyledTextFinder extends CallbackImpl {
 						for(Object robj: rObjects) {
 							Object tobj = XmlUtils.unwrap(robj);
 							if ( tobj instanceof org.docx4j.wml.Text ) {
+								// checkhere if styleIdToFont.get(styleName) might be null -?
 								results.put( (org.docx4j.wml.Text)tobj, styleIdToFont.get(styleName) );
 								resultsOrdered.add( (org.docx4j.wml.Text)tobj );
 							}
