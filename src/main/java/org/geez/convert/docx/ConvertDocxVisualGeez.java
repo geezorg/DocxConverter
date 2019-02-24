@@ -42,7 +42,7 @@ public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 
 
 		diacritics.addAll (
-				Arrays.asList( "\u0021", "\u0023", "\u0024", "\u0026", "\u002a", "\u0040", "\u0045", "\u00a4", "\u00ba", "\u00d6" )
+			Arrays.asList( "\u0021", "\u0023", "\u0024", "\u0026", "\u002a", "\u0040", "\u0045", "\u00a4", "\u00ba", "\u00d6" )
 		);
 				
 		buildRE();

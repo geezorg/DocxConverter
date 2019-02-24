@@ -3,6 +3,7 @@ package org.geez.convert.docx;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.docx4j.TraversalUtil;
@@ -128,22 +129,24 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 			new TraversalUtil( part.getContents(), stFinder );
 			// fix styled text nodes:
 		
-			List<Text> styledText = stFinder.resultsOrdered;
-			int size = styledText.size();
+			Map<Text,String> styledText = stFinder.results;
+			List<Text> styledTextOrdered = stFinder.resultsOrdered;
+			int size = styledTextOrdered.size();
 			for ( int i=1; i<size; i++ ) {
-				Text text1 = styledText.get(i);
+				Text text1 = styledTextOrdered.get(i);
 				String value1 = text1.getValue();
 				if( value1.length() > 0 ) {
 					char firstChar = value1.charAt(0);
+					fontIn = styledText.get( text1 );
 					if( isDiacritic( fontIn, String.valueOf(firstChar) ) )  {
-						Text text0 = styledText.get( i-1 );
+						Text text0 = styledTextOrdered.get( i-1 );
 						String value0 = text0.getValue();
 					
 						text0.setValue( value0 + firstChar );   // append to previous node as last char
 						text1.setValue( value1.substring(1) );  // remove from current node
 					}
 					else if( combinesWithHuletNeteb( firstChar ) ) {
-						Text text0 = styledText.get( i-1 );
+						Text text0 = styledTextOrdered.get( i-1 );
 						String value0 = text0.getValue();
 						if( ( value0.length() > 0 ) && ( value0.charAt( value0.length() - 1) ) == huletNeteb ) {
 							text0.setValue( value0 + firstChar );   // append to previous node as last char
@@ -157,22 +160,24 @@ abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
 		ustFinder.clearResults();
 		new TraversalUtil( part.getContents(), ustFinder );
 		
-		List<Text> unstyledText = ustFinder.resultsOrdered;
-		int size = unstyledText.size();
+		Map<Text,String> unstyledText = ustFinder.results;
+		List<Text> unstyledTextOrdered = ustFinder.resultsOrdered;
+		int size = unstyledTextOrdered.size();
 		for ( int i=1; i<size; i++ ) {
-			Text text1 = unstyledText.get(i);
+			Text text1 = unstyledTextOrdered.get(i);
 			String value1 = text1.getValue();
 			if( value1.length() > 0 ) {
 				char firstChar = value1.charAt(0);
+				fontIn = unstyledText.get( text1 );
 				if( isDiacritic( fontIn, String.valueOf(firstChar) ) )  {
-					Text text0 = unstyledText.get( i-1 );
+					Text text0 = unstyledTextOrdered.get( i-1 );
 					String value0 = text0.getValue();
 					
 					text0.setValue( value0 + firstChar );   // append to previous node as last char
 					text1.setValue( value1.substring(1) );  // remove from current node
 				}
 				else if( combinesWithHuletNeteb( firstChar ) ) {
-					Text text0 = unstyledText.get( i-1 );
+					Text text0 = unstyledTextOrdered.get( i-1 );
 					String value0 = text0.getValue();
 					if( ( value0.length() > 0 ) && ( value0.charAt( value0.length() - 1) ) == huletNeteb ) {
 						text0.setValue( value0 + firstChar );   // append to previous node as last char

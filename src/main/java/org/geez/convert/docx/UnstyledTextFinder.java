@@ -51,26 +51,41 @@ public class  UnstyledTextFinder extends CallbackImpl {
 		if( targetTypefaces.contains( rfonts.getAscii() ) ) {
 			fontIn = rfonts.getAscii();
 			rfonts.setAscii( fontOut );
-			isSet = true;
+			if( fontIn != null ) {
+				isSet = true;
+			}
 		}
 		if( targetTypefaces.contains( rfonts.getHAnsi() ) ) {
 			if(! isSet ) {
 				fontIn = rfonts.getHAnsi();
-				isSet = true;
+				if( fontIn != null ) {
+					isSet = true;
+				}
 			}
 			rfonts.setHAnsi( fontOut );
 		}
-		if( targetTypefaces.contains( rfonts.getCs() ) ) {
+		if( targetTypefaces.contains( rfonts.getCs() ) && isSet ) {
+			/* After discovering the following, it seems best to not rely on w:cs
+			 * because it can contradict with w:ascii and w:hAnsi
+			 * 
+			 * <w:rFonts w:ascii="VG2000 Main" w:hAnsi="VG2000 Main" w:cs="Ge'ez-1"/>
+			 */
+			/*
 			if(! isSet ) {
 				fontIn = rfonts.getCs();
-				isSet = true;
+				if( fontIn != null ) {
+					isSet = true;
+				}
 			}
+			*/
 			rfonts.setCs( fontOut );
 		}
 		if( targetTypefaces.contains( rfonts.getEastAsia() ) ) {
 			if(! isSet ) {
 				fontIn = rfonts.getEastAsia();
-				isSet = true;
+				if( fontIn != null ) {
+					isSet = true;
+				}
 			}
 			rfonts.setEastAsia( fontOut );
 		}
