@@ -55,7 +55,7 @@ import org.controlsfx.control.StatusBar;
 
 public final class DocxConverter extends Application {
  
-	private static final String VERSION = "v0.6.0-beta5";
+	private static final String VERSION = "v0.6.0";
     private Desktop desktop = Desktop.getDesktop();
     
     // Input Fonts

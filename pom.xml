@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>geez.org</groupId>
 	<artifactId>DocxConverter</artifactId>
-	<version>0.6.0-SNAPSHOT</version>
+	<version>0.6.0</version>
 	<name>Word DOCX Converter</name>
 	<dependencies>
 		<dependency>
