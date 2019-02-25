@@ -160,7 +160,7 @@ public final class DocxConverter extends Application {
 
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable(false);
-        listView.setPrefHeight( 125 ); // 190 for screenshots
+        listView.setPrefHeight( 125 ); // 205 for screenshots
         listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
@@ -284,7 +284,7 @@ public final class DocxConverter extends Application {
         rootGroup.setBottom( vbottomBox );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
-        stage.setScene(new Scene(rootGroup, 420, 220) ); // 290 for screenshots
+        stage.setScene(new Scene(rootGroup, 420, 220) ); // 305 for screenshots
         stage.show();
     }
  
@@ -308,6 +308,15 @@ public final class DocxConverter extends Application {
             for (File file : inputList) {
                 processFile( file, convertButton, listView, i );
                 i++;
+                
+                // this sleep seems to help slower CPUs
+                // when a list of files is processed, and
+                // avoids an exception from wordMLPackage.save( outputFile );
+                try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
              }
             converted = true;
          } 
