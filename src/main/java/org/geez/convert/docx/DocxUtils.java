@@ -56,13 +56,13 @@ public class DocxUtils {
 	    			String cs = rfonts.getCs();
 	    			if( (cs != null) &&  targetTypefaces.contains( cs ) ) {
 	    				if(! isSet)  {
-	    					styleIdToFont.put( id, hAnsi );
+	    					styleIdToFont.put( id, cs );
 	    				}
 	    				rfonts.setCs( fontOut );
 	    				isSet = true;
 	    			}
 	    			String eastAsia = rfonts.getEastAsia();
-	    			if( (hAnsi != null) &&  targetTypefaces.contains( eastAsia ) ) {
+	    			if( (eastAsia != null) &&  targetTypefaces.contains( eastAsia ) ) {
 	    				if(! isSet)  {
 	    					styleIdToFont.put( id, eastAsia );
 	    				}
