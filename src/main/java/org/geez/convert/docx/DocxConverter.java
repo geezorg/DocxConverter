@@ -61,6 +61,8 @@ public final class DocxConverter extends Application {
     // Input Fonts
 	private static final String brana = "Brana I/II";
 	private static final String geezii = "Geez, GeezII";
+	private static final String geezigna = "Geezigna";
+	private static final String geezbasic = "GeezBasic";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztypenet = "GeezTypeNet";
 	private static final String powergeez = "Power Ge'ez";
@@ -105,12 +107,14 @@ public final class DocxConverter extends Application {
         Menu inFontMenu = new Menu( "Font _In" );
         RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + brana );
         RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + geezii );
-        RadioMenuItem inMenuItem3 = new RadioMenuItem( "Geez_NewA/B" );
-        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geez_TypeNet" );
-        RadioMenuItem inMenuItem5 = new RadioMenuItem( "_" + powergeez );
-        RadioMenuItem inMenuItem6 = new RadioMenuItem( "_" + samawerfa );
-        RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + visualgeez );
-        RadioMenuItem inMenuItem8 = new RadioMenuItem( "VG _2000" );
+        RadioMenuItem inMenuItem3 = new RadioMenuItem( "Geezigna" );
+        RadioMenuItem inMenuItem4 = new RadioMenuItem( "GeezBasic" );
+        RadioMenuItem inMenuItem5 = new RadioMenuItem( "Geez_NewA/B" );
+        RadioMenuItem inMenuItem6 = new RadioMenuItem( "Geez_TypeNet" );
+        RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + powergeez );
+        RadioMenuItem inMenuItem8 = new RadioMenuItem( "_" + samawerfa );
+        RadioMenuItem inMenuItem9 = new RadioMenuItem( "_" + visualgeez );
+        RadioMenuItem inMenuItem10 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
         inMenuItem1.setOnAction( evt -> setSystemIn( brana ) );
@@ -118,20 +122,24 @@ public final class DocxConverter extends Application {
         inMenuItem1.setToggleGroup( groupInMenu );
         inMenuItem2.setOnAction( evt -> setSystemIn( geezii ) );
         inMenuItem2.setToggleGroup( groupInMenu );
-        inMenuItem3.setOnAction( evt -> setSystemIn( geeznewab ) );
+        inMenuItem3.setOnAction( evt -> setSystemIn( geezigna ) );
         inMenuItem3.setToggleGroup( groupInMenu );
-        inMenuItem4.setOnAction( evt -> setSystemIn( geeztypenet ) );
+        inMenuItem4.setOnAction( evt -> setSystemIn( geezbasic ) );
         inMenuItem4.setToggleGroup( groupInMenu );
-        inMenuItem5.setOnAction( evt -> setSystemIn( powergeez ) );
+        inMenuItem5.setOnAction( evt -> setSystemIn( geeznewab ) );
         inMenuItem5.setToggleGroup( groupInMenu );
-        inMenuItem6.setOnAction( evt -> setSystemIn( samawerfa ) );
+        inMenuItem6.setOnAction( evt -> setSystemIn( geeztypenet ) );
         inMenuItem6.setToggleGroup( groupInMenu );
-        inMenuItem7.setOnAction( evt -> setSystemIn( visualgeez ) );
+        inMenuItem7.setOnAction( evt -> setSystemIn( powergeez ) );
         inMenuItem7.setToggleGroup( groupInMenu );
-        inMenuItem8.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem8.setOnAction( evt -> setSystemIn( samawerfa ) );
         inMenuItem8.setToggleGroup( groupInMenu );
+        inMenuItem9.setOnAction( evt -> setSystemIn( visualgeez ) );
+        inMenuItem9.setToggleGroup( groupInMenu );
+        inMenuItem10.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem10.setToggleGroup( groupInMenu );
         
-        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8 );
+        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10 );
 
 
         Menu outFontMenu = new Menu( "Font _Out" );
@@ -339,6 +347,15 @@ public final class DocxConverter extends Application {
 			   	case geezii:
 		    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
 		    		break;
+		    		
+	    			
+			   	case geezigna:
+		    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
+		    		break;
+		
+			   	case geezbasic:
+		    		converter = new ConvertDocxGeezBasic( inputFile, outputFile );
+		    		break;    			
 		    			
 		   		case geeznewab:
 	    			converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
