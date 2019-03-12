@@ -397,6 +397,15 @@ abstract class ConvertDocx  implements Callable<Void> {
 			case "geezii":
 				converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
 				break;
+				
+    			
+		   	case "geezigna":
+	    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
+	    		break;
+	
+		   	case "geezbasic":
+	    		converter = new ConvertDocxGeezBasic( inputFile, outputFile );
+	    		break; 
 		
 			case "geeznewab":
 				converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
