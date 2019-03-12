@@ -346,8 +346,7 @@ public final class DocxConverter extends Application {
 	    			
 			   	case geezii:
 		    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
-		    		break;
-		    		
+		    		break;	
 	    			
 			   	case geezigna:
 		    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
