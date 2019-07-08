@@ -1,4 +1,4 @@
-package org.geez.convert.docx;
+package org.geez.ui;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -7,6 +7,19 @@ import java.net.URI;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.controlsfx.control.StatusBar;
+import org.geez.convert.docx.ConvertDocx;
+import org.geez.convert.docx.ConvertDocxBrana;
+import org.geez.convert.docx.ConvertDocxFeedelGeezII;
+import org.geez.convert.docx.ConvertDocxFeedelGeezNewAB;
+import org.geez.convert.docx.ConvertDocxFeedelGeezigna;
+import org.geez.convert.docx.ConvertDocxGeezBasic;
+import org.geez.convert.docx.ConvertDocxGeezTypeNet;
+import org.geez.convert.docx.ConvertDocxPowerGeez;
+import org.geez.convert.docx.ConvertDocxSamawerfa;
+import org.geez.convert.docx.ConvertDocxVisualGeez;
+import org.geez.convert.docx.ConvertDocxVisualGeez2000;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -49,13 +62,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import org.controlsfx.control.StatusBar;
  
 
 public final class DocxConverter extends Application {
  
-	private static final String VERSION = "v0.6.0";
+	private static final String VERSION = "v0.7.0";
     private Desktop desktop = Desktop.getDesktop();
     
     // Input Fonts
@@ -75,7 +86,8 @@ public final class DocxConverter extends Application {
 	private static final String kefa = "Kefa";
 	private static final String brana_uni = "Brana";
 	private static final String powergeez_uni = "Power Geez Unicode1";
-
+	private static final String bembino = "Bembino";
+	
 	private String systemIn  = brana; // alphabetic based default
 	private String systemOut = abyssinica;
 	private boolean openOutput = true;
@@ -144,26 +156,29 @@ public final class DocxConverter extends Application {
 
         Menu outFontMenu = new Menu( "Font _Out" );
         RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
-        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_" + brana_uni );
-        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_Kefa" );
-        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_" + nyala );
-        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_" + powergeez_uni );
+        RadioMenuItem outMenuItem2 = new RadioMenuItem( "Bembin_o" );
+        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_" + brana_uni );
+        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_Kefa" );
+        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_" + nyala );
+        RadioMenuItem outMenuItem6 = new RadioMenuItem( "_" + powergeez_uni );
         ToggleGroup groupOutMenu = new ToggleGroup();
               
         outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
         outMenuItem1.setSelected(true);
-        outMenuItem1.setToggleGroup( groupOutMenu );        
-        outMenuItem2.setOnAction( event -> setSystemOut( brana_uni ) );
+        outMenuItem1.setToggleGroup( groupOutMenu );   
+        outMenuItem2.setOnAction( event -> setSystemOut( bembino ) );
         outMenuItem2.setToggleGroup( groupOutMenu );
-        outMenuItem3.setOnAction( event -> setSystemOut( kefa ) );
+        outMenuItem3.setOnAction( event -> setSystemOut( brana_uni ) );
         outMenuItem3.setToggleGroup( groupOutMenu );
-        outMenuItem4.setOnAction( event -> setSystemOut( nyala ) );
+        outMenuItem4.setOnAction( event -> setSystemOut( kefa ) );
         outMenuItem4.setToggleGroup( groupOutMenu );
-        outMenuItem5.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem5.setOnAction( event -> setSystemOut( nyala ) );
         outMenuItem5.setToggleGroup( groupOutMenu );
+        outMenuItem6.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem6.setToggleGroup( groupOutMenu );
 
        
-        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5 );
+        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5, outMenuItem6 );
         
 
         ListView<Label> listView = new ListView<Label>();

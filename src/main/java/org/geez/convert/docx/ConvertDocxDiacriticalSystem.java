@@ -21,7 +21,7 @@ import org.docx4j.wml.Text;
  */
 
 
-abstract class ConvertDocxDiacriticalSystem extends ConvertDocx {
+public class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	protected final List<String> font1Typefaces = new ArrayList<String>();
 
 	protected final ArrayList<String> diacritics = new ArrayList<String>();
