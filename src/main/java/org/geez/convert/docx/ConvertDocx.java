@@ -43,7 +43,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  */
 
 
-abstract class ConvertDocx  implements Callable<Void> {
+public class ConvertDocx implements Callable<Void> {
 	protected Transliterator t = null;
 	protected String fontOut = null;
 	protected String fontIn = null;
