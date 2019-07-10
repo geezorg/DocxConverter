@@ -21,6 +21,15 @@ public class ConvertDocxGeezBasic extends ConvertDocxDiacriticalSystem {
 		
 		huletNeteb = ':';
 		
+		font1Typefaces.add( "GeezAddis" );
+		font1Typefaces.add( "GeezDirib" );
+		font1Typefaces.add( "GeezLong" );
+		font1Typefaces.add( "GeezThin" );
+		
+		for(String key: font1Typefaces) {
+			fontToTransliteratorMap.put( key, translit1 );			
+		}
+		
 		diacritics.addAll (
 			Arrays.asList ( "\u003c", "\u003d", "\u003e",
 					"\u004f", "\u005e", "\u005f",
