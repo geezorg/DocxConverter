@@ -73,7 +73,7 @@ public final class DocxConverter extends Application {
 	private static final String brana = "Brana I/II";
 	private static final String geezii = "Geez, GeezII";
 	private static final String geezigna = "Geezigna";
-	private static final String geezbasic = "GeezBasic";
+	private static final String geezfont = "GeezFont";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztypenet = "GeezTypeNet";
 	private static final String powergeez = "Power Ge'ez";
@@ -136,7 +136,7 @@ public final class DocxConverter extends Application {
         inMenuItem2.setToggleGroup( groupInMenu );
         inMenuItem3.setOnAction( evt -> setSystemIn( geezigna ) );
         inMenuItem3.setToggleGroup( groupInMenu );
-        inMenuItem4.setOnAction( evt -> setSystemIn( geezbasic ) );
+        inMenuItem4.setOnAction( evt -> setSystemIn( geezfont ) );
         inMenuItem4.setToggleGroup( groupInMenu );
         inMenuItem5.setOnAction( evt -> setSystemIn( geeznewab ) );
         inMenuItem5.setToggleGroup( groupInMenu );
@@ -367,7 +367,7 @@ public final class DocxConverter extends Application {
 		    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
 		    		break;
 		
-			   	case geezbasic:
+			   	case geezfont:
 		    		converter = new ConvertDocxGeezFont( inputFile, outputFile );
 		    		break;    			
 		    			
