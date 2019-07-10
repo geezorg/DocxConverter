@@ -14,7 +14,7 @@ import org.geez.convert.docx.ConvertDocxBrana;
 import org.geez.convert.docx.ConvertDocxFeedelGeezII;
 import org.geez.convert.docx.ConvertDocxFeedelGeezNewAB;
 import org.geez.convert.docx.ConvertDocxFeedelGeezigna;
-import org.geez.convert.docx.ConvertDocxGeezBasic;
+import org.geez.convert.docx.ConvertDocxGeezFont;
 import org.geez.convert.docx.ConvertDocxGeezTypeNet;
 import org.geez.convert.docx.ConvertDocxPowerGeez;
 import org.geez.convert.docx.ConvertDocxSamawerfa;
@@ -368,7 +368,7 @@ public final class DocxConverter extends Application {
 		    		break;
 		
 			   	case geezbasic:
-		    		converter = new ConvertDocxGeezBasic( inputFile, outputFile );
+		    		converter = new ConvertDocxGeezFont( inputFile, outputFile );
 		    		break;    			
 		    			
 		   		case geeznewab:

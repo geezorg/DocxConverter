@@ -403,7 +403,7 @@ public class ConvertDocx implements Callable<Void> {
 	    		break;
 	
 		   	case "geezbasic":
-	    		converter = new ConvertDocxGeezBasic( inputFile, outputFile );
+	    		converter = new ConvertDocxGeezFont( inputFile, outputFile );
 	    		break; 
 		
 			case "geeznewab":
