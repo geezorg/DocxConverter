@@ -17,13 +17,13 @@ public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
 	
 	public ConvertDocxGeezFont( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "monodirectional/GeezBasic.txt", "monodirectional/GeezBasic.txt", "GeezBasic", "GeezBasic" );
+		this.initialize( "monodirectional/GeezBasic.txt", "monodirectional/GeezBasic.txt", "geezBasic", "geezBasic" );
 		
 		huletNeteb = ':';
 		
 		font1Typefaces.add( "GeezAddis" );
-		font1Typefaces.add( "GeezDirib" );
-		font1Typefaces.add( "GeezLong" );
+		font1Typefaces.add( "geezDirib" );
+		font1Typefaces.add( "geezLong" );
 		font1Typefaces.add( "GeezThin" );
 		
 		for(String key: font1Typefaces) {
