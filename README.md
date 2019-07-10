@@ -26,9 +26,9 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
    * GeezNet
  * GeezFont
    * GeezAddis
-   * GeezBasic
-   * GeezDirib
-   * GeezLong
+   * geezBasic
+   * geezDirib
+   * geezLong
    * GeezThin
  * Ge'ezSoft
    * GeezTypeNet
