@@ -10,6 +10,8 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
    * Brana I
    * Brana II
  * Feedel
+   * Geezigna
+ * Feedel
    * Geez
    * GeezII
  * Feedel "New"
@@ -22,6 +24,12 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
    * ZewdituA
    * ZewdituB
    * GeezNet
+ * GeezFont
+   * GeezAddis
+   * GeezBasic
+   * GeezDirib
+   * GeezLong
+   * GeezThin
  * Ge'ezSoft
    * GeezTypeNet
  * Power Ge'ez
