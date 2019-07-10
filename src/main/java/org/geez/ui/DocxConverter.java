@@ -120,7 +120,7 @@ public final class DocxConverter extends Application {
         RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + brana );
         RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + geezii );
         RadioMenuItem inMenuItem3 = new RadioMenuItem( "Geezigna" );
-        RadioMenuItem inMenuItem4 = new RadioMenuItem( "GeezBasic" );
+        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geez_Font" );
         RadioMenuItem inMenuItem5 = new RadioMenuItem( "Geez_NewA/B" );
         RadioMenuItem inMenuItem6 = new RadioMenuItem( "Geez_TypeNet" );
         RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + powergeez );
