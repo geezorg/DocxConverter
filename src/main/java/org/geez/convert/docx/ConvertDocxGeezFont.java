@@ -13,9 +13,9 @@ import java.util.Arrays;
  */
 
 
-public class ConvertDocxGeezBasic extends ConvertDocxDiacriticalSystem {
+public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
 	
-	public ConvertDocxGeezBasic( final File inputFile, final File outputFile ) {
+	public ConvertDocxGeezFont( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
 		this.initialize( "monodirectional/GeezBasic.txt", "monodirectional/GeezBasic.txt", "GeezBasic", "GeezBasic" );
 		
