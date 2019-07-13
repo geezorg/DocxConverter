@@ -124,16 +124,19 @@ public class UnstyledTextFinder extends CallbackImpl {
 			}
 		}
 		else if (o instanceof org.docx4j.wml.P) {
+			// Why do we do this checking if we store no found nodes??
+			// Remove this code, if nothing breaks after commenting it out
 			P p = (org.docx4j.wml.P)o;
 			PPr ppr = p.getPPr();
 			if (ppr == null ) return null;
-			ParaRPr rpr = ppr.getRPr();
-			if ( (rpr == null) || (rpr.getRFonts() == null) ) return null;
+			ParaRPr prpr = ppr.getRPr();
+			if ( (prpr == null) || (prpr.getRFonts() == null) ) return null;
 
-			String fontIn = checkTargetFont( rpr.getRFonts() );
+			String fontIn = checkTargetFont( prpr.getRFonts() );
 			if ( fontIn == null ) {
 				return null;
 			}
+			System.err.println( "Debugging[Unstyled Text Finder]: Found <w:p><w:pPr><w:rPr> with content");
 		}
     	
         return null;
