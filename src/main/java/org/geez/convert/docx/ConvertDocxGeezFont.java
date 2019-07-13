@@ -17,7 +17,7 @@ public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
 	
 	public ConvertDocxGeezFont( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "monodirectional/GeezBasic.txt", "monodirectional/GeezBasic.txt", "geezBasic", "geezBasic" );
+		this.initialize( "monodirectional/GeezFont.txt", "monodirectional/GeezFont.txt", "geezBasic", "geezBasic" );
 		
 		huletNeteb = ':';
 		
