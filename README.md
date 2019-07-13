@@ -6,6 +6,12 @@
 Migrate Microsoft Word documents in pre-Unicode Ethiopic fonts into a Unicode font supporting Ethiopic script.
 The converter presently provides support for seven legacy (non-Unicode) systems and their respective fonts:
 
+ * Agafari
+   * AGF - Zemen
+   * AGF - Dawit
+   * AGF - Ejji Tsihuf
+   * AGF - Rejim
+   * AGF - Yigezu Bisrat
  * Brana 90 
    * Brana I
    * Brana II
