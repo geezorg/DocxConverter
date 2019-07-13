@@ -16,6 +16,7 @@ import org.geez.convert.docx.ConvertDocxFeedelGeezNewAB;
 import org.geez.convert.docx.ConvertDocxFeedelGeezigna;
 import org.geez.convert.docx.ConvertDocxGeezFont;
 import org.geez.convert.docx.ConvertDocxGeezTypeNet;
+import org.geez.convert.docx.ConvertDocxNCIC;
 import org.geez.convert.docx.ConvertDocxPowerGeez;
 import org.geez.convert.docx.ConvertDocxSamawerfa;
 import org.geez.convert.docx.ConvertDocxVisualGeez;
@@ -76,6 +77,7 @@ public final class DocxConverter extends Application {
 	private static final String geezfont = "GeezFont";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztypenet = "GeezTypeNet";
+	private static final String ncic = "Agafari (AGF)";
 	private static final String powergeez = "Power Ge'ez";
 	private static final String samawerfa = "Samawerfa";
 	private static final String visualgeez = "Visual Ge'ez";
@@ -117,41 +119,44 @@ public final class DocxConverter extends Application {
         }
 
         Menu inFontMenu = new Menu( "Font _In" );
-        RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + brana );
-        RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + geezii );
-        RadioMenuItem inMenuItem3 = new RadioMenuItem( "Geezigna" );
-        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geez_Font" );
-        RadioMenuItem inMenuItem5 = new RadioMenuItem( "Geez_NewA/B" );
-        RadioMenuItem inMenuItem6 = new RadioMenuItem( "Geez_TypeNet" );
-        RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + powergeez );
-        RadioMenuItem inMenuItem8 = new RadioMenuItem( "_" + samawerfa );
-        RadioMenuItem inMenuItem9 = new RadioMenuItem( "_" + visualgeez );
-        RadioMenuItem inMenuItem10 = new RadioMenuItem( "VG _2000" );
+        RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + ncic );
+        RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + brana );
+        RadioMenuItem inMenuItem3 = new RadioMenuItem( "_" + geezii );
+        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geezigna" );
+        RadioMenuItem inMenuItem5 = new RadioMenuItem( "Geez_Font" );
+        RadioMenuItem inMenuItem6 = new RadioMenuItem( "Geez_NewA/B" );
+        RadioMenuItem inMenuItem7 = new RadioMenuItem( "Geez_TypeNet" );
+        RadioMenuItem inMenuItem8 = new RadioMenuItem( "_" + powergeez );
+        RadioMenuItem inMenuItem9 = new RadioMenuItem( "_" + samawerfa );
+        RadioMenuItem inMenuItem10 = new RadioMenuItem( "_" + visualgeez );
+        RadioMenuItem inMenuItem11 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
-        inMenuItem1.setOnAction( evt -> setSystemIn( brana ) );
+        inMenuItem1.setOnAction( evt -> setSystemIn( ncic ) );
         inMenuItem1.setSelected(true);
         inMenuItem1.setToggleGroup( groupInMenu );
-        inMenuItem2.setOnAction( evt -> setSystemIn( geezii ) );
+        inMenuItem2.setOnAction( evt -> setSystemIn( brana ) );
         inMenuItem2.setToggleGroup( groupInMenu );
-        inMenuItem3.setOnAction( evt -> setSystemIn( geezigna ) );
+        inMenuItem3.setOnAction( evt -> setSystemIn( geezii ) );
         inMenuItem3.setToggleGroup( groupInMenu );
-        inMenuItem4.setOnAction( evt -> setSystemIn( geezfont ) );
+        inMenuItem4.setOnAction( evt -> setSystemIn( geezigna ) );
         inMenuItem4.setToggleGroup( groupInMenu );
-        inMenuItem5.setOnAction( evt -> setSystemIn( geeznewab ) );
+        inMenuItem5.setOnAction( evt -> setSystemIn( geezfont ) );
         inMenuItem5.setToggleGroup( groupInMenu );
-        inMenuItem6.setOnAction( evt -> setSystemIn( geeztypenet ) );
+        inMenuItem6.setOnAction( evt -> setSystemIn( geeznewab ) );
         inMenuItem6.setToggleGroup( groupInMenu );
-        inMenuItem7.setOnAction( evt -> setSystemIn( powergeez ) );
+        inMenuItem7.setOnAction( evt -> setSystemIn( geeztypenet ) );
         inMenuItem7.setToggleGroup( groupInMenu );
-        inMenuItem8.setOnAction( evt -> setSystemIn( samawerfa ) );
+        inMenuItem8.setOnAction( evt -> setSystemIn( powergeez ) );
         inMenuItem8.setToggleGroup( groupInMenu );
-        inMenuItem9.setOnAction( evt -> setSystemIn( visualgeez ) );
+        inMenuItem9.setOnAction( evt -> setSystemIn( samawerfa ) );
         inMenuItem9.setToggleGroup( groupInMenu );
-        inMenuItem10.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem10.setOnAction( evt -> setSystemIn( visualgeez ) );
         inMenuItem10.setToggleGroup( groupInMenu );
+        inMenuItem11.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem11.setToggleGroup( groupInMenu );
         
-        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10 );
+        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10,  inMenuItem11 );
 
 
         Menu outFontMenu = new Menu( "Font _Out" );
@@ -379,6 +384,10 @@ public final class DocxConverter extends Application {
 		    		converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
 		   			break;
 
+		    	case ncic:
+		    		converter = new ConvertDocxNCIC( inputFile, outputFile );
+		   			break;
+		   			
 		    	case powergeez:
 		    		converter = new ConvertDocxPowerGeez( inputFile, outputFile );
 		   			break;

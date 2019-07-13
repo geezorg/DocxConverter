@@ -13,20 +13,21 @@ import java.util.Arrays;
  */
 
 
-public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
+public class ConvertDocxNCIC extends ConvertDocxDiacriticalSystem {
 	
-	public ConvertDocxGeezFont( final File inputFile, final File outputFile ) {
+	public ConvertDocxNCIC( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
-		this.initialize( "monodirectional/GeezBasic.txt", "monodirectional/GeezBasic.txt", "geezBasic", "geezBasic" );
+		this.initialize( "monodirectional/NCIC.txt", "monodirectional/NCIC.txt", "geezBasic", "geezBasic" );
 		
 		huletNeteb = ':';
 		
 		font1Typefaces.addAll(
-			Arrays.asList ( 
-				"GeezAddis",
-				"geezDirib",
-				"geezLong",
-				"GeezThin" 
+			Arrays.asList(
+			    "AGF - Zemen",
+			    "AGF - Dawit",
+			    "AGF - Ejji Tsihuf",
+			    "AGF - Rejim",
+			    "AGF - Yigezu Bisrat"
 			)
 		);
 		
@@ -35,11 +36,7 @@ public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
 		}
 		
 		diacritics.addAll (
-			Arrays.asList ( "\u003c", "\u003d", "\u003e",
-					"\u004f", "\u005e", "\u005f",
-					"\u00b9", "\u00e1", "\u00ec", "\u00ee", "\u00ef",
-					"\u00fa", "\u00fb", "\u00fc", "\u00fd", "\u00fe", "\u00ff"
-			)
+			Arrays.asList ( "\u00fa", "\u00fb", "\u00fc", "\u00fd", "\u00fe","\u00ff" )
 		);
 		
 		translit2 = null;

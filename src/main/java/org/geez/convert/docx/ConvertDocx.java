@@ -23,6 +23,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
 
@@ -142,9 +143,11 @@ public class ConvertDocx implements Callable<Void> {
 		if(! stFinder.hasStyles() ) {
 			return;
 		}
+		/*
 		stFinder.clearResults();
 		
 		new TraversalUtil( part.getContents(), stFinder );
+		*/
 
 		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results;
 		
@@ -195,7 +198,7 @@ public class ConvertDocx implements Callable<Void> {
 							String out = convertText( text );
 							text.setValue( out );
 							rObjects.set(i, text);
-					}
+						}
 					}
 				}
 			}
@@ -253,7 +256,7 @@ public class ConvertDocx implements Callable<Void> {
 								String out = convertText( text );
 								text.setValue( out );
 								rObjects.set(i, text);
-						}
+							}
 						}
 					}
 				}
@@ -291,9 +294,19 @@ public class ConvertDocx implements Callable<Void> {
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 			
        		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
-       		StyledTextFinder stf = new StyledTextFinder( styleIdToFont );
+       		StyledTextFinder    stf = new StyledTextFinder( styleIdToFont );
     		UnstyledTextFinder ustf = new UnstyledTextFinder(targetTypefaces, fontOut);
     		
+    		for(String font: documentPart.fontsInUse() ) {
+    			System.out.println( "Font in Use: " + font );
+    		}
+    		
+    		StyleDefinitionsPart sdp = documentPart.getStyleDefinitionsPart();
+    		if( sdp != null )
+    		for(String font: documentPart.fontsInUse() ) {
+    			System.out.println( "Font in Use: " + font );
+    		}
+
     		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
 
 			normalizeText( documentPart, stf, ustf );
