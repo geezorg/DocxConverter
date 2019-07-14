@@ -71,6 +71,7 @@ public final class DocxConverter extends Application {
     private Desktop desktop = Desktop.getDesktop();
     
     // Input Fonts
+    private static final String autodetect = "Autodetect";
 	private static final String brana = "Brana I/II";
 	private static final String geezii = "Geez, GeezII";
 	private static final String geezigna = "Geezigna";
@@ -90,7 +91,7 @@ public final class DocxConverter extends Application {
 	private static final String powergeez_uni = "Power Geez Unicode1";
 	private static final String bembino = "Bembino";
 	
-	private String systemIn  = brana; // alphabetic based default
+	private String systemIn  = autodetect;
 	private String systemOut = abyssinica;
 	private boolean openOutput = true;
 	private List<File> inputList = null;
@@ -119,6 +120,7 @@ public final class DocxConverter extends Application {
         }
 
         Menu inFontMenu = new Menu( "Font _In" );
+        RadioMenuItem inMenuItem0 = new RadioMenuItem( autodetect );
         RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + ncic );
         RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + brana );
         RadioMenuItem inMenuItem3 = new RadioMenuItem( "_" + geezii );
@@ -132,8 +134,9 @@ public final class DocxConverter extends Application {
         RadioMenuItem inMenuItem11 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
+        inMenuItem0.setSelected(true);
+        inMenuItem0.setOnAction( evt -> setSystemIn( autodetect ) );
         inMenuItem1.setOnAction( evt -> setSystemIn( ncic ) );
-        inMenuItem1.setSelected(true);
         inMenuItem1.setToggleGroup( groupInMenu );
         inMenuItem2.setOnAction( evt -> setSystemIn( brana ) );
         inMenuItem2.setToggleGroup( groupInMenu );
@@ -156,7 +159,7 @@ public final class DocxConverter extends Application {
         inMenuItem11.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
         inMenuItem11.setToggleGroup( groupInMenu );
         
-        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10,  inMenuItem11 );
+        inFontMenu.getItems().addAll( inMenuItem0, new SeparatorMenuItem(), inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10,  inMenuItem11 );
 
 
         Menu outFontMenu = new Menu( "Font _Out" );
