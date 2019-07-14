@@ -136,6 +136,7 @@ public final class DocxConverter extends Application {
         
         inMenuItem0.setSelected(true);
         inMenuItem0.setOnAction( evt -> setSystemIn( autodetect ) );
+        inMenuItem0.setToggleGroup( groupInMenu );
         inMenuItem1.setOnAction( evt -> setSystemIn( ncic ) );
         inMenuItem1.setToggleGroup( groupInMenu );
         inMenuItem2.setOnAction( evt -> setSystemIn( brana ) );
