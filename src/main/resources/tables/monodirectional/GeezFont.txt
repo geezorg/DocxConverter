@@ -1,4 +1,19 @@
-$kaib = [\x3c \x3d \xfa] ;
+################################################################################
+#
+# This is a mono-directional mapping file for the GeezFont font encoding into the
+# Unicode standard for Ethiopic. The file is intended to be read as input for
+# the International Components for Unicode (ICU) software library. The mapping
+# syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# GeezAddis, geezBasic, geezDirib, geezLong, and GeezThing fonts were provided with
+# the GeezFont software created by Fikre Yibrehu of Visual Information Technology.
+#
+################################################################################
+#
+#
+#$kaib = [\x3c \x3d \xfa] ;
 $salis = [\x3e \x5e] ;
 $hamis = [\x5f \xfd];
 $diqala_rabi = [\x4f \xfc] ;
@@ -7,6 +22,7 @@ $diaqala_geez = [\xe1 \xff] ;
 $diqala_kaib = [\xee \xfb] ;
 $diqala_salis = \xec ;
 $macron = \xfe ;
+#
 ሀ ← \x7b $kaib ;
 ሀ ← \x7b ;
 ሃ ← \x7c $salis ;
@@ -302,3 +318,11 @@ $macron = \xfe ;
 ፺ ← \xf7 ;
 ፻ ← \xf8\xf8 ;
 ፻ ← \xf8 ;
+#
+#
+# Strip away any remaining diacritical marks
+# 
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron ] ;
+#
+#
+:: ([\x20-\xff ]) ;

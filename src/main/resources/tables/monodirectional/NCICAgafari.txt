@@ -309,3 +309,11 @@ No Map found for d0\xac
 ፃፅ ← \xe4$salis ;
 ፃፇ ← \xe4$hamis ;
 ፐፗ ← \xf3$diqala_rabi ;
+#
+#
+# Strip away any remaining diacritical marks
+# 
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron $plosive $diqala_hamis_left ] ;
+#
+#
+:: ([\x20-\xff ]) ;
