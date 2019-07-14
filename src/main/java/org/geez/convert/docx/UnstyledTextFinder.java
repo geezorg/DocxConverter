@@ -126,6 +126,21 @@ public class UnstyledTextFinder extends CallbackImpl {
 		else if (o instanceof org.docx4j.wml.P) {
 			// Why do we do this checking if we store no found nodes??
 			// Remove this code, if nothing breaks after commenting it out
+			/* We need this code block to map the font name (in checkTargetFont) to handle
+			 * hidden control characters for paragraph breaks (¶) and the like,
+			 * for example:
+			 *          
+			<w:p w:rsidR="00000000" w:rsidRDefault="002335F2">
+                <w:pPr>
+                    <w:jc w:val="center"/>
+                    <w:rPr>
+                        <w:rFonts w:ascii="GeezNewA" w:hAnsi="GeezNewA"/>
+                        <w:i/>
+                        <w:iCs/>
+                        <w:sz w:val="28"/>
+                    </w:rPr>
+                </w:pPr>
+			 */
 			P p = (org.docx4j.wml.P)o;
 			PPr ppr = p.getPPr();
 			if (ppr == null ) return null;
@@ -136,8 +151,8 @@ public class UnstyledTextFinder extends CallbackImpl {
 			if ( fontIn == null ) {
 				return null;
 			}
-			System.err.println( "Debugging[Unstyled Text Finder]: Found <w:p><w:pPr><w:rPr> with content");
 		}
+		
     	
         return null;
     }

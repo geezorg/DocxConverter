@@ -25,6 +25,9 @@ import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RFonts;
+import org.docx4j.wml.RPr;
+import org.docx4j.wml.Style;
 import org.docx4j.wml.Text;
 
 import com.ibm.icu.text.Transliterator;
@@ -292,20 +295,30 @@ public class ConvertDocx implements Callable<Void> {
 			Thread.sleep(100);
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
+
+    		
+    		StyleDefinitionsPart sdp = documentPart.getStyleDefinitionsPart();
+    		List<Style> styleList = sdp.getJaxbElement().getStyle();
+    	    	for(Style style: styleList) {
+    	    		String name = style.getName().getVal();
+    	    		RPr rpr = style.getRPr();
+    	    		if( (rpr != null) && (rpr.getRFonts() != null) ) {
+    	    			RFonts rfonts = rpr.getRFonts();
+    	    			String ascii = rfonts.getAscii();
+    	    			if( ascii != null )
+    	    			System.out.println( "Font in Use (Style): " + ascii + " / "  + name );
+    	    		}
+    	    		
+    	    	}
+    		
+    		for(String font: documentPart.fontsInUse() ) {
+    			System.out.println( "Font in Use: " + font );
+    		}
+    		
 			
        		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
        		StyledTextFinder    stf = new StyledTextFinder( styleIdToFont );
     		UnstyledTextFinder ustf = new UnstyledTextFinder(targetTypefaces, fontOut);
-    		
-    		for(String font: documentPart.fontsInUse() ) {
-    			System.out.println( "Font in Use: " + font );
-    		}
-    		
-    		StyleDefinitionsPart sdp = documentPart.getStyleDefinitionsPart();
-    		if( sdp != null )
-    		for(String font: documentPart.fontsInUse() ) {
-    			System.out.println( "Font in Use: " + font );
-    		}
 
     		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
 
