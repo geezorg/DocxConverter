@@ -299,9 +299,9 @@ $diqala_rabi = \xff ;
 ፗ ← \xf3$diqala_rabi ;
 ፐ ← \xf3 ;
 
-No Map found for 6d\xac
-No Map found for a5\xac
-No Map found for d0\xac
+# No Map found for 6d\xac
+# No Map found for a5\xac
+# No Map found for d0\xac
 #
 #
 # Strip away any remaining diacritical marks
