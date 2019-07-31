@@ -48,7 +48,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 
 public class ConvertDocx implements Callable<Void> {
-	protected Transliterator t = null;
+	protected Transliterator xlit = null;
 	protected String fontOut = null;
 	protected String fontIn = null;
 	protected char huletNeteb = 0x0;
@@ -134,11 +134,11 @@ public class ConvertDocx implements Callable<Void> {
 
 	public String convertText( Text text ) {
 		localCheck( text );
-		return t.transliterate( text.getValue() );
+		return xlit.transliterate( text.getValue() );
 	}
 
 	public String convertText( String text ) {
-		return t.transliterate( text );
+		return xlit.transliterate( text );
 	}
 	
 	
@@ -158,7 +158,7 @@ public class ConvertDocx implements Callable<Void> {
 			double i = progress.get() * totalNodes;
 			for(Text text: textNodes.keySet() ) {
 				fontIn = textNodes.get(text);
-				t = fontToTransliteratorMap.get( fontIn );
+				xlit = fontToTransliteratorMap.get( fontIn );
 				String out = convertText( text );
 				text.setValue( out );
 				progress.set( i / totalNodes );
@@ -168,7 +168,7 @@ public class ConvertDocx implements Callable<Void> {
 		else {
 			for(Text text: textNodes.keySet() ) {
 				fontIn = textNodes.get(text);
-				t = fontToTransliteratorMap.get( fontIn );
+				xlit = fontToTransliteratorMap.get( fontIn );
 				String out = convertText( text );
 				text.setValue( out );
 			}
@@ -177,7 +177,7 @@ public class ConvertDocx implements Callable<Void> {
 			HashMap<R.Sym,String> symNodes = (HashMap<R.Sym,String>)stFinder.symResults; 
 			for(R.Sym sym: symNodes.keySet() ) {
 				fontIn = symNodes.get(sym);
-				t = fontToTransliteratorMap.get( fontIn );
+				xlit = fontToTransliteratorMap.get( fontIn );
 				String symChar = sym.getChar();
 				int decimal = Integer.parseInt( symChar, 16 );
 				char ch = (char)decimal;
@@ -216,7 +216,7 @@ public class ConvertDocx implements Callable<Void> {
 				double i = 0.0;
 				for(Text text: textNodes.keySet() ) {
 					fontIn = textNodes.get(text);
-					t = fontToTransliteratorMap.get( fontIn );
+					xlit = fontToTransliteratorMap.get( fontIn );
 					String out = convertText( text );
 					text.setValue( out );
 					progress.set( i / totalNodes );
@@ -226,7 +226,7 @@ public class ConvertDocx implements Callable<Void> {
 			else {
 				for(Text text: textNodes.keySet() ) {
 					fontIn = textNodes.get(text);
-					t = fontToTransliteratorMap.get( fontIn );
+					xlit = fontToTransliteratorMap.get( fontIn );
 					String out = convertText( text );
 					text.setValue( out );
 				}
@@ -235,7 +235,7 @@ public class ConvertDocx implements Callable<Void> {
 				HashMap<R.Sym,String> symNodes = (HashMap<R.Sym,String>)ustFinder.symResults; 
 				for(R.Sym sym: symNodes.keySet() ) {
 					fontIn = symNodes.get(sym);
-					t = fontToTransliteratorMap.get( fontIn );
+					xlit = fontToTransliteratorMap.get( fontIn );
 					String symChar = sym.getChar();
 					int decimal = Integer.parseInt( symChar, 16 );
 					char ch = (char)decimal;
