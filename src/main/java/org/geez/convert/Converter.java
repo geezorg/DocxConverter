@@ -60,25 +60,27 @@ public class Converter  implements Callable<Void> {
     }
     
     public Converter( final File inputFile, final File outputFile ) {
-    	this.inputFile  = inputFile;
-    	this.outputFile = outputFile;
+    	setFiles( inputFile, outputFile );
     }
        
     public Converter( final File inputFile, final File outputFile, String direction ) {
-    	this.inputFile    = inputFile;
-    	this.outputFile   = outputFile;
+    	setFiles( inputFile, outputFile );
 		this.icuDirection = ( direction.equals("both") || direction.equals("forward") ) ? Transliterator.FORWARD : Transliterator.REVERSE;
     }
     
     public Converter( final File inputFile, final File outputFile, int icuDirection ) {
-    	this.inputFile    = inputFile;
-    	this.outputFile   = outputFile;
+    	setFiles( inputFile, outputFile );
 		this.icuDirection = icuDirection; // should throw an exception if not Transliterator.FORWARD or Transliterator.REVERSE;
     }
       
     public Converter() {
     }
 
+    public void setFiles( final File inputFile, final File outputFile ) {
+    	this.inputFile  = inputFile;
+    	this.outputFile = outputFile;
+    }
+    
     public ReadOnlyDoubleProperty progressProperty() {
         return progress.getReadOnlyProperty() ;
     }   
