@@ -21,14 +21,14 @@ import com.ibm.icu.text.Transliterator;
  */
 
 
-abstract class ConvertDocxMultiFont extends ConvertDocx {
+abstract class ConvertDocxDuoFont extends ConvertDocx {
 	protected Transliterator translit1 = null;
 	protected Transliterator translit2 = null;
 	protected String fontName1 = null;
 	protected String fontName2 = null;
 
 
-	public ConvertDocxMultiFont( final File inputFile, final File outputFile ) {
+	public ConvertDocxDuoFont( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
 	}
 	
