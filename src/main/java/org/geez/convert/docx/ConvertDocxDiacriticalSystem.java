@@ -21,7 +21,7 @@ import org.docx4j.wml.Text;
  */
 
 
-public class ConvertDocxDiacriticalSystem extends ConvertDocx {
+public class ConvertDocxDiacriticalSystem extends ConvertDocxMultiFont {
 	protected final List<String> font1Typefaces = new ArrayList<String>();
 
 	protected final ArrayList<String> diacritics = new ArrayList<String>();
@@ -70,7 +70,7 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocx {
 	
 	public String convertText( Text text ) {
 		localCheck( text );
-		return t.transliterate( text.getValue() );
+		return xlit.transliterate( text.getValue() );
 	}
 	
 	

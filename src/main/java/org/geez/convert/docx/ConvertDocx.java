@@ -1,15 +1,12 @@
 package org.geez.convert.docx;
 
-import java.io.BufferedReader;
+import org.geez.convert.Converter;
+
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.docx4j.TraversalUtil;
 import org.docx4j.XmlUtils;
@@ -23,18 +20,13 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.FootnotesPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
-import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.R;
-import org.docx4j.wml.RFonts;
-import org.docx4j.wml.RPr;
-import org.docx4j.wml.Style;
 import org.docx4j.wml.Text;
 
 import com.ibm.icu.text.Transliterator;
 
 // StatusBar Imports:
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 /*
@@ -47,8 +39,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  */
 
 
-public class ConvertDocx implements Callable<Void> {
-	protected Transliterator xlit = null;
+public abstract class ConvertDocx extends Converter {
 	protected String fontOut = null;
 	protected String fontIn = null;
 	protected char huletNeteb = 0x0;
@@ -57,76 +48,41 @@ public class ConvertDocx implements Callable<Void> {
 
     private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
 
-    private File inputFile = null, outputFile = null;
+    // private File inputFile = null, outputFile = null;
     
     public ConvertDocx( final File inputFile, final File outputFile ) {
-    	this.inputFile  = inputFile;
-    	this.outputFile = outputFile;
-    }
-
-    public ReadOnlyDoubleProperty progressProperty() {
-        return progress.getReadOnlyProperty() ;
-    }   
-    
-    public final double getProgress() {
-        return progressProperty().get();
+    	super( inputFile, outputFile );
     }
     
 	public void setFont(String fontOut) {
 		this.fontOut = fontOut;
 	}
-	
-	public String readRules( String fileName ) throws IOException {
-		String line, segment, rules = "";
-
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		InputStream in = classLoader.getResourceAsStream( "tables/" + fileName ); 
-		BufferedReader ruleFile = new BufferedReader( new InputStreamReader(in, "UTF-8") );
-		while ( (line = ruleFile.readLine()) != null) {
-			if ( line.trim().equals("") || line.charAt(0) == '#' ) {
-				continue;
-			}
-			segment = line.replaceFirst ( "^(.*?)#(.*)$", "$1" );
-			rules += ( segment == null ) ? line : segment;
-		}
-		ruleFile.close();
-		return rules;
-	}
 
 
-	protected Transliterator translit1 = null;
-	protected Transliterator translit2 = null;
-	protected String fontName1 = null;
-	protected String fontName2 = null;
+	protected String fontName = null;
 	protected List<String> targetTypefaces = new  ArrayList<String>();
 	protected Map<String,Transliterator> fontToTransliteratorMap = new HashMap<String,Transliterator>();
 
 	public void initialize(
 		final String table1RulesFile,
-		final String table2RulesFile,
-		final String fontName1,
-		final String fontName2)
+		final String fontName1)
 	{
 		try {
 			// specify the transliteration file in the first argument.
 			// read the input, transliterate, and write to output
-			String table1Text = readRules( table1RulesFile  );
-			String table2Text = readRules( table2RulesFile );
+			String table1Text = readRulesResourceFile( table1RulesFile  );
 
-			translit1 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-			translit2 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-			this.fontName1 = fontName1;
-			this.fontName2 = fontName2;
+			xlit = Transliterator.createFromRules( "Ethiopic-ExtendedLatin", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
+			this.fontName = fontName1;
 			
 			targetTypefaces.add( fontName1 );
-			targetTypefaces.add( fontName2 );
-			fontToTransliteratorMap.put( fontName1, translit1 );
-			fontToTransliteratorMap.put( fontName2, translit2 );
+			fontToTransliteratorMap.put( fontName, xlit );
 
 		} catch ( Exception ex ) {
 			System.err.println( ex );
 		}
 	}
+	
 	
 	protected void localCheck( Text text ) {
 		return;
@@ -141,16 +97,21 @@ public class ConvertDocx implements Callable<Void> {
 		return xlit.transliterate( text );
 	}
 	
+	public void setTargetTypefaces(List<String> targetTypefaces) {
+		this.targetTypefaces = targetTypefaces;
+	}
+	
+	public List<String> getTargetTypefaces() {
+		return  targetTypefaces;
+	}
 	
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
 		if(! stFinder.hasStyles() ) {
 			return;
 		}
-		/*
 		stFinder.clearResults();
 		
 		new TraversalUtil( part.getContents(), stFinder );
-		*/
 
 		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results;
 		
@@ -201,7 +162,7 @@ public class ConvertDocx implements Callable<Void> {
 							String out = convertText( text );
 							text.setValue( out );
 							rObjects.set(i, text);
-						}
+					}
 					}
 				}
 			}
@@ -295,32 +256,13 @@ public class ConvertDocx implements Callable<Void> {
 			Thread.sleep(100);
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-
-    		
-    		StyleDefinitionsPart sdp = documentPart.getStyleDefinitionsPart();
-    		List<Style> styleList = sdp.getJaxbElement().getStyle();
-    	    	for(Style style: styleList) {
-    	    		String name = style.getName().getVal();
-    	    		RPr rpr = style.getRPr();
-    	    		if( (rpr != null) && (rpr.getRFonts() != null) ) {
-    	    			RFonts rfonts = rpr.getRFonts();
-    	    			String ascii = rfonts.getAscii();
-    	    			if( ascii != null )
-    	    			System.out.println( "Font in Use (Style): " + ascii + " / "  + name );
-    	    		}
-    	    		
-    	    	}
-    		
-    		for(String font: documentPart.fontsInUse() ) {
-    			System.out.println( "Font in Use: " + font );
-    		}
-    		
 			
        		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
-       		StyledTextFinder    stf = new StyledTextFinder( styleIdToFont );
+       		StyledTextFinder stf = new StyledTextFinder( styleIdToFont );
     		UnstyledTextFinder ustf = new UnstyledTextFinder(targetTypefaces, fontOut);
-
+    		
     		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
+    		// selectFonts( documentPart );
 
 			normalizeText( documentPart, stf, ustf );
     		totalNodes = stf.results.size() + ustf.results.size();
@@ -415,6 +357,7 @@ public class ConvertDocx implements Callable<Void> {
 
 
 	    ConvertDocx converter = null;
+	    
 		switch( systemIn ) {
 			case "brana":
 				converter = new ConvertDocxBrana( inputFile, outputFile );
@@ -460,7 +403,7 @@ public class ConvertDocx implements Callable<Void> {
 				System.err.println( "Unrecognized input system: " + systemIn );
 				System.exit(1);
 		}
-		
+
 		converter.process( inputFile, outputFile );
 	}
 }

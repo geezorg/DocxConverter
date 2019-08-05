@@ -74,7 +74,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 			sb.append( (char)x );
 		}
 		
-		return t.transliterate( sb.toString() );
+		return xlit.transliterate( sb.toString() );
 	}
 	
 	
