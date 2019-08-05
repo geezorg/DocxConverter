@@ -12,7 +12,7 @@ import java.io.File;
  */
 
 
-public class ConvertDocxBrana extends ConvertDocx {
+public class ConvertDocxBrana extends ConvertDocxMultiFont {
 
 	public ConvertDocxBrana( final File inputFile, final File outputFile ) {
 		super( inputFile, outputFile );
