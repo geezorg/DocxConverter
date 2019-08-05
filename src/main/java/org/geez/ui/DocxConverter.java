@@ -337,6 +337,8 @@ public final class DocxConverter extends Application {
         		converted = false;
         	}
             int i = 0;
+            // if "Autodetect" is the system out, create the converter instance here and
+            // pass it the inputList to iterate over to setup its font list and map
             for (File file : inputList) {
                 processFile( file, convertButton, listView, i );
                 i++;

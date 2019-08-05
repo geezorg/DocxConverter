@@ -36,6 +36,7 @@ public class Converter  implements Callable<Void> {
     protected File inputFile = null, outputFile = null;
 	protected Transliterator xlit = null;
 	protected int icuDirection = -1;
+	public static String[] IDs = null;
     
     protected static DocumentBuilder builder = null; 
     {
@@ -79,6 +80,10 @@ public class Converter  implements Callable<Void> {
     public void setFiles( final File inputFile, final File outputFile ) {
     	this.inputFile  = inputFile;
     	this.outputFile = outputFile;
+    }
+    
+    public String[] getIDs() {
+    	return IDs;
     }
     
     public ReadOnlyDoubleProperty progressProperty() {

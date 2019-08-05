@@ -40,13 +40,11 @@ abstract class ConvertDocxDuoFont extends ConvertDocx {
 		final String fontName2)
 	{
 		try {
-			// specify the transliteration file in the first argument.
-			// read the input, transliterate, and write to output
 			String table1Text = readRulesResourceFile( table1RulesFile  );
 			String table2Text = readRulesResourceFile( table2RulesFile );
 
-			translit1 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin1", table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
-			translit2 = Transliterator.createFromRules( "Ethiopic-ExtendedLatin2", table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
+			translit1 = Transliterator.createFromRules( IDs[0], table1Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
+			translit2 = Transliterator.createFromRules( IDs[1], table2Text.replace( '\ufeff', ' ' ), Transliterator.REVERSE );
 			this.fontName1 = fontName1;
 			this.fontName2 = fontName2;
 			
