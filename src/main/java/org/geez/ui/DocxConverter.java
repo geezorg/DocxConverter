@@ -362,58 +362,63 @@ public final class DocxConverter extends Application {
         	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
     		File outputFile = new File ( outputFilePath );
 
-    		
-    		switch( systemIn ) {
-		   		case brana:
-		   			converter = new ConvertDocxBrana( inputFile, outputFile );
-		   			break;
-	    			
-			   	case geezii:
-		    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
-		    		break;	
-	    			
-			   	case geezigna:
-		    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
-		    		break;
-		
-			   	case geezfont:
-		    		converter = new ConvertDocxGeezFont( inputFile, outputFile );
-		    		break;    			
-		    			
-		   		case geeznewab:
-	    			converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
-	    			break;
-
-		    	case geeztypenet:
-		    		converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
-		   			break;
-
-		    	case ncic:
-		    		converter = new ConvertDocxNCIC( inputFile, outputFile );
-		   			break;
-		   			
-		    	case powergeez:
-		    		converter = new ConvertDocxPowerGeez( inputFile, outputFile );
-		   			break;
-
-		    	case samawerfa:
-		    		converter = new ConvertDocxSamawerfa( inputFile, outputFile );
-		   			break;
-		   			
-		    	case visualgeez:
-		    		converter = new ConvertDocxVisualGeez( inputFile, outputFile );
-		    		break;
-		   			
-		    	case visualgeez2000:
-		    		converter = new ConvertDocxVisualGeez2000( inputFile, outputFile );
-		    		break;
-    			
-		    	default:
-		    		System.err.println( "Unrecognized input system: " + systemIn );
-		    		return;
+    		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
+    		if (converter != null ) {
+    			converter.setFiles( inputFile, outputFile );
     		}
-		
-    		converter.setFont( systemOut );
+    		else {
+	    		switch( systemIn ) {
+			   		case brana:
+			   			converter = new ConvertDocxBrana( inputFile, outputFile );
+			   			break;
+		    			
+				   	case geezii:
+			    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
+			    		break;	
+		    			
+				   	case geezigna:
+			    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
+			    		break;
+			
+				   	case geezfont:
+			    		converter = new ConvertDocxGeezFont( inputFile, outputFile );
+			    		break;    			
+			    			
+			   		case geeznewab:
+		    			converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
+		    			break;
+	
+			    	case geeztypenet:
+			    		converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
+			   			break;
+	
+			    	case ncic:
+			    		converter = new ConvertDocxNCIC( inputFile, outputFile );
+			   			break;
+			   			
+			    	case powergeez:
+			    		converter = new ConvertDocxPowerGeez( inputFile, outputFile );
+			   			break;
+	
+			    	case samawerfa:
+			    		converter = new ConvertDocxSamawerfa( inputFile, outputFile );
+			   			break;
+			   			
+			    	case visualgeez:
+			    		converter = new ConvertDocxVisualGeez( inputFile, outputFile );
+			    		break;
+			   			
+			    	case visualgeez2000:
+			    		converter = new ConvertDocxVisualGeez2000( inputFile, outputFile );
+			    		break;
+	    			
+			    	default:
+			    		System.err.println( "Unrecognized input system: " + systemIn );
+			    		return;
+	    		}
+			
+	    		converter.setFont( systemOut );
+    		}
 
     		
     		// references:
