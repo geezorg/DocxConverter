@@ -21,6 +21,8 @@ import org.geez.convert.docx.ConvertDocxPowerGeez;
 import org.geez.convert.docx.ConvertDocxSamawerfa;
 import org.geez.convert.docx.ConvertDocxVisualGeez;
 import org.geez.convert.docx.ConvertDocxVisualGeez2000;
+import org.geez.convert.docx.DocxProcessor;
+import org.geez.convert.docx.DocxProcessorAutodetect;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -94,10 +96,11 @@ public final class DocxConverter extends Application {
 	private String systemIn  = autodetect;
 	private String systemOut = abyssinica;
 	private boolean openOutput = true;
-	private List<File> inputList = null;
+	private List<File> inputFileList = null;
 	protected StatusBar statusBar = new StatusBar();
 	private boolean converted = false;
 	
+    private DocxProcessor processor = new DocxProcessor();
 	
     private static void configureFileChooser( final FileChooser fileChooser ) {      
     	fileChooser.setTitle("View Word Files");
@@ -217,10 +220,10 @@ public final class DocxConverter extends Application {
                 public void handle(final ActionEvent e) {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
-                    inputList = fileChooser.showOpenMultipleDialog( stage );
+                    inputFileList = fileChooser.showOpenMultipleDialog( stage );
                     
-                    if ( inputList != null ) {
-                    	for( File file: inputList) {
+                    if ( inputFileList != null ) {
+                    	for( File file: inputFileList) {
                     		Label rowLabel = new Label( file.getName() );
                     		data.add( rowLabel );
                     		Tooltip tooltip = new Tooltip( file.getPath() );
@@ -326,7 +329,7 @@ public final class DocxConverter extends Application {
  
     private void convertFiles(Button convertButton, ListView<Label> listView) {
     	
-        if ( inputList != null ) {
+        if ( inputFileList != null ) {
         	if( converted ) {
         		// this is a re-run, reset file names;
         		for(Label label: listView.getItems()) {
@@ -339,79 +342,88 @@ public final class DocxConverter extends Application {
             int i = 0;
             // if "Autodetect" is the system out, create the converter instance here and
             // pass it the inputList to iterate over to setup its font list and map
-            for (File file : inputList) {
-                processFile( file, convertButton, listView, i );
-                i++;
-                
-                // this sleep seems to help slower CPUs
-                // when a list of files is processed, and
-                // avoids an exception from wordMLPackage.save( outputFile );
-                try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-             }
+            if( systemIn.equals( "Autodetect") ) {
+            	processor = new DocxProcessorAutodetect( inputFileList );
+            }
+            else {
+	            for (File file : inputFileList) {
+	                processFile( file, convertButton, listView, i );
+	                i++;
+	                
+	                // this sleep seems to help slower CPUs
+	                // when a list of files is processed, and
+	                // avoids an exception from wordMLPackage.save( outputFile );
+	                try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+	             }
+            }
             converted = true;
          } 
     }
     
     
-    ConvertDocx converter = null;
+
     private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
         try {
         	String inputFilePath = inputFile.getPath();
         	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
     		File outputFile = new File ( outputFilePath );
+    		
+    		processor.setFiles( inputFile, outputFile );
+    		processor.setFontOut( systemOut );
 
+    		ConvertDocx converter = null;
     		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
-    		if (converter != null ) {
-    			converter.setFiles( inputFile, outputFile );
+    		if (processor != null ) {
+    			processor.setFiles( inputFile, outputFile );
     		}
     		else {
 	    		switch( systemIn ) {
 			   		case brana:
-			   			converter = new ConvertDocxBrana( inputFile, outputFile );
+			   			converter = new ConvertDocxBrana();
 			   			break;
 		    			
 				   	case geezii:
-			    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
+			    		converter = new ConvertDocxFeedelGeezII();
 			    		break;	
 		    			
 				   	case geezigna:
-			    		converter = new ConvertDocxFeedelGeezigna( inputFile, outputFile );
+			    		converter = new ConvertDocxFeedelGeezigna();
 			    		break;
 			
 				   	case geezfont:
-			    		converter = new ConvertDocxGeezFont( inputFile, outputFile );
+			    		converter = new ConvertDocxGeezFont();
 			    		break;    			
 			    			
 			   		case geeznewab:
-		    			converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
+		    			converter = new ConvertDocxFeedelGeezNewAB();
 		    			break;
 	
 			    	case geeztypenet:
-			    		converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
+			    		converter = new ConvertDocxGeezTypeNet();
 			   			break;
 	
 			    	case ncic:
-			    		converter = new ConvertDocxNCIC( inputFile, outputFile );
+			    		converter = new ConvertDocxNCIC();
 			   			break;
 			   			
 			    	case powergeez:
-			    		converter = new ConvertDocxPowerGeez( inputFile, outputFile );
+			    		converter = new ConvertDocxPowerGeez();
 			   			break;
 	
 			    	case samawerfa:
-			    		converter = new ConvertDocxSamawerfa( inputFile, outputFile );
+			    		converter = new ConvertDocxSamawerfa();
 			   			break;
 			   			
 			    	case visualgeez:
-			    		converter = new ConvertDocxVisualGeez( inputFile, outputFile );
+			    		converter = new ConvertDocxVisualGeez();
 			    		break;
 			   			
 			    	case visualgeez2000:
-			    		converter = new ConvertDocxVisualGeez2000( inputFile, outputFile );
+			    		converter = new ConvertDocxVisualGeez2000();
 			    		break;
 	    			
 			    	default:
@@ -419,10 +431,9 @@ public final class DocxConverter extends Application {
 			    		return;
 	    		}
 			
-	    		converter.setFont( systemOut );
     		}
 
-    		
+    		processor.addConverter( converter );
     		// references:
     		// https://stackoverflow.com/questions/49222017/javafx-make-threads-wait-and-threadsave-gui-update
     		// https://stackoverflow.com/questions/47419949/propagate-progress-information-from-callable-to-task
@@ -430,11 +441,11 @@ public final class DocxConverter extends Application {
                 @Override protected Void call() throws Exception {
                 	
                 	updateProgress(0.0,1.0);
-                	converter.progressProperty().addListener( 
+                	processor.progressProperty().addListener( 
                 		(obs, oldProgress, newProgress) -> updateProgress( newProgress.doubleValue(), 1.0 )
                 	);
                 	updateMessage("[" +  (listIndex+1) + "/" + listView.getItems().size() + "]" );
-                	converter.call();
+                	processor.call();
                 	updateProgress(1.0, 1.0);
 
     				done();

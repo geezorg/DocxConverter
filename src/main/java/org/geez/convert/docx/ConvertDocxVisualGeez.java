@@ -1,17 +1,31 @@
 package org.geez.convert.docx;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 
 
 public class ConvertDocxVisualGeez extends ConvertDocxDiacriticalSystem {
 
+	public static final Set<String> supportedFonts = new HashSet<String> (
+			Arrays.asList(
+					"VG2 Main",    "VG2 Main regular",
+				    "VG2 Agazian", "VG2 Agazian regular",
+				    "VG2 Title",   "VG2 Title regular"
+			)
+	);
+	
 	{
 		IDs = new String[] { "VisualGeez", "VisualGeezNumbers" } ;
 	}
-
-	public ConvertDocxVisualGeez( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	
+	public ConvertDocxVisualGeez() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/VisualGeez.txt", "bidirectional/VisualGeezNumbers.txt", "VG2 Main", "VG Geez Numbers" );
 		
 		huletNeteb = '\u003a';

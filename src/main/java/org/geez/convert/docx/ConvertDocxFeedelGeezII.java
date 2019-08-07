@@ -1,21 +1,27 @@
 package org.geez.convert.docx;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.docx4j.wml.Text;
 
 
 
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
-	
+
+	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "GeezI", "GeezII" ) );
 
 	{
 		IDs = new String[] { "FeedelGeez", "FeedelGeezII" } ;
 	}
 	
-
-	public ConvertDocxFeedelGeezII( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	public ConvertDocxFeedelGeezII() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/FeedelGeez.txt", "bidirectional/FeedelGeezII.txt", "Geez", "GeezII" );
 		
 		huletNeteb = '\uf023';
@@ -28,7 +34,6 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 		buildRE();
 		
 	}
-
 
 	public String convertText( Text text ) {
 		localCheck( text );

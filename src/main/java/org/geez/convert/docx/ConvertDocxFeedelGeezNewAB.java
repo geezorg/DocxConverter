@@ -1,9 +1,10 @@
 package org.geez.convert.docx;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.docx4j.wml.Text;
 
@@ -11,14 +12,28 @@ import org.docx4j.wml.Text;
 
 public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 
+	public static final Set<String> supportedFonts = new HashSet<String> (
+			Arrays.asList(
+					"GeezA",      "GeezB",
+				    "GeezNewA",   "GeezNewB",
+				    "GeezSindeA", "GeezSindeB",
+				    "ZewdituA",   "ZewdituB",
+				    "GeezNet"
+			)
+	);
+	
 	{
 		IDs = new String[] { "GeezNewA", "GeezNewB" } ;
 	}
 	
 	private final List<String> font2Typefaces = new ArrayList<String>();
-
-	public ConvertDocxFeedelGeezNewAB( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	
+	public ConvertDocxFeedelGeezNewAB() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/FeedelGeezNewA.txt", "bidirectional/FeedelGeezNewB.txt", "GeezNewA", "GeezNewB" );
 		
 		huletNeteb = '\uf022';
