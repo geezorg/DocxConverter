@@ -1,18 +1,25 @@
 package org.geez.convert.docx;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
 public class ConvertDocxGeezTypeNet extends ConvertDocxDiacriticalSystem {
 
+	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "GeezTypeNet" ) );
+	
 	{
 		IDs = new String[] { "GeezTypeNet" } ;
 	}
 	
-	public ConvertDocxGeezTypeNet( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	public ConvertDocxGeezTypeNet() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/GeezTypeNet.txt", "GeezTypeNet" );
 		
 		huletNeteb = ':';

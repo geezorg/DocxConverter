@@ -1,18 +1,37 @@
 package org.geez.convert.docx;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
 public class ConvertDocxNCIC extends ConvertDocxDiacriticalSystem {
 
+	public static final Set<String> supportedFonts = new HashSet<String> (
+			Arrays.asList(
+					"AGF - Zemen",
+				    "AGF - Dawit",
+				    "AGF - Ejji Tsihuf",
+				    "AGF - Rejim",
+				    "AGF - Yigezu Bisrat"
+			)
+	);
+	
+	public static boolean isSupportedFont(String font) {
+		return supportedFonts.contains( font );
+	}
+	
 	{
 		IDs = new String[] { "NCIC" } ;
 	}
 	
-	public ConvertDocxNCIC( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	public ConvertDocxNCIC() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/NCIC.txt", "AGF - Zemen" );
 		
 		huletNeteb = ':';

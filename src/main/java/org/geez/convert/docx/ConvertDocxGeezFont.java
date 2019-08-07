@@ -1,18 +1,32 @@
 package org.geez.convert.docx;
 
-import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
 public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
 
+	public static final Set<String> supportedFonts = new HashSet<String> (
+			Arrays.asList(
+				"GeezAddis",
+				"geezDirib",
+				"geezLong",
+				"GeezThin" 
+			)
+	);
+	
 	{
 		IDs = new String[] { "GeezFont" } ;
 	}
 	
-	public ConvertDocxGeezFont( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	public ConvertDocxGeezFont() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/GeezFont.txt", "geezBasic" );
 		
 		huletNeteb = ':';
