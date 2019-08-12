@@ -39,6 +39,15 @@ public class DocxProcessor extends DocumentProcessor {
 		}
 	}
     
+	private void processText(Text text, String fontIn) {
+		ConvertDocx converter = fontToConverterMap.get( fontIn );
+		if( converter.isSpacePreservableSymbol( text.getValue() ) ) {
+			text.setSpace( "preserve" );
+		}
+		String out = converter.convertText( text.getValue(), fontIn );
+		text.setValue( out );
+	}
+	
 	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
 		if(! stFinder.hasStyles() ) {
 			return;
@@ -46,34 +55,25 @@ public class DocxProcessor extends DocumentProcessor {
 		stFinder.clearResults();
 		
 		new TraversalUtil( part.getContents(), stFinder );
-		String fontIn = null;
 		HashMap<Text,String> textNodes = (HashMap<Text,String>)stFinder.results;
-		ConvertDocx converter;
 		
 		if( setProgress ) {
 			double i = progress.get() * totalNodes;
 			for(Text text: textNodes.keySet() ) {
-				fontIn = textNodes.get(text);
-				converter = fontToConverterMap.get( fontIn );
-				String out = converter.convertText( text, fontIn );
-				text.setValue( out );
+				processText( text, textNodes.get(text) );
 				progress.set( i / totalNodes );
 				i++;
 			}
 		}
 		else {
 			for(Text text: textNodes.keySet() ) {
-				fontIn = textNodes.get(text);
-				converter = fontToConverterMap.get( fontIn );
-				String out = converter.convertText( text, fontIn );
-				text.setValue( out );
+				processText( text, textNodes.get(text) );
 			}
 		}
 		if(! stFinder.symResults.isEmpty() ) {
 			HashMap<R.Sym,String> symNodes = (HashMap<R.Sym,String>)stFinder.symResults; 
 			for(R.Sym sym: symNodes.keySet() ) {
-				fontIn = symNodes.get(sym);
-				converter = fontToConverterMap.get( fontIn );
+				// fontIn = symNodes.get(sym);
 				String symChar = sym.getChar();
 				int decimal = Integer.parseInt( symChar, 16 );
 				char ch = (char)decimal;
@@ -94,8 +94,7 @@ public class DocxProcessor extends DocumentProcessor {
 							// so long as the value is the same
 							Text text = new Text();
 							text.setValue( String.valueOf( ch ) );
-							String out = converter.convertText( text, fontIn );
-							text.setValue( out );
+							processText( text, symNodes.get(sym) );
 							rObjects.set(i, text);
 					}
 					}
@@ -107,33 +106,24 @@ public class DocxProcessor extends DocumentProcessor {
 
 	public void processUnstyledObjects( final JaxbXmlPart<?> part, UnstyledTextFinder ustFinder ) throws Docx4JException {
 			HashMap<Text,String> textNodes = (HashMap<Text,String>)ustFinder.results;
-			ConvertDocx converter;
-			String fontIn = null;
 			
 			if( setProgress ) {
 				double i = 0.0;
 				for(Text text: textNodes.keySet() ) {
-					fontIn = textNodes.get(text);
-					converter = fontToConverterMap.get( fontIn );
-					String out = converter.convertText( text, fontIn );
-					text.setValue( out );
+					processText( text, textNodes.get(text) );
 					progress.set( i / totalNodes );
 					i++;
 				}		
 			}
 			else {
 				for(Text text: textNodes.keySet() ) {
-					fontIn = textNodes.get(text);
-					converter = fontToConverterMap.get( fontIn );
-					String out = converter.convertText( text, fontIn );
-					text.setValue( out );
+					processText( text, textNodes.get(text) );
 				}
 			}
 			if(! ustFinder.symResults.isEmpty() ) {
 				HashMap<R.Sym,String> symNodes = (HashMap<R.Sym,String>)ustFinder.symResults; 
 				for(R.Sym sym: symNodes.keySet() ) {
-					fontIn = symNodes.get(sym);
-					converter = fontToConverterMap.get( fontIn );
+					// fontIn = symNodes.get(sym);
 					String symChar = sym.getChar();
 					int decimal = Integer.parseInt( symChar, 16 );
 					char ch = (char)decimal;
@@ -154,8 +144,7 @@ public class DocxProcessor extends DocumentProcessor {
 								// so long as the value is the same
 								Text text = new Text();
 								text.setValue( String.valueOf( ch ) );
-								String out = converter.convertText( text, fontIn );
-								text.setValue( out );
+								processText( text, symNodes.get(sym) );
 								rObjects.set(i, text);
 							}
 						}

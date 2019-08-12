@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.docx4j.wml.Text;
-
 import com.ibm.icu.text.Transliterator;
 
 
@@ -72,19 +70,20 @@ public class ConvertDocx extends Converter {
 			System.err.println( ex );
 		}
 	}
+
 	
-	
-	protected void localCheck( Text text ) {
+	protected void localCheck(String text) {
+		// system specific extra conversions
 		return;
 	}
-	
-	public String convertText( Text text, String fontIn ) {
+ 	
+	public String convertText( String text, String fontIn ) {
 		xlit = fontToTransliteratorMap.get( fontIn );
 		if ( xlit == null ) {
 			return null;
 		}
-		localCheck( text );
-		return xlit.transliterate( text.getValue() );
+		// localCheck( text ); no systems are using this anymore
+		return xlit.transliterate( text );
 	}
 	
 	public String convertText( String text ) {

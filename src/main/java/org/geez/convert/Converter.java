@@ -145,5 +145,9 @@ public abstract class Converter {
 		}
 		return "";
 	}
+	
+	public boolean isSpacePreservableSymbol(String space) {
+		return false;
+	}
 
 }

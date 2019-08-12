@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.docx4j.wml.Text;
-
 
 
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
@@ -35,26 +33,21 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 		
 	}
 
-	public String convertText( Text text, String fontName ) {
-		localCheck( text );
-		String value = text.getValue();
+	public String convertText( String text, String fontName ) {
 		StringBuilder sb = new StringBuilder();
 
-		for(int i = 0; i < value.length(); i++) {
-			int x =  ( 0x00ff & (int)value.charAt(i) );
+		for(int i = 0; i < text.length(); i++) {
+			int x =  ( 0x00ff & (int)text.charAt(i) );
 			sb.append( (char)x );
 		}
 		
 		xlit = fontToTransliteratorMap.get( fontName );
 		return xlit.transliterate( sb.toString() );
 	}
+
 	
-	
-	public void localCheck( Text text ) {
-		super.localCheck( text );
-		if( "\uf020".equals( text.getValue() ) ) {
-			text.setSpace( "preserve" );
-		}
+	public boolean isSpacePreservableSymbol(String space) {
+		return ( space.equals("\uf020") );
 	}
 	
 	

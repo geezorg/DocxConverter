@@ -1,12 +1,10 @@
 package org.geez.convert.docx;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 import org.apache.commons.io.FilenameUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
