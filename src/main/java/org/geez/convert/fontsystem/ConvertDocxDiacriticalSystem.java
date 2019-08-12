@@ -50,14 +50,7 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocxDuoFont {
 		return ( isDiacritic(fontName, text) || (text.charAt(0) == huletNeteb) );
 		
 	}
-	
-	
-	public void localCheck( Text text ) {
-		String value = text.getValue();
-		// remove extra diacritical symbol
-		// value = diacriticsRE.matcher(value).replaceAll( "$1" ); // this could be put into the normalizer
-		text.setValue (value );
-	}
+
 	
 	/*
 	public String convertText( Text text, String fontIn ) {

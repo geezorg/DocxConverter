@@ -10,9 +10,7 @@ import org.docx4j.XmlUtils;
 import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.PStyle;
-import org.docx4j.wml.ParaRPr;
 import org.docx4j.wml.R;
-import org.docx4j.wml.RPr;
 import org.docx4j.wml.Text;
 
 
