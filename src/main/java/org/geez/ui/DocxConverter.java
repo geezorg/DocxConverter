@@ -313,7 +313,7 @@ public final class DocxConverter extends Application {
         HBox menubars = new HBox(leftBar, spacer, rightBar);
         
  
-        final BorderPane rootGroup =new BorderPane();
+        final BorderPane rootGroup = new BorderPane();
         rootGroup.setTop( menubars );
         rootGroup.setCenter( listVBox );
         rootGroup.setBottom( vbottomBox );
@@ -344,43 +344,40 @@ public final class DocxConverter extends Application {
             // pass it the inputList to iterate over to setup its font list and map
             if( systemIn.equals( "Autodetect") ) {
             	processor = new DocxProcessorAutodetect( inputFileList );
+            	((DocxProcessorAutodetect)processor).readFonts();
             }
             else {
-	            for (File file : inputFileList) {
-	                processFile( file, convertButton, listView, i );
-	                i++;
-	                
-	                // this sleep seems to help slower CPUs
-	                // when a list of files is processed, and
-	                // avoids an exception from wordMLPackage.save( outputFile );
-	                try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-	             }
+            	setFileConverter();
             }
+            
+    		processor.setFontOut( systemOut );
+    		
+            for (File file : inputFileList) {
+                processFile( file, convertButton, listView, i );
+                i++;
+                
+                // this sleep seems to help slower CPUs
+                // when a list of files is processed, and
+                // avoids an exception from wordMLPackage.save( outputFile );
+                try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+             }
+           
             converted = true;
          } 
     }
     
     
 
-    private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
+    private void setFileConverter() {
         try {
-        	String inputFilePath = inputFile.getPath();
-        	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
-    		File outputFile = new File ( outputFilePath );
-    		
-    		processor.setFiles( inputFile, outputFile );
-    		processor.setFontOut( systemOut );
 
-    		ConvertDocx converter = null;
     		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
-    		if (processor != null ) {
-    			processor.setFiles( inputFile, outputFile );
-    		}
-    		else {
+    		if( processor.getTargetTypefaces().isEmpty()  ) {
+        		ConvertDocx converter = null;
 	    		switch( systemIn ) {
 			   		case brana:
 			   			converter = new ConvertDocxBrana();
@@ -430,10 +427,24 @@ public final class DocxConverter extends Application {
 			    		System.err.println( "Unrecognized input system: " + systemIn );
 			    		return;
 	    		}
-			
+	    		
+	    		processor.addConverter( converter );
     		}
+		}
+        catch (Exception ex) {
+        	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+        }
+            
+    }
 
-    		processor.addConverter( converter );
+    private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
+    	
+    	String inputFilePath = inputFile.getPath();
+    	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
+		File outputFile = new File ( outputFilePath );
+		
+		processor.setFiles( inputFile, outputFile );
+        try {
     		// references:
     		// https://stackoverflow.com/questions/49222017/javafx-make-threads-wait-and-threadsave-gui-update
     		// https://stackoverflow.com/questions/47419949/propagate-progress-information-from-callable-to-task
@@ -459,6 +470,7 @@ public final class DocxConverter extends Application {
            	// remove bindings again
             task.setOnSucceeded( event -> { 
             	statusBar.progressProperty().unbind();
+                //File outputFile = processor.getOutputFile( listIndex );
             	if ( openOutput ) {
             		if ( outputFile.exists() ) {
             			try { 

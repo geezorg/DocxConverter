@@ -32,7 +32,7 @@ public class ConvertDocxNCIC extends ConvertDocxDiacriticalSystem {
 	}
 	
 	private void init() {
-		this.initialize( "monodirectional/NCIC.txt", "AGF - Zemen" );
+		this.initialize( "monodirectional/NCICAgafari.txt", "AGF - Zemen" );
 		
 		huletNeteb = ':';
 		

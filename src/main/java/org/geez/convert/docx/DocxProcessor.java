@@ -33,8 +33,8 @@ public class DocxProcessor extends DocumentProcessor {
 	protected String fontOut = null;
 	
 	public void addConverter(ConvertDocx converter) {
-		targetTypefaces.addAll( converter.getSupportedFonts() );
-		for(String font: converter.getSupportedFonts()) {
+		targetTypefaces.addAll( converter.getTargetTypefaces() );
+		for(String font: converter.getTargetTypefaces()) {
 			fontToConverterMap.put(font, converter);
 		}
 	}
@@ -55,7 +55,7 @@ public class DocxProcessor extends DocumentProcessor {
 			for(Text text: textNodes.keySet() ) {
 				fontIn = textNodes.get(text);
 				converter = fontToConverterMap.get( fontIn );
-				String out = converter.convertText( text.getValue() );
+				String out = converter.convertText( text, fontIn );
 				text.setValue( out );
 				progress.set( i / totalNodes );
 				i++;
@@ -65,7 +65,7 @@ public class DocxProcessor extends DocumentProcessor {
 			for(Text text: textNodes.keySet() ) {
 				fontIn = textNodes.get(text);
 				converter = fontToConverterMap.get( fontIn );
-				String out = converter.convertText( text.getValue() );
+				String out = converter.convertText( text, fontIn );
 				text.setValue( out );
 			}
 		}
@@ -94,7 +94,7 @@ public class DocxProcessor extends DocumentProcessor {
 							// so long as the value is the same
 							Text text = new Text();
 							text.setValue( String.valueOf( ch ) );
-							String out = converter.convertText( text.getValue() );
+							String out = converter.convertText( text, fontIn );
 							text.setValue( out );
 							rObjects.set(i, text);
 					}
@@ -115,7 +115,7 @@ public class DocxProcessor extends DocumentProcessor {
 				for(Text text: textNodes.keySet() ) {
 					fontIn = textNodes.get(text);
 					converter = fontToConverterMap.get( fontIn );
-					String out = converter.convertText( text.getValue() );
+					String out = converter.convertText( text, fontIn );
 					text.setValue( out );
 					progress.set( i / totalNodes );
 					i++;
@@ -125,7 +125,7 @@ public class DocxProcessor extends DocumentProcessor {
 				for(Text text: textNodes.keySet() ) {
 					fontIn = textNodes.get(text);
 					converter = fontToConverterMap.get( fontIn );
-					String out = converter.convertText( text.getValue() );
+					String out = converter.convertText( text, fontIn );
 					text.setValue( out );
 				}
 			}
@@ -154,7 +154,7 @@ public class DocxProcessor extends DocumentProcessor {
 								// so long as the value is the same
 								Text text = new Text();
 								text.setValue( String.valueOf( ch ) );
-								String out = converter.convertText( text.getValue() );
+								String out = converter.convertText( text, fontIn );
 								text.setValue( out );
 								rObjects.set(i, text);
 							}
@@ -281,7 +281,6 @@ public class DocxProcessor extends DocumentProcessor {
 	public List<String> getTargetTypefaces() {
 		return  targetTypefaces;
 	}
-
     
     public void setFontOut(String fontOut) {
     	this.fontOut = fontOut;
@@ -313,5 +312,11 @@ public class DocxProcessor extends DocumentProcessor {
     	super( inputFile, outputFile );
     	this.fontOut = fontOut;
     }
+    
+	@Override
+	public Void call() {
+		process( inputFile, outputFile );
+        return null;
+	}
     
 }

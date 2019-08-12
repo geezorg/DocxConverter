@@ -76,7 +76,12 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 	}
 
 
-	public String convertText( Text text ) {
+	public String convertText( Text text, String fontIn ) {
+		xlit = fontToTransliteratorMap.get( fontIn );
+		if ( xlit == null ) {
+			return null;
+		}
+		
 		localCheck( text );
 		String value = text.getValue();
 		StringBuilder sb = new StringBuilder();
