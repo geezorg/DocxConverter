@@ -1,4 +1,4 @@
-package org.geez.convert.docx;
+package org.geez.convert.fontsystem;
 
 import com.ibm.icu.text.Transliterator;
 

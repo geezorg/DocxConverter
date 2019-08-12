@@ -1,4 +1,4 @@
-package org.geez.convert.docx;
+package org.geez.convert.fontsystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,8 @@ import org.docx4j.TraversalUtil;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
 import org.docx4j.wml.Text;
+import org.geez.convert.docx.StyledTextFinder;
+import org.geez.convert.docx.UnstyledTextFinder;
 
 
 

@@ -10,6 +10,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.geez.convert.fontsystem.ConvertDocx;
+import org.geez.convert.fontsystem.ConvertDocxBrana;
+import org.geez.convert.fontsystem.ConvertDocxFeedelGeezII;
+import org.geez.convert.fontsystem.ConvertDocxFeedelGeezNewAB;
+import org.geez.convert.fontsystem.ConvertDocxFeedelGeezigna;
+import org.geez.convert.fontsystem.ConvertDocxGeezFont;
+import org.geez.convert.fontsystem.ConvertDocxGeezTypeNet;
+import org.geez.convert.fontsystem.ConvertDocxNCIC;
+import org.geez.convert.fontsystem.ConvertDocxPowerGeez;
+import org.geez.convert.fontsystem.ConvertDocxSamawerfa;
+import org.geez.convert.fontsystem.ConvertDocxVisualGeez;
+import org.geez.convert.fontsystem.ConvertDocxVisualGeez2000;
 
 
 
