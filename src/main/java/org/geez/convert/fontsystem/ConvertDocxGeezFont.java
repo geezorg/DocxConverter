@@ -1,4 +1,4 @@
-package org.geez.convert.docx;
+package org.geez.convert.fontsystem;
 
 import java.util.Arrays;
 import java.util.HashSet;
