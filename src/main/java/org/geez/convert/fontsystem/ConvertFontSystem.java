@@ -12,22 +12,22 @@ import java.util.UUID;
 import com.ibm.icu.text.Transliterator;
 
 
-public class ConvertDocx extends Converter {
+public class ConvertFontSystem extends Converter {
 	// protected String fontOut = null;
 	//protected String fontIn = null;
 	protected char huletNeteb = 0x0;
 	
 	public Set<String> supportedFonts = null;
 	
-	public ConvertDocx() {
+	public ConvertFontSystem() {
 		super();
 	}
 	
-	public ConvertDocx( String direction ) {
+	public ConvertFontSystem( String direction ) {
 	 	super( direction );
 	}
 	 
-	public ConvertDocx( int icuDirection ) {
+	public ConvertFontSystem( int icuDirection ) {
 	 	super( icuDirection );
 	}
 	/*

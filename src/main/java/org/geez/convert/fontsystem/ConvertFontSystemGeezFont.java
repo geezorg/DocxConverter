@@ -6,7 +6,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
+public class ConvertFontSystemGeezFont extends ConvertFontSystemDiacriticalSystem {
 
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
@@ -21,7 +21,7 @@ public class ConvertDocxGeezFont extends ConvertDocxDiacriticalSystem {
 		IDs = new String[] { "GeezFont" } ;
 	}
 	
-	public ConvertDocxGeezFont() {
+	public ConvertFontSystemGeezFont() {
 		super();
 		init();
 	}

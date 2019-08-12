@@ -10,18 +10,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
-import org.geez.convert.fontsystem.ConvertDocx;
-import org.geez.convert.fontsystem.ConvertDocxBrana;
-import org.geez.convert.fontsystem.ConvertDocxFeedelGeezII;
-import org.geez.convert.fontsystem.ConvertDocxFeedelGeezNewAB;
-import org.geez.convert.fontsystem.ConvertDocxFeedelGeezigna;
-import org.geez.convert.fontsystem.ConvertDocxGeezFont;
-import org.geez.convert.fontsystem.ConvertDocxGeezTypeNet;
-import org.geez.convert.fontsystem.ConvertDocxNCIC;
-import org.geez.convert.fontsystem.ConvertDocxPowerGeez;
-import org.geez.convert.fontsystem.ConvertDocxSamawerfa;
-import org.geez.convert.fontsystem.ConvertDocxVisualGeez;
-import org.geez.convert.fontsystem.ConvertDocxVisualGeez2000;
+import org.geez.convert.fontsystem.ConvertFontSystem;
+import org.geez.convert.fontsystem.ConvertFontSystemBrana;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezII;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezNewAB;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezigna;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezFont;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezTypeNet;
+import org.geez.convert.fontsystem.ConvertFontSystemNCIC;
+import org.geez.convert.fontsystem.ConvertFontSystemPowerGeez;
+import org.geez.convert.fontsystem.ConvertFontSystemSamawerfa;
+import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez;
+import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez2000;
 
 
 
@@ -34,53 +34,53 @@ public class DocxProcessorAutodetect extends DocxProcessor {
 	
 	public void readFonts() {
 		if ( targetTypefaces.isEmpty() ) {
-			for(String font: ConvertDocxBrana.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxBrana.class );
+			for(String font: ConvertFontSystemBrana.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemBrana.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxFeedelGeezigna.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxFeedelGeezigna.class );
+			for(String font: ConvertFontSystemFeedelGeezigna.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemFeedelGeezigna.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxFeedelGeezII.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxFeedelGeezII.class );
+			for(String font: ConvertFontSystemFeedelGeezII.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemFeedelGeezII.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxFeedelGeezNewAB.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxFeedelGeezNewAB.class );
+			for(String font: ConvertFontSystemFeedelGeezNewAB.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemFeedelGeezNewAB.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxGeezFont.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxGeezFont.class );
+			for(String font: ConvertFontSystemGeezFont.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemGeezFont.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxGeezTypeNet.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxGeezTypeNet.class );
+			for(String font: ConvertFontSystemGeezTypeNet.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemGeezTypeNet.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxNCIC.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxNCIC.class );
+			for(String font: ConvertFontSystemNCIC.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemNCIC.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxPowerGeez.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxPowerGeez.class );
+			for(String font: ConvertFontSystemPowerGeez.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemPowerGeez.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxSamawerfa.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxSamawerfa.class );
+			for(String font: ConvertFontSystemSamawerfa.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemSamawerfa.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxVisualGeez.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxVisualGeez.class );
+			for(String font: ConvertFontSystemVisualGeez.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemVisualGeez.class );
 				targetTypefaces.add( font );
 			}
-			for(String font: ConvertDocxVisualGeez2000.supportedFonts) {
-				fontToConverterClassMap.put( font, ConvertDocxVisualGeez2000.class );
+			for(String font: ConvertFontSystemVisualGeez2000.supportedFonts) {
+				fontToConverterClassMap.put( font, ConvertFontSystemVisualGeez2000.class );
 				targetTypefaces.add( font );
 			}
 		}
 
-		Map<Class<?>, ConvertDocx> classToInstanceMap = new HashMap<Class<?>, ConvertDocx> ();
+		Map<Class<?>, ConvertFontSystem> classToInstanceMap = new HashMap<Class<?>, ConvertFontSystem> ();
     	try {
 	    	for(File file: inputFileList) {
 	    		String extension = FilenameUtils.getExtension( file.getPath() );
@@ -91,7 +91,7 @@ public class DocxProcessorAutodetect extends DocxProcessor {
 						if( targetTypefaces.contains( font ) && !(fontToConverterMap.containsKey(font)) ) {
 							Class<?> clazz = fontToConverterClassMap.get(font);
 							if(! classToInstanceMap.containsKey(clazz) ) {
-								classToInstanceMap.put( clazz, (ConvertDocx)clazz.newInstance() );
+								classToInstanceMap.put( clazz, (ConvertFontSystem)clazz.newInstance() );
 							}
 							fontToConverterMap.put( font, classToInstanceMap.get(clazz) );
 						}

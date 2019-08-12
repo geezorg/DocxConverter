@@ -14,14 +14,14 @@ import org.geez.convert.docx.UnstyledTextFinder;
 
 
 
-public class ConvertDocxDiacriticalSystem extends ConvertDocxDuoFont {
+public class ConvertFontSystemDiacriticalSystem extends ConvertFontSystemDuoFont {
 	protected final List<String> font1Typefaces = new ArrayList<String>();
 
 	protected final ArrayList<String> diacritics = new ArrayList<String>();
 	protected Pattern diacriticsRE = null;
 	
 	
-	public ConvertDocxDiacriticalSystem() {
+	public ConvertFontSystemDiacriticalSystem() {
 		super();
 	}
 	

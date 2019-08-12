@@ -7,7 +7,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
+public class ConvertFontSystemPowerGeez extends  ConvertFontSystemDiacriticalSystem {
 	
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
@@ -21,7 +21,7 @@ public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 		IDs = new String[] { "PowerGeez", "PowerGeezNumbers" } ;
 	}
 	
-	public ConvertDocxPowerGeez() {
+	public ConvertFontSystemPowerGeez() {
 		super();
 		init();
 	}
