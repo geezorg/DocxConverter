@@ -14,7 +14,7 @@ import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
 
 
-public class StyledTextFinder extends CallbackImpl {
+public class DocxStyledTextFinder extends CallbackImpl {
     
     public Map<Text,String> results = new HashMap<Text,String>();
     public Map<R.Sym,String> symResults = new HashMap<R.Sym,String>();
@@ -22,7 +22,7 @@ public class StyledTextFinder extends CallbackImpl {
     public List<Text> resultsOrdered = new ArrayList<Text>();
     private Map<String,String> styleIdToFont = null;
     
-    public StyledTextFinder( Map<String,String> styleIdToFont ) {
+    public DocxStyledTextFinder( Map<String,String> styleIdToFont ) {
     	super();
     	this.styleIdToFont = styleIdToFont;
     }

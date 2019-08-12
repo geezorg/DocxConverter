@@ -9,8 +9,8 @@ import org.docx4j.TraversalUtil;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.parts.JaxbXmlPart;
 import org.docx4j.wml.Text;
-import org.geez.convert.docx.StyledTextFinder;
-import org.geez.convert.docx.UnstyledTextFinder;
+import org.geez.convert.docx.DocxStyledTextFinder;
+import org.geez.convert.docx.DocxUnstyledTextFinder;
 
 
 
@@ -109,7 +109,7 @@ public class ConvertFontSystemDiacriticalSystem extends ConvertFontSystemDuoFont
 	 * </w:p>
 	 * 
 	 */
-	public void normalizeText( final JaxbXmlPart<?> part, StyledTextFinder stFinder, UnstyledTextFinder ustFinder ) throws Docx4JException {
+	public void normalizeText( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
 
 		if( stFinder.hasStyles() ) {
 			stFinder.clearResults();

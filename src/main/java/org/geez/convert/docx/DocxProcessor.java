@@ -49,7 +49,7 @@ public class DocxProcessor extends DocumentProcessor {
 		text.setValue( out );
 	}
 	
-	public void processStyledObjects( final JaxbXmlPart<?> part, StyledTextFinder stFinder ) throws Docx4JException {
+	public void processStyledObjects( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder ) throws Docx4JException {
 		if(! stFinder.hasStyles() ) {
 			return;
 		}
@@ -105,7 +105,7 @@ public class DocxProcessor extends DocumentProcessor {
 	}
 	
 
-	public void processUnstyledObjects( final JaxbXmlPart<?> part, UnstyledTextFinder ustFinder ) throws Docx4JException {
+	public void processUnstyledObjects( final JaxbXmlPart<?> part, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
 			HashMap<Text,String> textNodes = (HashMap<Text,String>)ustFinder.results;
 			
 			if( setProgress ) {
@@ -156,7 +156,7 @@ public class DocxProcessor extends DocumentProcessor {
 	
 
 	// make this an abstract method
-	public void normalizeText( final JaxbXmlPart<?> part, StyledTextFinder stFinder, UnstyledTextFinder ustFinder ) throws Docx4JException {
+	public void normalizeText( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
 		if( stFinder.hasStyles() ) {
 			stFinder.clearResults();
 		
@@ -179,8 +179,8 @@ public class DocxProcessor extends DocumentProcessor {
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 			
        		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
-       		StyledTextFinder stf = new StyledTextFinder( styleIdToFont );
-    		UnstyledTextFinder ustf = new UnstyledTextFinder(targetTypefaces, fontOut);
+       		DocxStyledTextFinder stf = new DocxStyledTextFinder( styleIdToFont );
+    		DocxUnstyledTextFinder ustf = new DocxUnstyledTextFinder(targetTypefaces, fontOut);
     		
     		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
     		// selectFonts( documentPart );
