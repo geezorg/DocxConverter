@@ -50,7 +50,8 @@ public class StyledTextFinder extends CallbackImpl {
 			if (ppr == null) return null;
 			String styleName = "Normal";
 
-			if ( (ppr != null) && (ppr.getPStyle() != null)) {
+			// if ( (ppr != null) && (ppr.getPStyle() != null)) {
+			if ( ppr.getPStyle() != null ) {
 				PStyle style = ppr.getPStyle();
 				styleName = style.getVal();
 			}
@@ -60,8 +61,40 @@ public class StyledTextFinder extends CallbackImpl {
 				for(Object pobj: pObjects) {
 					if( pobj instanceof org.docx4j.wml.R ) {
 						R r = (org.docx4j.wml.R)pobj;
-						RPr rpr = r.getRPr();
-						if ( (rpr != null) && (rpr.getRFonts() != null) ) continue;  // UnstypedTextFinder has been here
+						//
+						// RPr rpr = r.getRPr();
+						// if ( (rpr != null) && (rpr.getRFonts() != null) ) continue;  // UnstypedTextFinder has been here
+						//
+						// this check doesn't go far enough.  it may be the case that the rpr defines only the font
+						// for on of the 4 encodings, like w:cs, and not w:hAnsi or w:ascii where an Ethopic font might be set,
+						// thus this is not an override and UnstyledTextFinder also may not have found anything.  An example:
+						/*
+						 * document/styles.xml
+						 * ...
+						 * <w:style w:type="character" w:customStyle="1" w:styleId="BodyTextChar"><w:name w:val="Body Text Char"/>
+						 *   <w:basedOn w:val="DefaultParagraphFont"/>
+						 *   <w:link w:val="BodyText"/><w:semiHidden/>
+						 *   <w:rsid w:val="009616E8"/>
+						 *   <w:rPr>
+						 *   <w:rFonts w:ascii="GeezNewA" w:eastAsia="Times New Roman" w:hAnsi="GeezNewA" w:cs="Times New Roman"/>
+						 *   <w:szCs w:val="20"/>
+						 *   </w:rPr>
+						 * </w:style>
+						 *
+						 * then in the document:
+						 *
+						 *  <w:pPr>
+						 *  <w:pStyle w:val="BodyText"/>
+						 *  <w:rPr>
+						 *  <w:rFonts w:cs="Arial"/>
+						 *  </w:rPr>
+						 *  </w:pPr>
+						 *
+						 *  therefore we should track the encoding attribute that the ethiopic typeface is defined under (w:hAnsi, etc)
+						 *  within a style definition to then check of the newly encountered rpr overrides it or not.  thus styleIdToFont
+						 *  should be a hash of these attributes.
+						 *  
+						 */
 						List<Object> rObjects = r.getContent();
 						for(Object robj: rObjects) {
 							Object tobj = XmlUtils.unwrap(robj);

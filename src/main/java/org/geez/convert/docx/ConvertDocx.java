@@ -15,8 +15,8 @@ import com.ibm.icu.text.Transliterator;
 
 
 public class ConvertDocx extends Converter {
-	protected String fontOut = null;
-	protected String fontIn = null;
+	// protected String fontOut = null;
+	//protected String fontIn = null;
 	protected char huletNeteb = 0x0;
 	
 	public Set<String> supportedFonts = null;
@@ -32,10 +32,10 @@ public class ConvertDocx extends Converter {
 	public ConvertDocx( int icuDirection ) {
 	 	super( icuDirection );
 	}
-	    
+	/*
 	public void setFont(String fontOut) {
 		this.fontOut = fontOut;
-	}
+	}*/
 	
 	protected String fontName = null;
 	protected List<String> targetTypefaces = new  ArrayList<String>();
@@ -78,17 +78,25 @@ public class ConvertDocx extends Converter {
 		return;
 	}
 	
-	public String convertText( Text text ) {
+	public String convertText( Text text, String fontIn ) {
+		xlit = fontToTransliteratorMap.get( fontIn );
+		if ( xlit == null ) {
+			return null;
+		}
 		localCheck( text );
 		return xlit.transliterate( text.getValue() );
 	}
 	
 	public String convertText( String text ) {
+		// this would only work for mono-font systems
 		return xlit.transliterate( text );
 	}
 	
 	public Set<String> getSupportedFonts() {
 		return supportedFonts;
 	}
-
+	
+	public List<String> getTargetTypefaces() {
+		return targetTypefaces;
+	}
 }

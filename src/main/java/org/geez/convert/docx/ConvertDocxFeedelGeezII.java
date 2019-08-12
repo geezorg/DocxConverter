@@ -10,7 +10,7 @@ import org.docx4j.wml.Text;
 
 public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 
-	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "GeezI", "GeezII" ) );
+	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "Geez", "GeezII" ) );
 
 	{
 		IDs = new String[] { "FeedelGeez", "FeedelGeezII" } ;
@@ -35,7 +35,7 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 		
 	}
 
-	public String convertText( Text text ) {
+	public String convertText( Text text, String fontName ) {
 		localCheck( text );
 		String value = text.getValue();
 		StringBuilder sb = new StringBuilder();
@@ -45,6 +45,7 @@ public class ConvertDocxFeedelGeezII extends ConvertDocxDiacriticalSystem {
 			sb.append( (char)x );
 		}
 		
+		xlit = fontToTransliteratorMap.get( fontName );
 		return xlit.transliterate( sb.toString() );
 	}
 	

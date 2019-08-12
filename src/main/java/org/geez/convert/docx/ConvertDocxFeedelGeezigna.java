@@ -20,7 +20,7 @@ public class ConvertDocxFeedelGeezigna extends ConvertDocxDiacriticalSystem {
 	}
 	
 	private void init() {
-		this.initialize( "monodirectional/Geezigna.txt", "Geezigna" );
+		this.initialize( "monodirectional/FeedelGeezigna.txt", "Geezigna" );
 		
 		huletNeteb = ':';
 		

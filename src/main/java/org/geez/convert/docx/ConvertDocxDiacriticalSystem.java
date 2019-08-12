@@ -59,11 +59,12 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocxDuoFont {
 		text.setValue (value );
 	}
 	
-	
-	public String convertText( Text text ) {
+	/*
+	public String convertText( Text text, String fontIn ) {
 		localCheck( text );
 		return xlit.transliterate( text.getValue() );
 	}
+	*/
 	
 	
 	protected boolean combinesWithHuletNeteb(char symbol) {
@@ -129,7 +130,7 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocxDuoFont {
 				String value1 = text1.getValue();
 				if( value1.length() > 0 ) {
 					char firstChar = value1.charAt(0);
-					fontIn = styledText.get( text1 );
+					String fontIn = styledText.get( text1 );
 					if( isDiacritic( fontIn, String.valueOf(firstChar) ) )  {
 						Text text0 = styledTextOrdered.get( i-1 );
 						String value0 = text0.getValue();
@@ -160,7 +161,7 @@ public class ConvertDocxDiacriticalSystem extends ConvertDocxDuoFont {
 			String value1 = text1.getValue();
 			if( value1.length() > 0 ) {
 				char firstChar = value1.charAt(0);
-				fontIn = unstyledText.get( text1 );
+				String fontIn = unstyledText.get( text1 );
 				if( isDiacritic( fontIn, String.valueOf(firstChar) ) )  {
 					Text text0 = unstyledTextOrdered.get( i-1 );
 					String value0 = text0.getValue();
