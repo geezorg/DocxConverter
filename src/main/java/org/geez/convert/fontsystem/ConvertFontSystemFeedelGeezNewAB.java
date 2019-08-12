@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
+public class ConvertFontSystemFeedelGeezNewAB extends ConvertFontSystemDiacriticalSystem {
 
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
@@ -26,7 +26,7 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 	
 	private final List<String> font2Typefaces = new ArrayList<String>();
 	
-	public ConvertDocxFeedelGeezNewAB() {
+	public ConvertFontSystemFeedelGeezNewAB() {
 		super();
 		init();
 	}

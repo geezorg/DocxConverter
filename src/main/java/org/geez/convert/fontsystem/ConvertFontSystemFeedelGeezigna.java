@@ -6,7 +6,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxFeedelGeezigna extends ConvertDocxDiacriticalSystem {
+public class ConvertFontSystemFeedelGeezigna extends ConvertFontSystemDiacriticalSystem {
 
 	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "Geezigna" ) );
 	
@@ -14,7 +14,7 @@ public class ConvertDocxFeedelGeezigna extends ConvertDocxDiacriticalSystem {
 		IDs = new String[] { "Geezigna" } ;
 	}
 	
-	public ConvertDocxFeedelGeezigna() {
+	public ConvertFontSystemFeedelGeezigna() {
 		super();
 		init();
 	}

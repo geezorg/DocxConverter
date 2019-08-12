@@ -6,7 +6,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxNCIC extends ConvertDocxDiacriticalSystem {
+public class ConvertFontSystemNCIC extends ConvertFontSystemDiacriticalSystem {
 
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
@@ -26,7 +26,7 @@ public class ConvertDocxNCIC extends ConvertDocxDiacriticalSystem {
 		IDs = new String[] { "NCIC" } ;
 	}
 	
-	public ConvertDocxNCIC() {
+	public ConvertFontSystemNCIC() {
 		super();
 		init();
 	}

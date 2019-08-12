@@ -6,7 +6,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxSamawerfa extends ConvertDocxDiacriticalSystem {
+public class ConvertFontSystemSamawerfa extends ConvertFontSystemDiacriticalSystem {
 
 	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "Samawerfa" ) );
 	
@@ -14,7 +14,7 @@ public class ConvertDocxSamawerfa extends ConvertDocxDiacriticalSystem {
 		IDs = new String[] { "Samawerfa" } ;
 	}
 	
-	public ConvertDocxSamawerfa() {
+	public ConvertFontSystemSamawerfa() {
 		super();
 		init();
 	}

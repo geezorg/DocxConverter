@@ -11,18 +11,18 @@ import java.util.logging.Logger;
 import org.controlsfx.control.StatusBar;
 import org.geez.convert.docx.DocxProcessor;
 import org.geez.convert.docx.DocxProcessorAutodetect;
-import org.geez.convert.fontsystem.ConvertDocx;
-import org.geez.convert.fontsystem.ConvertDocxBrana;
-import org.geez.convert.fontsystem.ConvertDocxFeedelGeezII;
-import org.geez.convert.fontsystem.ConvertDocxFeedelGeezNewAB;
-import org.geez.convert.fontsystem.ConvertDocxFeedelGeezigna;
-import org.geez.convert.fontsystem.ConvertDocxGeezFont;
-import org.geez.convert.fontsystem.ConvertDocxGeezTypeNet;
-import org.geez.convert.fontsystem.ConvertDocxNCIC;
-import org.geez.convert.fontsystem.ConvertDocxPowerGeez;
-import org.geez.convert.fontsystem.ConvertDocxSamawerfa;
-import org.geez.convert.fontsystem.ConvertDocxVisualGeez;
-import org.geez.convert.fontsystem.ConvertDocxVisualGeez2000;
+import org.geez.convert.fontsystem.ConvertFontSystem;
+import org.geez.convert.fontsystem.ConvertFontSystemBrana;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezII;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezNewAB;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezigna;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezFont;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezTypeNet;
+import org.geez.convert.fontsystem.ConvertFontSystemNCIC;
+import org.geez.convert.fontsystem.ConvertFontSystemPowerGeez;
+import org.geez.convert.fontsystem.ConvertFontSystemSamawerfa;
+import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez;
+import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez2000;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -377,50 +377,50 @@ public final class DocxConverter extends Application {
 
     		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
     		if( processor.getTargetTypefaces().isEmpty()  ) {
-        		ConvertDocx converter = null;
+        		ConvertFontSystem converter = null;
 	    		switch( systemIn ) {
 			   		case brana:
-			   			converter = new ConvertDocxBrana();
+			   			converter = new ConvertFontSystemBrana();
 			   			break;
 		    			
 				   	case geezii:
-			    		converter = new ConvertDocxFeedelGeezII();
+			    		converter = new ConvertFontSystemFeedelGeezII();
 			    		break;	
 		    			
 				   	case geezigna:
-			    		converter = new ConvertDocxFeedelGeezigna();
+			    		converter = new ConvertFontSystemFeedelGeezigna();
 			    		break;
 			
 				   	case geezfont:
-			    		converter = new ConvertDocxGeezFont();
+			    		converter = new ConvertFontSystemGeezFont();
 			    		break;    			
 			    			
 			   		case geeznewab:
-		    			converter = new ConvertDocxFeedelGeezNewAB();
+		    			converter = new ConvertFontSystemFeedelGeezNewAB();
 		    			break;
 	
 			    	case geeztypenet:
-			    		converter = new ConvertDocxGeezTypeNet();
+			    		converter = new ConvertFontSystemGeezTypeNet();
 			   			break;
 	
 			    	case ncic:
-			    		converter = new ConvertDocxNCIC();
+			    		converter = new ConvertFontSystemNCIC();
 			   			break;
 			   			
 			    	case powergeez:
-			    		converter = new ConvertDocxPowerGeez();
+			    		converter = new ConvertFontSystemPowerGeez();
 			   			break;
 	
 			    	case samawerfa:
-			    		converter = new ConvertDocxSamawerfa();
+			    		converter = new ConvertFontSystemSamawerfa();
 			   			break;
 			   			
 			    	case visualgeez:
-			    		converter = new ConvertDocxVisualGeez();
+			    		converter = new ConvertFontSystemVisualGeez();
 			    		break;
 			   			
 			    	case visualgeez2000:
-			    		converter = new ConvertDocxVisualGeez2000();
+			    		converter = new ConvertFontSystemVisualGeez2000();
 			    		break;
 	    			
 			    	default:

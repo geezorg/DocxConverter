@@ -6,7 +6,7 @@ import java.util.Set;
 
 
 
-public class ConvertDocxBrana extends ConvertDocxDuoFont {
+public class ConvertFontSystemBrana extends ConvertFontSystemDuoFont {
 
 	public static final Set<String> supportedFonts = new HashSet<String> ( Arrays.asList( "Brana I", "Brana II" ) );
 	
@@ -14,7 +14,7 @@ public class ConvertDocxBrana extends ConvertDocxDuoFont {
 		IDs = new String[] { "BranaI", "BranaII" } ;
 	}
 		
-	public ConvertDocxBrana() {
+	public ConvertFontSystemBrana() {
 		super();
 		this.initialize( "bidirectional/BranaI.txt", "bidirectional/BranaII.txt", "Brana I", "Brana II" );
 	}

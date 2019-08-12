@@ -22,7 +22,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
 import org.geez.convert.DocumentProcessor;
-import org.geez.convert.fontsystem.ConvertDocx;
+import org.geez.convert.fontsystem.ConvertFontSystem;
 
 
 public class DocxProcessor extends DocumentProcessor {
@@ -30,10 +30,10 @@ public class DocxProcessor extends DocumentProcessor {
 	protected double totalNodes = 0;
 	
 	protected List<String> targetTypefaces = new  ArrayList<String>();
-	protected Map<String,ConvertDocx> fontToConverterMap = new HashMap<String,ConvertDocx>();
+	protected Map<String,ConvertFontSystem> fontToConverterMap = new HashMap<String,ConvertFontSystem>();
 	protected String fontOut = null;
 	
-	public void addConverter(ConvertDocx converter) {
+	public void addConverter(ConvertFontSystem converter) {
 		targetTypefaces.addAll( converter.getTargetTypefaces() );
 		for(String font: converter.getTargetTypefaces()) {
 			fontToConverterMap.put(font, converter);
@@ -41,7 +41,7 @@ public class DocxProcessor extends DocumentProcessor {
 	}
     
 	private void processText(Text text, String fontIn) {
-		ConvertDocx converter = fontToConverterMap.get( fontIn );
+		ConvertFontSystem converter = fontToConverterMap.get( fontIn );
 		if( converter.isSpacePreservableSymbol( text.getValue() ) ) {
 			text.setSpace( "preserve" );
 		}
