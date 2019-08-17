@@ -102,37 +102,39 @@ public final class DocxConverter extends Application {
 	
     private DocxProcessor processor = new DocxProcessor();
 	
+    
     private static void configureFileChooser( final FileChooser fileChooser ) {      
-    	fileChooser.setTitle("View Word Files");
+    	fileChooser.setTitle( "View Word Files" );
         fileChooser.setInitialDirectory(
-        		new File( System.getProperty("user.home") )
+        		new File( System.getProperty( "user.home" ) )
         );                 
         fileChooser.getExtensionFilters().add(
-        		new FileChooser.ExtensionFilter("*.docx", "*.docx")
+        		new FileChooser.ExtensionFilter( "*.docx", "*.docx" )
         );
     }
     
+    
     @Override
     public void start(final Stage stage) {
-        stage.setTitle("Ethiopic Docx Font Converter");
-        Image logoImage = new Image( ClassLoader.getSystemResourceAsStream("images/geez-org-avatar.png") );
+        stage.setTitle( "Ethiopic Docx Font Converter" );
+        Image logoImage = new Image( ClassLoader.getSystemResourceAsStream( "images/geez-org-avatar.png" ) );
         stage.getIcons().add( logoImage );
-        String osName = System.getProperty("os.name");
-        if( osName.equals("Mac OS X") ) {
-            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage(logoImage, null) );      
+        String osName = System.getProperty( "os.name" );
+        if( osName.equals( "Mac OS X" ) ) {
+            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) );      
         }
 
         Menu inFontMenu = new Menu( "Font _In" );
-        RadioMenuItem inMenuItem0 = new RadioMenuItem( autodetect );
-        RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + ncic );
-        RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + brana );
-        RadioMenuItem inMenuItem3 = new RadioMenuItem( "_" + geezii );
-        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geezigna" );
-        RadioMenuItem inMenuItem5 = new RadioMenuItem( "Geez_Font" );
-        RadioMenuItem inMenuItem6 = new RadioMenuItem( "Geez_NewA/B" );
-        RadioMenuItem inMenuItem7 = new RadioMenuItem( "Geez_TypeNet" );
-        RadioMenuItem inMenuItem8 = new RadioMenuItem( "_" + powergeez );
-        RadioMenuItem inMenuItem9 = new RadioMenuItem( "_" + samawerfa );
+        RadioMenuItem inMenuItem0  = new RadioMenuItem( autodetect );
+        RadioMenuItem inMenuItem1  = new RadioMenuItem( "_" + ncic );
+        RadioMenuItem inMenuItem2  = new RadioMenuItem( "_" + brana );
+        RadioMenuItem inMenuItem3  = new RadioMenuItem( "_" + geezii );
+        RadioMenuItem inMenuItem4  = new RadioMenuItem( "Geezigna" );
+        RadioMenuItem inMenuItem5  = new RadioMenuItem( "Geez_Font" );
+        RadioMenuItem inMenuItem6  = new RadioMenuItem( "Geez_NewA/B" );
+        RadioMenuItem inMenuItem7  = new RadioMenuItem( "Geez_TypeNet" );
+        RadioMenuItem inMenuItem8  = new RadioMenuItem( "_" + powergeez );
+        RadioMenuItem inMenuItem9  = new RadioMenuItem( "_" + samawerfa );
         RadioMenuItem inMenuItem10 = new RadioMenuItem( "_" + visualgeez );
         RadioMenuItem inMenuItem11 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
@@ -194,7 +196,7 @@ public final class DocxConverter extends Application {
         
 
         ListView<Label> listView = new ListView<Label>();
-        listView.setEditable(false);
+        listView.setEditable( false );
         listView.setPrefHeight( 125 ); // 205 for screenshots
         listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
@@ -217,7 +219,7 @@ public final class DocxConverter extends Application {
         fileMenuItem1.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(final ActionEvent e) {
+                public void handle(final ActionEvent evt) {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
                     inputFileList = fileChooser.showOpenMultipleDialog( stage );
@@ -238,7 +240,7 @@ public final class DocxConverter extends Application {
         fileMenu.getItems().add( fileMenuItem1 ); 
         fileMenu.getItems().add( new SeparatorMenuItem() );
         
-        MenuItem exitMenuItem = new MenuItem("Exit");
+        MenuItem exitMenuItem = new MenuItem( "Exit" );
         exitMenuItem.setOnAction(actionEvent -> Platform.exit());
         fileMenu.getItems().add( exitMenuItem ); 
         
@@ -250,8 +252,8 @@ public final class DocxConverter extends Application {
         aboutMenuItem.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(final ActionEvent e) {
-			        Alert alert = new Alert(AlertType.INFORMATION);
+                public void handle( final ActionEvent evt ) {
+			        Alert alert = new Alert( AlertType.INFORMATION );
 			        alert.setTitle( "About Legacy Ethiopic Docx Converter" );
 			        alert.setHeaderText( "Legacy Ethiopic Font Converter for Docx " + VERSION );
 			        
@@ -267,7 +269,10 @@ public final class DocxConverter extends Application {
 		                    desktop.browse( uri );
 	                    }
 	                    catch(Exception ex) {
-	                    	
+	    					Alert errorAlert = new Alert( AlertType.ERROR );
+	    					errorAlert.setHeaderText( "An error opening a web browser." );
+	    					errorAlert.setContentText( ex.getMessage() );
+	    					errorAlert.showAndWait();
 	                    }
 			        });
 
@@ -295,7 +300,7 @@ public final class DocxConverter extends Application {
         openFilesCheckbox.setSelected(true);
         
         Region bottomSpacer = new Region();
-        HBox.setHgrow(bottomSpacer, Priority.SOMETIMES);
+        HBox.setHgrow( bottomSpacer, Priority.SOMETIMES );
         HBox hbottomBox = new HBox( openFilesCheckbox, bottomSpacer, convertButton );
         hbottomBox.setPadding(new Insets(4, 0, 4, 0));
         hbottomBox.setAlignment( Pos.CENTER_LEFT );
@@ -308,9 +313,9 @@ public final class DocxConverter extends Application {
         MenuBar rightBar = new MenuBar();
         rightBar.getMenus().addAll( helpMenu );
         Region spacer = new Region();
-        spacer.getStyleClass().add("menu-bar");
-        HBox.setHgrow(spacer, Priority.SOMETIMES);
-        HBox menubars = new HBox(leftBar, spacer, rightBar);
+        spacer.getStyleClass().add( "menu-bar" );
+        HBox.setHgrow( spacer, Priority.SOMETIMES );
+        HBox menubars = new HBox( leftBar, spacer, rightBar );
         
  
         final BorderPane rootGroup = new BorderPane();
@@ -319,16 +324,12 @@ public final class DocxConverter extends Application {
         rootGroup.setBottom( vbottomBox );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
-        stage.setScene(new Scene(rootGroup, 420, 220) ); // 305 for screenshots
+        stage.setScene( new Scene(rootGroup, 420, 220) ); // 305 for screenshots
         stage.show();
     }
- 
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
+    
  
     private void convertFiles(Button convertButton, ListView<Label> listView) {
-    	
         if ( inputFileList != null ) {
         	if( converted ) {
         		// this is a re-run, reset file names;
@@ -352,7 +353,7 @@ public final class DocxConverter extends Application {
             
     		processor.setFontOut( systemOut );
     		
-            for (File file : inputFileList) {
+            for( File file : inputFileList ) {
                 processFile( file, convertButton, listView, i );
                 i++;
                 
@@ -361,8 +362,12 @@ public final class DocxConverter extends Application {
                 // avoids an exception from wordMLPackage.save( outputFile );
                 try {
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				}
+                catch (InterruptedException ex) {
+					Alert errorAlert = new Alert(AlertType.ERROR);
+					errorAlert.setHeaderText( "An error occurred processing a file." );
+					errorAlert.setContentText( ex.getMessage() );
+					errorAlert.showAndWait();
 				}
              }
            
@@ -371,10 +376,8 @@ public final class DocxConverter extends Application {
     }
     
     
-
     private void setFileConverter() {
         try {
-
     		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
     		if( processor.getTargetTypefaces().isEmpty()  ) {
         		ConvertFontSystem converter = null;
@@ -433,9 +436,14 @@ public final class DocxConverter extends Application {
 		}
         catch (Exception ex) {
         	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+			Alert errorAlert = new Alert(AlertType.ERROR);
+			errorAlert.setHeaderText( "An error occurred instantiating a converter." );
+			errorAlert.setContentText( ex.getMessage() );
+			errorAlert.showAndWait();
         }
             
     }
+    
 
     private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
     	
@@ -505,6 +513,10 @@ public final class DocxConverter extends Application {
         }
         catch (Exception ex) {
         	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+			Alert errorAlert = new Alert(AlertType.ERROR);
+			errorAlert.setHeaderText( "An error occurred processing a file." );
+			errorAlert.setContentText( ex.getMessage() );
+			errorAlert.showAndWait();
         }
         
     }
@@ -512,6 +524,14 @@ public final class DocxConverter extends Application {
 
     Text systemInText = new Text( systemIn );
     Text systemOutText = new Text( systemOut );
+    private void setSystemIn(String systemIn) {
+    	this.systemIn = systemIn;
+    	systemInText.setText( systemIn );
+    }
+    private void setSystemOut(String systemOut) {
+    	this.systemOut = systemOut;
+    	systemOutText.setText( systemOut );
+    }
     // status bar reference:
     // https://jar-download.com/artifacts/org.controlsfx/controlsfx-samples/8.40.14/source-code/org/controlsfx/samples/HelloStatusBar.java
     private void updateStatusMessage() {
@@ -555,13 +575,9 @@ public final class DocxConverter extends Application {
         
         statusBar.getLeftItems().add( hbox );
     }
-    private void setSystemIn(String systemIn) {
-    	this.systemIn = systemIn;
-    	systemInText.setText( systemIn );
+    
+    
+    public static void main(String[] args) {
+        Application.launch(args);
     }
-    private void setSystemOut(String systemOut) {
-    	this.systemOut = systemOut;
-    	systemOutText.setText( systemOut );
-    }
-
 }
