@@ -178,7 +178,7 @@ public class DocxProcessor extends DocumentProcessor {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 			
-       		Map<String,String> styleIdToFont  = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
+       		Map<String,String> styleIdToFont = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
        		DocxStyledTextFinder stf = new DocxStyledTextFinder( styleIdToFont );
     		DocxUnstyledTextFinder ustf = new DocxUnstyledTextFinder(targetTypefaces, fontOut);
     		
