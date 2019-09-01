@@ -89,7 +89,7 @@ $diqala_rabi = \xff ;
 ሿ  ← \x5c$diqala_rabi ;
 ሻ ← \x5c ;
 
-/ ← \x5f ;
+'/' ← \x5f ;
 ቀ ← \x60 ;
 ቁ ← a ;
 ቂ ← b ;
@@ -190,7 +190,7 @@ $diqala_rabi = \xff ;
 ዕ ← \xa9 ;
 ዖ ← \xaa ;
 ዉ ← \xac$kaib ;
-ዉ ← \xac$kaib ;
+# ዉ ← \xac$kaib ;
 ወ ← \xac ;
 ዊ ← \xad ;
 ዋ ← \xae ;
@@ -309,4 +309,4 @@ $diqala_rabi = \xff ;
  ← [ $kaib $salis $hamis $diqala_rabi ] ;
 #
 #
-:: ([\x20-\xff ]) ;
+:: ([\x20-\xff]) ;

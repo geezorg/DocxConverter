@@ -10,10 +10,10 @@ public class ConvertFontSystemGeezFont extends ConvertFontSystemDiacriticalSyste
 
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
-				"GeezAddis",
-				"geezDirib",
-				"geezLong",
-				"GeezThin" 
+					"GeezAddis",
+					"geezDirib",
+					"geezLong",
+					"GeezThin" 
 			)
 	);
 	
@@ -39,9 +39,11 @@ public class ConvertFontSystemGeezFont extends ConvertFontSystemDiacriticalSyste
 				"GeezThin" 
 			)
 		);
+		targetTypefaces.addAll( font1Typefaces );
+		targetTypefaces.remove(0); // duplicate
 		
 		for(String key: font1Typefaces) {
-			fontToTransliteratorMap.put( key, translit1 );			
+			fontToTransliteratorMap.put( key, xlit );			
 		}
 		
 		diacritics.addAll (

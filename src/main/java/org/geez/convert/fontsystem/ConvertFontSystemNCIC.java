@@ -10,18 +10,14 @@ public class ConvertFontSystemNCIC extends ConvertFontSystemDiacriticalSystem {
 
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
-					"AGF - Zemen",
-				    "AGF - Dawit",
-				    "AGF - Ejji Tsihuf",
-				    "AGF - Rejim",
-				    "AGF - Yigezu Bisrat"
+					"AGF - Zemen  Zemen",
+					"AGF - Dawit",
+					"AGF - Ejji Tsihuf",
+					"AGF - Rejim",
+					"AGF - Yigezu Bisrat"
 			)
 	);
-	
-	public static boolean isSupportedFont(String font) {
-		return supportedFonts.contains( font );
-	}
-	
+
 	{
 		IDs = new String[] { "NCIC" } ;
 	}
@@ -32,22 +28,24 @@ public class ConvertFontSystemNCIC extends ConvertFontSystemDiacriticalSystem {
 	}
 	
 	private void init() {
-		this.initialize( "monodirectional/NCICAgafari.txt", "AGF - Zemen" );
+		this.initialize( "monodirectional/NCICAgafari.txt", "AGF - Zemen  Zemen" );
 		
 		huletNeteb = ':';
 		
 		font1Typefaces.addAll(
 			Arrays.asList(
-			    "AGF - Zemen",
+			    "AGF - Zemen  Zemen",
 			    "AGF - Dawit",
 			    "AGF - Ejji Tsihuf",
 			    "AGF - Rejim",
 			    "AGF - Yigezu Bisrat"
 			)
 		);
+		targetTypefaces.addAll( font1Typefaces );
+		targetTypefaces.remove(0); // duplicate
 		
 		for(String key: font1Typefaces) {
-			fontToTransliteratorMap.put( key, translit1 );			
+			fontToTransliteratorMap.put( key, xlit );			
 		}
 		
 		diacritics.addAll (
