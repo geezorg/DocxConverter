@@ -91,7 +91,7 @@ public class DocxProcessorAutodetect extends DocxProcessor {
 						if( targetTypefaces.contains( font ) && !(fontToConverterMap.containsKey(font)) ) {
 							Class<?> clazz = fontToConverterClassMap.get(font);
 							if(! classToInstanceMap.containsKey(clazz) ) {
-								classToInstanceMap.put( clazz, (ConvertFontSystem)clazz.newInstance() );
+								classToInstanceMap.put( clazz, (ConvertFontSystem) clazz.getDeclaredConstructor().newInstance() );
 							}
 							fontToConverterMap.put( font, classToInstanceMap.get(clazz) );
 						}
@@ -107,7 +107,9 @@ public class DocxProcessorAutodetect extends DocxProcessor {
     	}
     	catch ( InstantiationException ex ) {
     		System.err.printf( "An error occured while reading documents.\n" + ex );  
-		}
+		} catch (Exception ex) {
+    		System.err.printf( "An error occured while reading documents.\n" + ex ); 
+		} 
     	
     	//
 		return;

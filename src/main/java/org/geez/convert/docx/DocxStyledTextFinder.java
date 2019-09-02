@@ -137,7 +137,7 @@ public class DocxStyledTextFinder extends CallbackImpl {
 							}
 							else if( tobj instanceof org.docx4j.wml.R.Sym ) {
 								R.Sym sym = (org.docx4j.wml.R.Sym)tobj;
-								if( styleIdToFont.containsValue( sym.getFont() ) ) {
+								if( encodingToFont.containsValue( sym.getFont() ) ) {
 									symResults.put( sym, sym.getFont() );
 								}
 							}
