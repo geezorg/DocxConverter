@@ -379,7 +379,7 @@ public final class DocxConverter extends Application {
     private void setFileConverter() {
         try {
     		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
-    		if( processor.getTargetTypefaces().isEmpty()  ) {
+    		if( (processor.getTargetTypefaces().isEmpty()) || (! processor.getTargetTypefaces().contains( systemIn ) ) ) {
         		ConvertFontSystem converter = null;
 	    		switch( systemIn ) {
 			   		case brana:
