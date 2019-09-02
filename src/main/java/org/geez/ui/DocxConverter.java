@@ -4,6 +4,9 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -197,7 +200,7 @@ public final class DocxConverter extends Application {
 
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable( false );
-        listView.setPrefHeight( 125 ); // 205 for screenshots
+        listView.setPrefHeight( 425 ); // 205 for screenshots, 125 normal
         listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
@@ -222,10 +225,20 @@ public final class DocxConverter extends Application {
                 public void handle(final ActionEvent evt) {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
-                    inputFileList = fileChooser.showOpenMultipleDialog( stage );
+                    inputFileList = new ArrayList<File>( fileChooser.showOpenMultipleDialog( stage ) );
+                    
+                    Collections.sort( inputFileList, new Comparator<File>() {
+                        @Override
+                        public int compare(File o1, File o2) {
+                            String n1 = o1.getName();
+                            String n2 = o2.getName();
+                            return n1.compareTo(n2);
+                        }
+
+                    });
                     
                     if ( inputFileList != null ) {
-                    	for( File file: inputFileList) {
+                    	for( File file: inputFileList ) {
                     		Label rowLabel = new Label( file.getName() );
                     		data.add( rowLabel );
                     		Tooltip tooltip = new Tooltip( file.getPath() );
@@ -324,7 +337,7 @@ public final class DocxConverter extends Application {
         rootGroup.setBottom( vbottomBox );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
-        stage.setScene( new Scene(rootGroup, 420, 220) ); // 305 for screenshots
+        stage.setScene( new Scene(rootGroup, 420, 420) ); // 305 for screenshots 220 normal
         stage.show();
     }
     
