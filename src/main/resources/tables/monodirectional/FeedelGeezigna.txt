@@ -15,12 +15,11 @@
 $kaib = [ \x2e \xb3 ] ;
 $salis = [ \x3e \xf9 ] ;
 $hamis = [ \x3f \xc0 ] ;
+$diqala_geez = \d6 ;
 $diqala_rabi = [ \x5f \xd0 ] ;
-$diqala_hamis = [\xb9 \xef];
-$diaqala_geez = \xd6 ;
 $diqala_kaib = [ \x23 \x8b ] ;
 $diqala_salis = \x8a ;
-$diqala_hamis = \x9d ;
+$diqala_hamis = \x9d ;  # left side stroke
 $macron = [ \x99 \x9b \xd1 ] ;
 #
 #
@@ -35,16 +34,16 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ሉ ← s $kaib ;
 ሊ ← s $salis ;
 ሌ ← s $hamis ;
-ለ ← s ;
 ል ← S ;
 ሎ ← s $diqala_geez ;
+ለ ← s ;
 ሏ ← \xa7 $diqala_rabi ;
 ላ ← \xa7 ;
 
-ሐ ← a ;
 ሑ ← \x61 $kaib ;
 ሒ ← \x61 $salis ;
 ሔ ← \x61 $hamis ;
+ሐ ← a ;
 ሗ ← \x8c $diqala_rabi ;
 ሓ ← \x8c ;
 ሕ ← A ;
@@ -99,14 +98,14 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ቁ ← n $kaib ;
 ቂ ← n $salis ;
 ቄ ← n $hamis ;
-ቄ ← n $hamis ;
 ቊ ← n $diqala_salis ;
+ቌ ← n $diqala_hamis $hamis ;
 ቀ ← n ;
 ቃ ← \x7e ;
 ቅ ← N ;
 ቆ ← \xf6 ;
 ቈ ← \x84 ;
-ቋ ← [ \x92 \x96 \x97 ]
+ቋ ← [ \x92 \x96 \x97 ] ;
 ቍ ← \xcc ;
 
 ቡ ← j $kaib ;
@@ -139,11 +138,11 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ኁ ← p $kaib ;
 ኂ ← p $salis ;
 ኄ ← p $hamis ;
-ኄ ← p $hamis ;
 ኅ ← P ;
 ኈ ← p $diqala_geez ;
 ኍ ← p $diqala_kaib ;
 ኊ ← p $diqala_salis ;
+ኌ ← p $diqala_hamis $hamis ;
 ኀ ← p ;
 ኃ ← \xb9 ;
 ኆ ← \xb8 ;
@@ -189,7 +188,6 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ኮ ← \xf7 ;
 ኳ ← \x88 ;
 
-ኸ ← z ;
 ኹ ← \x7a $kaib ;
 ኺ ← \x7a $salis ;
 ኼ ← \x7a $hamis ;
@@ -197,6 +195,7 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ዂ ← \x7a $diqala_salis ;
 ዃ ← \x7a $diqala_kaib ;
 ዄ ← \x7a $diqala_hamis $hamis ;
+ኸ ← z ;
 ኻ ← \xbd ;
 ኽ ← Z ;
 ኾ ← \xf3 ;
@@ -231,8 +230,8 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ዢ ← q $salis ;
 ዤ ← q $hamis ;
 ዠ ← q ;
-ዣ ← \xcf ;
 ዧ ← \xcf $diqala_rabi ;
+ዣ ← \xcf ;
 ዥ ← Q ;
 ዦ ← \xce ;
 
@@ -244,21 +243,22 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ይ ← V ;
 ዮ ← \xd7 ;
 
-ደ ← f ;
+
 ዱ ← \xc4 $kaib ;
 ዲ ← \xc4 $salis ;
 ዴ ← f $hamis ;
 ዷ ← f $diqala_rabi ;
+ደ ← f ;
 ዳ ← \xc4 ;
 ድ ← F ;
 ዶ ← \xec ;
 
-ጀ ← g ;
 ጁ ← \xa9 $kaib ;
 ጂ ← \xa9 $salis ;
 ጇ ← \xa9 $diqala_rabi ;
 ጃ ← \xa9 ;
 ጄ ← g $hamis ;
+ጀ ← g ;
 ጅ ← G ;
 ጆ ← \xed ;
 
@@ -268,18 +268,19 @@ $macron = [ \x99 \x9b \xd1 ] ;
 ጐ ← o $diqala_geez ;
 ጕ ← o $diqala_kaib ;
 ጒ ← o $diqala_salis ;
+ጔ ← o $diqala_hamis $hamis ;
 ገ ← o ;
 ጋ ← \xbf ;
 ግ ← O ;
 ጎ ← \xaf ;
 ጓ ← \xd9 ;
 
-ጠ ← b ;
 ጡ ← b $kaib ;
 ጢ ← b $salis ;
 ጤ ← b $hamis ;
-ጣ ← \xba ;
+ጠ ← b ;
 ጧ ← \xba $diqala_rabi ;
+ጣ ← \xba ;
 ጥ ← B ;
 ጦ ← \xf5 ;
 
@@ -339,17 +340,17 @@ $macron = [ \x99 \x9b \xd1 ] ;
 
 
 ። ← \xca\xca ;
-፦ ← \xca- ;
+፦ ← \xca'-' ;
 ፡ ← \xca ;
 ፥ ← \x24 ;
 ፤ ← \x25 ;
 \x22 ← \x26 ;
 \x24 ← \x5e ;
-) ← \x28 ;
-( ← \x2a ;
-? ← \x40 ;
-, ← \x8f ;
-. ← \x90 ;
+')' ← \x28 ;
+'(' ← \x2a ;
+'?' ← \x40 ;
+',' ← \x8f ;
+'.' ← \x90 ;
 « ← \x93 ;
 » ← \x94 ;
 0 ← \x83 ;

@@ -155,7 +155,55 @@ public class DocxProcessor extends DocumentProcessor {
 			}
 	}
 	
-	public void normalizeTextNew( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
+	/*
+	 * Previously this normalizeText was done by the diacrtical based converter, this works fine so long as
+	 * a document is in a single font system. Since multi-font system documents have been found (diacritical mixed
+	 * with non-diacrtical), we normalize the text outside of a converter.  This needs a re-think, the benefit of
+	 * iterating outside of a converter is that only a single iteration is needed.  Alternatively, each converter
+	 * in play could run the text node iteration individually.
+	 * 
+	 * We need to first "normalize" the text before processing it.  This avoids inserting lots of confusing
+	 * complexity that would be needed to check for diacritical marks separated by xml elements from their
+	 * bases.  This process will check if the first letter of run text is a diacritical mark, if so, then 
+	 * move it to the last character of the previous run.  Thus <w:t>....b</w:t> ... <w:t>u...</w:t>
+	 * becomes <w:t>...bu</w:t> ... <w:t>...</w:t> and "bu" will be converted properly to "ቡ".
+	 * 
+	 * There are two scenarios to check for and correct. The first is when in the Ethiopic font is specified
+	 * in adjacent w:rFonts properties, and not in a named style. For example:
+	 * 
+	 * <w:r>
+	 *  <w:rPr>
+	 *    <w:rFonts w:ascii="..." w:ansi="..."/>
+	 *  <w:rPr>
+	 *  <w:t>b</w:t>
+	 * </w:r>
+	 * <w:r>
+	 *  <w:rPr>
+	 *    <w:rFonts w:ascii="..." w:ansi="..."/>
+	 *  <w:rPr>
+	 *  <w:t>u</w:t>
+	 * </w:r>
+	 * 
+	 * The 2nd scenario is when an Ethiopic font is defined in a style, and no rFonts are present.  For example:
+	 * 
+	 * <w:p>
+	 *   <w:pPr><w:pStyle w:val="BodyText"/><w:rPr><w:sz w:val="20"/></w:rPr></w:pPr>
+	 *   <w:r>
+	 *     <w:rPr>
+	 *      <w:sz w:val="20"/>
+	 *     <w:rPr>
+	 *     <w:t>b</w:t>
+	 *   </w:r>
+	 *   <w:r>
+	 *    <w:rPr>
+	 *      <w:sz w:val="20"/>
+	 *    <w:rPr>
+	 *    <w:t>u</w:t>
+	 *   </w:r>
+	 * </w:p>
+	 * 
+	 */
+	public void normalizeText( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
 
 		if( stFinder.hasStyles() ) {
 			stFinder.clearResults();
@@ -243,7 +291,8 @@ public class DocxProcessor extends DocumentProcessor {
 	}
 	
 
-	// make this an abstract method
+	/*
+	 * 
 	public void normalizeText( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
 		if( stFinder.hasStyles() ) {
 			stFinder.clearResults();
@@ -255,6 +304,7 @@ public class DocxProcessor extends DocumentProcessor {
 		ustFinder.clearResults();
 		new TraversalUtil( part.getContents(), ustFinder );
 	}
+	*/
 
 	public void process( final File inputFile, final File outputFile )
 	{
@@ -273,7 +323,7 @@ public class DocxProcessor extends DocumentProcessor {
     		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
     		// selectFonts( documentPart );
 
-			normalizeTextNew( documentPart, stf, ustf );
+			normalizeText( documentPart, stf, ustf );
     		totalNodes = stf.results.size() + ustf.results.size();
             
     		/*
@@ -287,13 +337,13 @@ public class DocxProcessor extends DocumentProcessor {
             
        		if( documentPart.hasFootnotesPart() ) {
 	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
-				normalizeTextNew( footnotesPart, stf, ustf );
+				normalizeText( footnotesPart, stf, ustf );
        			processUnstyledObjects( footnotesPart, ustf );
            		processStyledObjects( footnotesPart, stf );
        		}
        		if( documentPart.hasEndnotesPart() ) {
 	            EndnotesPart endnotesPart = documentPart.getEndNotesPart();
-				normalizeTextNew( endnotesPart, stf, ustf );
+				normalizeText( endnotesPart, stf, ustf );
        			processUnstyledObjects( endnotesPart, ustf );
            		processStyledObjects( endnotesPart, stf );		
        		}
@@ -305,19 +355,19 @@ public class DocxProcessor extends DocumentProcessor {
     			
     			if( hfp.getFirstHeader() != null ) {
     				HeaderPart headerPart = hfp.getFirstHeader();
-    				normalizeTextNew( headerPart, stf, ustf );
+    				normalizeText( headerPart, stf, ustf );
     	       		processUnstyledObjects( headerPart, ustf );
                		processStyledObjects( headerPart, stf );  
     			}
     			if( hfp.getDefaultHeader() != null ) {
     				HeaderPart headerPart = hfp.getDefaultHeader();
-    				normalizeTextNew( headerPart, stf, ustf );
+    				normalizeText( headerPart, stf, ustf );
     	       		processUnstyledObjects( headerPart, ustf );
                		processStyledObjects( headerPart, stf );  
     			}
     			if( hfp.getEvenHeader() != null ) {
     				HeaderPart headerPart = hfp.getEvenHeader();
-    				normalizeTextNew( headerPart, stf, ustf );
+    				normalizeText( headerPart, stf, ustf );
     	       		processUnstyledObjects( headerPart, ustf );
                		processStyledObjects( headerPart, stf );  
     			}
@@ -325,19 +375,19 @@ public class DocxProcessor extends DocumentProcessor {
 
     			if ( hfp.getFirstFooter() != null ) {
     				FooterPart footerPart = hfp.getFirstFooter();
-    				normalizeTextNew( footerPart, stf, ustf );
+    				normalizeText( footerPart, stf, ustf );
     	       		processUnstyledObjects( footerPart, ustf );
                		processStyledObjects( footerPart, stf ); 
     			}
     			if ( hfp.getDefaultFooter() != null ) {
     				FooterPart footerPart = hfp.getDefaultFooter();
-    				normalizeTextNew( footerPart, stf, ustf );
+    				normalizeText( footerPart, stf, ustf );
     	       		processUnstyledObjects( footerPart, ustf );
                		processStyledObjects( footerPart, stf );
     			}
     			if ( hfp.getEvenFooter() != null ) {
     				FooterPart footerPart = hfp.getEvenFooter();
-    				normalizeTextNew( footerPart, stf, ustf );
+    				normalizeText( footerPart, stf, ustf );
     	       		processUnstyledObjects( footerPart, ustf );
                		processStyledObjects( footerPart, stf );
     			}
