@@ -76,13 +76,12 @@ public class DocxUtils {
 	    				// }
 	    				rfonts.setEastAsia( fontOut );
 	    				isSet = true;
-	    			}
-	    			if( isSet == false ) {
-	    				// the style id does not use a target typeface, so remove:
-	    				styleIdToFont.remove( id );
-	    			}
-	    			
+	    			}	    			
 	    		}
+    			if( isSet == false ) {
+    				// the style id does not use a target typeface, so remove:
+    				styleIdToFont.remove( id );
+    			}
 	    		if( style.getBasedOn() != null ) {
 	    			String basedOn = style.getBasedOn().getVal();
 	    			if( styleIdToFont.containsKey( basedOn ) ) {
