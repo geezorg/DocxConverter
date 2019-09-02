@@ -214,6 +214,8 @@ public final class DocxConverter extends Application {
         	convertButton.setDisable( true );
         	convertFiles( convertButton, listView ); 
         });
+        
+        CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after conversion?" );
 
         final Menu fileMenu = new Menu("_File"); 
         final FileChooser fileChooser = new FileChooser();
@@ -227,6 +229,11 @@ public final class DocxConverter extends Application {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
                     inputFileList = new ArrayList<File>( fileChooser.showOpenMultipleDialog( stage ) );
+                    if ( inputFileList.size() == 1 ) {
+                    	openFilesCheckbox.setText( "Open file after conversion?" );
+                    } else {
+                    	openFilesCheckbox.setText( "Open files after conversion?" );                    	
+                    }
                     
                     Collections.sort( inputFileList, new Comparator<File>() {
                         @Override
@@ -304,7 +311,6 @@ public final class DocxConverter extends Application {
         leftBar.getMenus().addAll( fileMenu, inFontMenu, outFontMenu );
 
         
-        CheckBox openFilesCheckbox = new CheckBox( "Open file(s) after conversion?");
         openFilesCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             public void changed(ObservableValue<? extends Boolean> ov,
                 Boolean old_val, Boolean new_val) {
