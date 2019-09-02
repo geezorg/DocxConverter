@@ -23,6 +23,7 @@ import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
 import org.geez.convert.DocumentProcessor;
 import org.geez.convert.fontsystem.ConvertFontSystem;
+import org.geez.convert.fontsystem.ConvertFontSystemDiacriticalSystem;
 
 
 public class DocxProcessor extends DocumentProcessor {
@@ -154,6 +155,93 @@ public class DocxProcessor extends DocumentProcessor {
 			}
 	}
 	
+	public void normalizeTextNew( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
+
+		if( stFinder.hasStyles() ) {
+			stFinder.clearResults();
+		
+			new TraversalUtil( part.getContents(), stFinder );
+			// fix styled text nodes:
+		
+			Map<Text,String> styledText = stFinder.results;
+			List<Text> styledTextOrdered = stFinder.resultsOrdered;
+			int size = styledTextOrdered.size();
+			for ( int i=1; i<size; i++ ) {
+				Text text1 = styledTextOrdered.get(i);
+				String value1 = text1.getValue();
+				if( value1.length() > 0 ) {
+					char firstChar = value1.charAt(0);
+					String fontIn = styledText.get( text1 );
+					ConvertFontSystem converter = fontToConverterMap.get( fontIn );
+					if( converter instanceof ConvertFontSystemDiacriticalSystem ) {
+						ConvertFontSystemDiacriticalSystem diaConverter = (ConvertFontSystemDiacriticalSystem)converter;
+						if( diaConverter.isDiacritic( fontIn, String.valueOf(firstChar) ) )  {
+							Text text0 = styledTextOrdered.get( i-1 );
+							// check here if text0 is under the same font
+							if( fontIn.equals( styledText.get( text0 ) ) ) {
+								String value0 = text0.getValue();
+							
+								text0.setValue( value0 + firstChar );   // append to previous node as last char
+								text1.setValue( value1.substring(1) );  // remove from current node
+							}
+						}
+						else if( diaConverter.combinesWithHuletNeteb( firstChar ) ) {
+							Text text0 = styledTextOrdered.get( i-1 );
+							// check here if text0 is under the same font
+							if( fontIn.equals( styledText.get( text0 ) ) ) {
+								String value0 = text0.getValue();
+								if( ( value0.length() > 0 ) && ( ( value0.charAt( value0.length() - 1) ) == diaConverter.getHuletNeteb() ) ) {
+									text0.setValue( value0 + firstChar );   // append to previous node as last char
+									text1.setValue( value1.substring(1) );  // remove from current node	
+								}
+							}
+						}
+				}
+				}
+			}
+		}
+		
+		ustFinder.clearResults();
+		new TraversalUtil( part.getContents(), ustFinder );
+		
+		Map<Text,String> unstyledText = ustFinder.results;
+		List<Text> unstyledTextOrdered = ustFinder.resultsOrdered;
+		int size = unstyledTextOrdered.size();
+		for ( int i=1; i<size; i++ ) {
+			Text text1 = unstyledTextOrdered.get(i);
+			String value1 = text1.getValue();
+			if( value1.length() > 0 ) {
+				char firstChar = value1.charAt(0);
+				String fontIn = unstyledText.get( text1 );
+				ConvertFontSystem converter = fontToConverterMap.get( fontIn );
+				if( converter instanceof ConvertFontSystemDiacriticalSystem ) {
+					ConvertFontSystemDiacriticalSystem diaConverter = (ConvertFontSystemDiacriticalSystem)converter;
+					if( diaConverter.isDiacritic( fontIn, String.valueOf(firstChar) ) )  {
+						Text text0 = unstyledTextOrdered.get( i-1 );
+						// check here if text0 is under the same font
+						if( fontIn.equals( unstyledText.get( text0 ) ) ) {
+							String value0 = text0.getValue();
+							
+							text0.setValue( value0 + firstChar );   // append to previous node as last char
+							text1.setValue( value1.substring(1) );  // remove from current node
+						}
+					}
+					else if( diaConverter.combinesWithHuletNeteb( firstChar ) ) {
+						Text text0 = unstyledTextOrdered.get( i-1 );
+						// check here if text0 is under the same font
+						if( fontIn.equals( unstyledText.get( text0 ) ) ) {
+							String value0 = text0.getValue();
+							if( ( value0.length() > 0 ) && ( ( value0.charAt( value0.length() - 1) ) == diaConverter.getHuletNeteb() ) ) {
+								text0.setValue( value0 + firstChar );   // append to previous node as last char
+								text1.setValue( value1.substring(1) );  // remove from current node	
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 
 	// make this an abstract method
 	public void normalizeText( final JaxbXmlPart<?> part, DocxStyledTextFinder stFinder, DocxUnstyledTextFinder ustFinder ) throws Docx4JException {
@@ -178,14 +266,14 @@ public class DocxProcessor extends DocumentProcessor {
 			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load( inputFile );		
 			MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 			
-       		Map<String,String> styleIdToFont = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
-       		DocxStyledTextFinder stf = new DocxStyledTextFinder( styleIdToFont );
+       		Map<String,Map<String,String>> styleIdToFont = DocxUtils.readStyles(wordMLPackage, targetTypefaces, fontOut);
+       		DocxStyledTextFinder    stf = new DocxStyledTextFinder( styleIdToFont );
     		DocxUnstyledTextFinder ustf = new DocxUnstyledTextFinder(targetTypefaces, fontOut);
     		
     		// see: https://stackoverflow.com/questions/34357005/javafx-task-update-progress-from-a-method
     		// selectFonts( documentPart );
 
-			normalizeText( documentPart, stf, ustf );
+			normalizeTextNew( documentPart, stf, ustf );
     		totalNodes = stf.results.size() + ustf.results.size();
             
     		/*
@@ -199,13 +287,13 @@ public class DocxProcessor extends DocumentProcessor {
             
        		if( documentPart.hasFootnotesPart() ) {
 	            FootnotesPart footnotesPart = documentPart.getFootnotesPart();
-				normalizeText( footnotesPart, stf, ustf );
+				normalizeTextNew( footnotesPart, stf, ustf );
        			processUnstyledObjects( footnotesPart, ustf );
            		processStyledObjects( footnotesPart, stf );
        		}
        		if( documentPart.hasEndnotesPart() ) {
 	            EndnotesPart endnotesPart = documentPart.getEndNotesPart();
-				normalizeText( endnotesPart, stf, ustf );
+				normalizeTextNew( endnotesPart, stf, ustf );
        			processUnstyledObjects( endnotesPart, ustf );
            		processStyledObjects( endnotesPart, stf );		
        		}
@@ -217,19 +305,19 @@ public class DocxProcessor extends DocumentProcessor {
     			
     			if( hfp.getFirstHeader() != null ) {
     				HeaderPart headerPart = hfp.getFirstHeader();
-    				normalizeText( headerPart, stf, ustf );
+    				normalizeTextNew( headerPart, stf, ustf );
     	       		processUnstyledObjects( headerPart, ustf );
                		processStyledObjects( headerPart, stf );  
     			}
     			if( hfp.getDefaultHeader() != null ) {
     				HeaderPart headerPart = hfp.getDefaultHeader();
-    				normalizeText( headerPart, stf, ustf );
+    				normalizeTextNew( headerPart, stf, ustf );
     	       		processUnstyledObjects( headerPart, ustf );
                		processStyledObjects( headerPart, stf );  
     			}
     			if( hfp.getEvenHeader() != null ) {
     				HeaderPart headerPart = hfp.getEvenHeader();
-    				normalizeText( headerPart, stf, ustf );
+    				normalizeTextNew( headerPart, stf, ustf );
     	       		processUnstyledObjects( headerPart, ustf );
                		processStyledObjects( headerPart, stf );  
     			}
@@ -237,19 +325,19 @@ public class DocxProcessor extends DocumentProcessor {
 
     			if ( hfp.getFirstFooter() != null ) {
     				FooterPart footerPart = hfp.getFirstFooter();
-    				normalizeText( footerPart, stf, ustf );
+    				normalizeTextNew( footerPart, stf, ustf );
     	       		processUnstyledObjects( footerPart, ustf );
                		processStyledObjects( footerPart, stf ); 
     			}
     			if ( hfp.getDefaultFooter() != null ) {
     				FooterPart footerPart = hfp.getDefaultFooter();
-    				normalizeText( footerPart, stf, ustf );
+    				normalizeTextNew( footerPart, stf, ustf );
     	       		processUnstyledObjects( footerPart, ustf );
                		processStyledObjects( footerPart, stf );
     			}
     			if ( hfp.getEvenFooter() != null ) {
     				FooterPart footerPart = hfp.getEvenFooter();
-    				normalizeText( footerPart, stf, ustf );
+    				normalizeTextNew( footerPart, stf, ustf );
     	       		processUnstyledObjects( footerPart, ustf );
                		processStyledObjects( footerPart, stf );
     			}

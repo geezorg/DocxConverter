@@ -62,7 +62,7 @@ public class ConvertFontSystemDiacriticalSystem extends ConvertFontSystemDuoFont
 	*/
 	
 	
-	protected boolean combinesWithHuletNeteb(char symbol) {
+	public boolean combinesWithHuletNeteb(char symbol) {
 		return ( symbol == huletNeteb );
 	}
 	

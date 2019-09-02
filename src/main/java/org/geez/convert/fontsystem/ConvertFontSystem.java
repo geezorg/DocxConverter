@@ -95,4 +95,8 @@ public class ConvertFontSystem extends Converter {
 	public List<String> getTargetTypefaces() {
 		return targetTypefaces;
 	}
+	
+	public char getHuletNeteb() {
+		return huletNeteb;
+	}
 }

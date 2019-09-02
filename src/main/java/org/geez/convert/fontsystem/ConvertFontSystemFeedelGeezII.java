@@ -51,7 +51,7 @@ public class ConvertFontSystemFeedelGeezII extends ConvertFontSystemDiacriticalS
 	}
 	
 	
-	protected boolean combinesWithHuletNeteb(char symbol) {
+	public boolean combinesWithHuletNeteb(char symbol) {
 		return ( (symbol == huletNeteb) || ( symbol == 0xf02d ) );
 	}
 
