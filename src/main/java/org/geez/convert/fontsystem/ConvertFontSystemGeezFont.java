@@ -10,10 +10,11 @@ public class ConvertFontSystemGeezFont extends ConvertFontSystemDiacriticalSyste
 
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
+					"geezBasic",
 					"GeezAddis",
 					"geezDirib",
 					"geezLong",
-					"GeezThin" 
+					"GeezThin  Black" 
 			)
 	);
 	
@@ -32,11 +33,12 @@ public class ConvertFontSystemGeezFont extends ConvertFontSystemDiacriticalSyste
 		huletNeteb = ':';
 		
 		font1Typefaces.addAll(
-			Arrays.asList ( 
+			Arrays.asList (
+				"geezBasic",
 				"GeezAddis",
 				"geezDirib",
 				"geezLong",
-				"GeezThin" 
+				"GeezThin  Black" 
 			)
 		);
 		targetTypefaces.addAll( font1Typefaces );
