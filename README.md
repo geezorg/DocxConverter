@@ -75,7 +75,7 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 4. Click "Convert File(s)"
 5. Converted files will automatically open.
 
-![v0.6 Screenshot](doc/gui-screenshot-v0.6.png)
+![v0.7 Screenshot](doc/gui-screenshot-v0.7.png)
 
 If your document contains more than one legacy font system, you may convert the fonts one at a time where
 the output document of the first conversion is used as the input document of the 2nd conversion and so on.
