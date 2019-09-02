@@ -1,0 +1,385 @@
+################################################################################
+#
+# This is a mono-directional mapping file for the Geezigna font encoding into the
+# Unicode standard for Ethiopic. The file is intended to be read as input for
+# the International Components for Unicode (ICU) software library. The mapping
+# syntax is documented at the following URL:
+#
+#   http://userguide.icu-project.org/transforms/general
+#
+# Geezigna was provided with the Feedel software created by Fekade Mesfin.
+#
+################################################################################
+#
+#
+$kaib = [ \x2e \xb3 ] ;
+$salis = [ \x3e \xf9 ] ;
+$hamis = [ \x3f \xc0 ] ;
+$diqala_geez = \d6 ;
+$diqala_rabi = [ \x5f \xd0 ] ;
+$diqala_kaib = [ \x23 \x8b ] ;
+$diqala_salis = \x8a ;
+$diqala_hamis = \x9d ;  # left side stroke
+$macron = [ \x99 \x9b \xd1 ] ;
+#
+#
+ሁ ← y $kaib ;
+ሀ ← y ;
+ህ ← Y ;
+ሂ ← \xb4 $salis ;
+ሃ ← \xb4 ;
+ሄ ← \xff ;
+ሆ ← \xe7 ;
+
+ሉ ← s $kaib ;
+ሊ ← s $salis ;
+ሌ ← s $hamis ;
+ል ← S ;
+ሎ ← s $diqala_geez ;
+ለ ← s ;
+ሏ ← \xa7 $diqala_rabi ;
+ላ ← \xa7 ;
+
+ሑ ← \x61 $kaib ;
+ሒ ← \x61 $salis ;
+ሔ ← \x61 $hamis ;
+ሐ ← a ;
+ሗ ← \x8c $diqala_rabi ;
+ሓ ← \x8c ;
+ሕ ← A ;
+ሖ ← \x81 ;
+
+ሙ ← e $kaib ;
+መ ← e ;
+ሚ ← \xab $salis ;
+ሜ ← \xab $hamis ;
+ሟ ← \xab $diqala_rabi ;
+ማ ← \xab ;
+ም ← E ;
+ሞ ← \xe4 ;
+
+ሡ ← c $kaib ;
+ሠ ← c ;
+ሢ ← \x8d $salis ;
+ሤ ← \x8d $hamis ;
+ሧ ← \x8d $diqala_rabi ;
+ሣ ← \x8d ;
+ሥ ← C ;
+ሦ ← \x82 ;
+
+ረ ← i ;
+ሩ ← K ;
+ሪ ← k ;
+ሯ ← \x85 ;
+ራ ← \x86 ;
+ፘ ← \x8e ;
+ሬ ← \x9e ;
+ር ← I ;
+ሮ ← \xe9 ;
+
+ሱ ← h $kaib ;
+ሲ ← h $salis ;
+ሴ ← h $hamis ;
+ሰ ← h ;
+ሷ ← \xfa $diqala_rabi ;
+ሳ ← \xfa ;
+ስ ← H ;
+ሶ ← \xee ;
+
+ሹ ← d $kaib ;
+ሺ ← d $salis ;
+ሼ ← d $hamis ;
+ሸ ← d ;
+ሽ ← D ;
+ሾ ← \xeb ;
+ሿ ← \x9a $diqala_rabi ;
+ሻ ← [ \x9a \xb6 ] ;
+
+ቁ ← n $kaib ;
+ቂ ← n $salis ;
+ቄ ← n $hamis ;
+ቊ ← n $diqala_salis ;
+ቌ ← n $diqala_hamis $hamis ;
+ቀ ← n ;
+ቃ ← \x7e ;
+ቅ ← N ;
+ቆ ← \xf6 ;
+ቈ ← \x84 ;
+ቋ ← [ \x92 \x96 \x97 ] ;
+ቍ ← \xcc ;
+
+ቡ ← j $kaib ;
+ቢ ← j $salis ;
+ቤ ← j $hamis ;
+በ ← j ;
+ቧ ← \xc6 $diqala_rabi ;
+ባ ← \xc6 ;
+ብ ← J ;
+ቦ ← \xef ;
+
+ቱ ← u $kaib ;
+ቲ ← u $salis ;
+ቴ ← u $hamis ;
+ተ ← u ;
+ታ ← \xac ;
+ት ← U ;
+ቶ ← \xe8 ;
+ቷ ← \x9f ;
+
+ቹ ← \x5b $kaib ;
+ቺ ← \x5b $salis ;
+ቼ ← \x5b $hamis ;
+ቿ ← \x5b $diqala_rabi ;
+ቸ ← \x5b ;
+ቻ ← \xd2 ;
+ች ← \x7b ;
+ቾ ← \xd3 ;
+
+ኁ ← p $kaib ;
+ኂ ← p $salis ;
+ኄ ← p $hamis ;
+ኅ ← P ;
+ኈ ← p $diqala_geez ;
+ኍ ← p $diqala_kaib ;
+ኊ ← p $diqala_salis ;
+ኌ ← p $diqala_hamis $hamis ;
+ኀ ← p ;
+ኃ ← \xb9 ;
+ኆ ← \xb8 ;
+ኋ ← \x60 ;
+
+ኑ ← l $kaib ;
+ኒ ← l $salis ;
+ኔ ← l $hamis ;
+ነ ← l ;
+ን ← L ;
+ኖ ← \xf1 ;
+ኗ ← \xc2 $diqala_rabi ;
+ና ← \xc2 ;
+
+ኙ ← \x27 $kaib ;
+ኚ ← \x27 $salis ;
+ኜ ← \x27 $hamis ;
+ኘ ← \x27 ;
+ኝ ← \x22 ;
+ኞ ← \xae ;
+ኟ ← \xbe $diqala_rabi ;
+ኛ ← \xbe ;
+
+ኡ ← r $kaib ;
+ኢ ← r $salis ;
+ኤ ← r $hamis ;
+አ ← r ;
+ኣ ← \xa8 ;
+እ ← R ;
+ኦ ← \xe5 ;
+ኧ ← \x89 ;
+
+ኩ ← m $kaib ;
+ኪ ← m $salis ;
+ኬ ← m $hamis ;
+ኰ ← m $diqala_geez ;
+ኵ ← m $diqala_kaib ;
+ኲ ← m $diqala_salis ;
+ኴ ← m $diqala_hamis $hamis ;
+ከ ← m ;
+ካ ← \xb5 ;
+ክ ← M ;
+ኮ ← \xf7 ;
+ኳ ← \x88 ;
+
+ኹ ← \x7a $kaib ;
+ኺ ← \x7a $salis ;
+ኼ ← \x7a $hamis ;
+ዀ ← \x7a $diqala_geez ;
+ዂ ← \x7a $diqala_salis ;
+ዃ ← \x7a $diqala_kaib ;
+ዄ ← \x7a $diqala_hamis $hamis ;
+ኸ ← z ;
+ኻ ← \xbd ;
+ኽ ← Z ;
+ኾ ← \xf3 ;
+ዃ ← \x9c ;
+
+ወ ← w ;
+ዉ ← \xfd ;
+ዊ ← \xb7 $salis ;
+ዌ ← \xb7 $hamis ;
+ዋ ← \xb7 ;
+ው ← W ;
+ዎ ← \xe3 ;
+
+ዑ ← \x30 $kaib ;
+ዐ ← \x30 ;
+ዓ ← \xbc $salis ;
+ዓ ← \xbc $hamis ;
+ዓ ← \xbc ;
+ዕ ← \x29 ;
+ዖ ← \xe2 ;
+
+ዟ ← \xb2 $diqala_rabi ;
+ዛ ← \xb2 ;
+ዙ ← \x2c $kaib ;
+ዚ ← \x2c $salis ;
+ዜ ← \x2c $hamis ;
+ዘ ← \x2c ;
+ዝ ← \x3c ;
+ዞ ← \xf8 ;
+
+ዡ ← q $kaib ;
+ዢ ← q $salis ;
+ዤ ← q $hamis ;
+ዠ ← q ;
+ዧ ← \xcf $diqala_rabi ;
+ዣ ← \xcf ;
+ዥ ← Q ;
+ዦ ← \xce ;
+
+የ ← v ;
+ዩ ← \x87 ;
+ዪ ← \x91 ;
+ያ ← \xc3 ;
+ዬ ← \xfc ;
+ይ ← V ;
+ዮ ← \xd7 ;
+
+
+ዱ ← \xc4 $kaib ;
+ዲ ← \xc4 $salis ;
+ዴ ← f $hamis ;
+ዷ ← f $diqala_rabi ;
+ደ ← f ;
+ዳ ← \xc4 ;
+ድ ← F ;
+ዶ ← \xec ;
+
+ጁ ← \xa9 $kaib ;
+ጂ ← \xa9 $salis ;
+ጇ ← \xa9 $diqala_rabi ;
+ጃ ← \xa9 ;
+ጄ ← g $hamis ;
+ጀ ← g ;
+ጅ ← G ;
+ጆ ← \xed ;
+
+ጉ ← o $kaib ;
+ጊ ← o $salis ;
+ጌ ← o $hamis ;
+ጐ ← o $diqala_geez ;
+ጕ ← o $diqala_kaib ;
+ጒ ← o $diqala_salis ;
+ጔ ← o $diqala_hamis $hamis ;
+ገ ← o ;
+ጋ ← \xbf ;
+ግ ← O ;
+ጎ ← \xaf ;
+ጓ ← \xd9 ;
+
+ጡ ← b $kaib ;
+ጢ ← b $salis ;
+ጤ ← b $hamis ;
+ጠ ← b ;
+ጧ ← \xba $diqala_rabi ;
+ጣ ← \xba ;
+ጥ ← B ;
+ጦ ← \xf5 ;
+
+ጩ ← x $kaib ;
+ጪ ← x $salis ;
+ጨ ← x ;
+ጫ ← \xc5 ;
+ጬ ← \x98 ;
+ጭ ← X ;
+ጮ ← \xf4 ;
+ጯ ← \xfe ;
+
+ጱ ← \x5d $kaib ;
+ጲ ← \x5d $salis ;
+ጴ ← \x5d $hamis ;
+ጰ ← \x5d ;
+ጷ ← \xd4 $diqala_rabi ;
+ጳ ← \xd4 ;
+ጵ ← \x7d ;
+ጶ ← \xd5 ;
+
+ጹ ← \x5c $kaib ;
+ጺ ← \x5c $salis ;
+ጼ ← \x5c $hamis ;
+ጸ ← \x5c ;
+ጿ ← \xc7 $diqala_rabi ;
+ጻ ← \xc7 ;
+ጽ ← \x7c ;
+ጾ ← \xc8 ;
+
+ፁ ← \x3b $kaib ;
+ፀ ← \x3b ;
+ፂ ← \xc9 $salis ;
+ፄ ← \xc9 $hamis ;
+ፃ ← \xc9 ;
+ፅ ← \x3a ;
+ፆ ← \xf2 ;
+
+ፈ ← t ;
+ፉ ← \xfb ;
+ፊ ← \xf0 ;
+ፋ ← \xa0 ;
+ፌ ← \xd8 ;
+ፍ ← T ;
+ፎ ← \xe6 ;
+ፏ ← \xcd $diqala_rabi ;
+ፋ ← \xcd ;
+
+ፑ ← \x3d $kaib ;
+ፒ ← \x3d $salis ;
+ፔ ← \x3d $hamis ;
+ፗ ← \x3d $diqala_rabi ;
+ፐ ← \x3d ;
+ፓ ← \xad ;
+ፕ ← \x2b ;
+ፖ ← \xb1 ;
+
+
+። ← \xca\xca ;
+፦ ← \xca'-' ;
+፡ ← \xca ;
+፥ ← \x24 ;
+፤ ← \x25 ;
+\x22 ← \x26 ;
+\x24 ← \x5e ;
+')' ← \x28 ;
+'(' ← \x2a ;
+'?' ← \x40 ;
+',' ← \x8f ;
+'.' ← \x90 ;
+« ← \x93 ;
+» ← \x94 ;
+0 ← \x83 ;
+
+፩ ← \xc1 ;
+፪ ← \xaa ;
+፫ ← \xa3 ;
+፬ ← \xa2 ;
+፭ ← \xb0 ;
+፮ ← \xa4 ;
+፯ ← \xa6 ;
+፰ ← \xa5 ;
+፱ ← \xbb ;
+፲ ← \xda ;
+፳ ← \xdb ;
+፴ ← \xdc ;
+፵ ← \xdd ;
+፶ ← \xde ;
+፷ ← \xdf ;
+፸ ← \xe0 ;
+፹ ← \xa1 ;
+፺ ← \xe1 ;
+፻ ← \xea ;
+፼ ← \xcb ;
+#
+#
+# Strip away any remaining diacritical marks
+# 
+ ← [ $kaib $salis $hamis $diqala_geez $diqala_salis $diqala_kaib $diqala_rabi $diqala_hamis $macron ] ;
+#
+#
+:: ([\x20-\xff]) ;

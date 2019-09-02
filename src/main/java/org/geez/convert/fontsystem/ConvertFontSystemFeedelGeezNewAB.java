@@ -1,27 +1,37 @@
-package org.geez.convert.docx;
+package org.geez.convert.fontsystem;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-
-import org.docx4j.wml.Text;
-
-/*
- * The non-maven way to build the jar file:
- *
- * javac -Xlint:deprecation -cp docx4j-6.0.1.jar:dependencies/commons-io-2.5.jar:../icu4j-63_1.jar:dependencies/slf4j-api-1.7.25.jar:slf4j-1.7.25 *.java
- * jar -cvf convert.jar org/geez/convert/docx/*.class org/geez/convert/tables/
- * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab myFile-In.docx myFile-Out.docx
- *
- */
+import java.util.Set;
 
 
-public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
+
+public class ConvertFontSystemFeedelGeezNewAB extends ConvertFontSystemDiacriticalSystem {
+
+	public static final Set<String> supportedFonts = new HashSet<String> (
+			Arrays.asList(
+					"GeezA",      "GeezB",
+				    "GeezNewA",   "GeezNewB",
+				    "GeezSindeA", "GeezSindeB",
+				    "ZewdituA",   "ZewdituB",
+				    "GeezNet"
+			)
+	);
+	
+	{
+		IDs = new String[] { "GeezNewA", "GeezNewB" } ;
+	}
+	
 	private final List<String> font2Typefaces = new ArrayList<String>();
-
-	public ConvertDocxFeedelGeezNewAB( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+	
+	public ConvertFontSystemFeedelGeezNewAB() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/FeedelGeezNewA.txt", "bidirectional/FeedelGeezNewB.txt", "GeezNewA", "GeezNewB" );
 		
 		huletNeteb = '\uf022';
@@ -64,25 +74,25 @@ public class ConvertDocxFeedelGeezNewAB extends ConvertDocxDiacriticalSystem {
 	}
 
 
-	public String convertText( Text text ) {
-		localCheck( text );
-		String value = text.getValue();
+	public String convertText( String text, String fontIn ) {
+		xlit = fontToTransliteratorMap.get( fontIn );
+		if ( xlit == null ) {
+			return null;
+		}
+		
 		StringBuilder sb = new StringBuilder();
 		
-		for(int i = 0; i < value.length(); i++) {
-			int x = ( 0x00ff & (int)value.charAt(i) );
+		for(int i = 0; i < text.length(); i++) {
+			int x = ( 0x00ff & (int)text.charAt(i) );
 			sb.append( (char)x );
 		}
 		
-		return t.transliterate( sb.toString() );
+		return xlit.transliterate( sb.toString() );
 	}
 	
 	
-	public void localCheck( Text text ) {
-		super.localCheck( text );
-		if( "\uf020".equals( text.getValue() ) ) {
-			text.setSpace( "preserve" );
-		}
+	public boolean isSpacePreservableSymbol(String space) {
+		return ( space.equals("\uf020") );
 	}
 
 }
