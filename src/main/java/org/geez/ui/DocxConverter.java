@@ -73,6 +73,7 @@ import javafx.stage.Stage;
 public final class DocxConverter extends Application {
  
 	private static final String VERSION = "v0.7.0";
+	private final int APP_HEIGHT = 220, APP_WIDTH = 420; //  420, 420) ); // 305 for screenshots 220 normal
     private Desktop desktop = Desktop.getDesktop();
     
     // Input Fonts
@@ -200,8 +201,8 @@ public final class DocxConverter extends Application {
 
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable( false );
-        listView.setPrefHeight( 425 ); // 205 for screenshots, 125 normal
-        listView.setPrefWidth( 310 );
+        listView.setPrefHeight(  APP_HEIGHT - 95 ); // 420, 220 => 330, 125
+        listView.setPrefWidth( APP_WIDTH - 90 );
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
         listView.autosize();
@@ -337,7 +338,13 @@ public final class DocxConverter extends Application {
         rootGroup.setBottom( vbottomBox );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
-        stage.setScene( new Scene(rootGroup, 420, 420) ); // 305 for screenshots 220 normal
+        Scene scene = new Scene(rootGroup, APP_WIDTH, APP_HEIGHT );
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                listView.setPrefHeight( Integer.parseInt(newSceneHeight.toString().split("\\.")[0] ) - 95);
+            }
+        });
+        stage.setScene( scene ); // 305 for screenshots 220 normal
         stage.show();
     }
     
