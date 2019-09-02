@@ -229,23 +229,24 @@ public final class DocxConverter extends Application {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
                     inputFileList = new ArrayList<File>( fileChooser.showOpenMultipleDialog( stage ) );
-                    if ( inputFileList.size() == 1 ) {
-                    	openFilesCheckbox.setText( "Open file after conversion?" );
-                    } else {
-                    	openFilesCheckbox.setText( "Open files after conversion?" );                    	
-                    }
-                    
-                    Collections.sort( inputFileList, new Comparator<File>() {
-                        @Override
-                        public int compare(File o1, File o2) {
-                            String n1 = o1.getName();
-                            String n2 = o2.getName();
-                            return n1.compareTo(n2);
-                        }
-
-                    });
                     
                     if ( inputFileList != null ) {
+	                    if ( inputFileList.size() == 1 ) {
+	                    	openFilesCheckbox.setText( "Open file after conversion?" );
+	                    } else {
+	                    	openFilesCheckbox.setText( "Open files after conversion?" );                    	
+	                    }
+	                    
+	                    Collections.sort( inputFileList, new Comparator<File>() {
+	                        @Override
+	                        public int compare(File o1, File o2) {
+	                            String n1 = o1.getName();
+	                            String n2 = o2.getName();
+	                            return n1.compareTo(n2);
+	                        }
+	
+	                    });
+                    
                     	for( File file: inputFileList ) {
                     		Label rowLabel = new Label( file.getName() );
                     		data.add( rowLabel );
