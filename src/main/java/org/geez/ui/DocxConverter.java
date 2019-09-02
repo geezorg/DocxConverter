@@ -1,4 +1,4 @@
-package org.geez.convert.docx;
+package org.geez.ui;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -7,6 +7,22 @@ import java.net.URI;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.controlsfx.control.StatusBar;
+import org.geez.convert.docx.DocxProcessor;
+import org.geez.convert.docx.DocxProcessorAutodetect;
+import org.geez.convert.fontsystem.ConvertFontSystem;
+import org.geez.convert.fontsystem.ConvertFontSystemBrana;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezII;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezNewAB;
+import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezigna;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezFont;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezTypeNet;
+import org.geez.convert.fontsystem.ConvertFontSystemNCIC;
+import org.geez.convert.fontsystem.ConvertFontSystemPowerGeez;
+import org.geez.convert.fontsystem.ConvertFontSystemSamawerfa;
+import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez;
+import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez2000;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -49,20 +65,22 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import org.controlsfx.control.StatusBar;
  
 
 public final class DocxConverter extends Application {
  
-	private static final String VERSION = "v0.6.0";
+	private static final String VERSION = "v0.7.0";
     private Desktop desktop = Desktop.getDesktop();
     
     // Input Fonts
+    private static final String autodetect = "Autodetect";
 	private static final String brana = "Brana I/II";
 	private static final String geezii = "Geez, GeezII";
+	private static final String geezigna = "Geezigna";
+	private static final String geezfont = "GeezFont";
 	private static final String geeznewab = "GeezNewA/B";
 	private static final String geeztypenet = "GeezTypeNet";
+	private static final String ncic = "Agafari (AGF)";
 	private static final String powergeez = "Power Ge'ez";
 	private static final String samawerfa = "Samawerfa";
 	private static final String visualgeez = "Visual Ge'ez";
@@ -73,93 +91,112 @@ public final class DocxConverter extends Application {
 	private static final String kefa = "Kefa";
 	private static final String brana_uni = "Brana";
 	private static final String powergeez_uni = "Power Geez Unicode1";
-
-	private String systemIn  = brana; // alphabetic based default
+	private static final String bembino = "Bembino";
+	
+	private String systemIn  = autodetect;
 	private String systemOut = abyssinica;
 	private boolean openOutput = true;
-	private List<File> inputList = null;
+	private List<File> inputFileList = null;
 	protected StatusBar statusBar = new StatusBar();
 	private boolean converted = false;
 	
+    private DocxProcessor processor = new DocxProcessor();
 	
+    
     private static void configureFileChooser( final FileChooser fileChooser ) {      
-    	fileChooser.setTitle("View Word Files");
+    	fileChooser.setTitle( "View Word Files" );
         fileChooser.setInitialDirectory(
-        		new File( System.getProperty("user.home") )
+        		new File( System.getProperty( "user.home" ) )
         );                 
         fileChooser.getExtensionFilters().add(
-        		new FileChooser.ExtensionFilter("*.docx", "*.docx")
+        		new FileChooser.ExtensionFilter( "*.docx", "*.docx" )
         );
     }
     
+    
     @Override
     public void start(final Stage stage) {
-        stage.setTitle("Ethiopic Docx Font Converter");
-        Image logoImage = new Image( ClassLoader.getSystemResourceAsStream("images/geez-org-avatar.png") );
+        stage.setTitle( "Ethiopic Docx Font Converter" );
+        Image logoImage = new Image( ClassLoader.getSystemResourceAsStream( "images/geez-org-avatar.png" ) );
         stage.getIcons().add( logoImage );
-        String osName = System.getProperty("os.name");
-        if( osName.equals("Mac OS X") ) {
-            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage(logoImage, null) );      
+        String osName = System.getProperty( "os.name" );
+        if( osName.equals( "Mac OS X" ) ) {
+            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) );      
         }
 
         Menu inFontMenu = new Menu( "Font _In" );
-        RadioMenuItem inMenuItem1 = new RadioMenuItem( "_" + brana );
-        RadioMenuItem inMenuItem2 = new RadioMenuItem( "_" + geezii );
-        RadioMenuItem inMenuItem3 = new RadioMenuItem( "Geez_NewA/B" );
-        RadioMenuItem inMenuItem4 = new RadioMenuItem( "Geez_TypeNet" );
-        RadioMenuItem inMenuItem5 = new RadioMenuItem( "_" + powergeez );
-        RadioMenuItem inMenuItem6 = new RadioMenuItem( "_" + samawerfa );
-        RadioMenuItem inMenuItem7 = new RadioMenuItem( "_" + visualgeez );
-        RadioMenuItem inMenuItem8 = new RadioMenuItem( "VG _2000" );
+        RadioMenuItem inMenuItem0  = new RadioMenuItem( autodetect );
+        RadioMenuItem inMenuItem1  = new RadioMenuItem( "_" + ncic );
+        RadioMenuItem inMenuItem2  = new RadioMenuItem( "_" + brana );
+        RadioMenuItem inMenuItem3  = new RadioMenuItem( "_" + geezii );
+        RadioMenuItem inMenuItem4  = new RadioMenuItem( "Geezigna" );
+        RadioMenuItem inMenuItem5  = new RadioMenuItem( "Geez_Font" );
+        RadioMenuItem inMenuItem6  = new RadioMenuItem( "Geez_NewA/B" );
+        RadioMenuItem inMenuItem7  = new RadioMenuItem( "Geez_TypeNet" );
+        RadioMenuItem inMenuItem8  = new RadioMenuItem( "_" + powergeez );
+        RadioMenuItem inMenuItem9  = new RadioMenuItem( "_" + samawerfa );
+        RadioMenuItem inMenuItem10 = new RadioMenuItem( "_" + visualgeez );
+        RadioMenuItem inMenuItem11 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
-        inMenuItem1.setOnAction( evt -> setSystemIn( brana ) );
-        inMenuItem1.setSelected(true);
+        inMenuItem0.setSelected(true);
+        inMenuItem0.setOnAction( evt -> setSystemIn( autodetect ) );
+        inMenuItem0.setToggleGroup( groupInMenu );
+        inMenuItem1.setOnAction( evt -> setSystemIn( ncic ) );
         inMenuItem1.setToggleGroup( groupInMenu );
-        inMenuItem2.setOnAction( evt -> setSystemIn( geezii ) );
+        inMenuItem2.setOnAction( evt -> setSystemIn( brana ) );
         inMenuItem2.setToggleGroup( groupInMenu );
-        inMenuItem3.setOnAction( evt -> setSystemIn( geeznewab ) );
+        inMenuItem3.setOnAction( evt -> setSystemIn( geezii ) );
         inMenuItem3.setToggleGroup( groupInMenu );
-        inMenuItem4.setOnAction( evt -> setSystemIn( geeztypenet ) );
+        inMenuItem4.setOnAction( evt -> setSystemIn( geezigna ) );
         inMenuItem4.setToggleGroup( groupInMenu );
-        inMenuItem5.setOnAction( evt -> setSystemIn( powergeez ) );
+        inMenuItem5.setOnAction( evt -> setSystemIn( geezfont ) );
         inMenuItem5.setToggleGroup( groupInMenu );
-        inMenuItem6.setOnAction( evt -> setSystemIn( samawerfa ) );
+        inMenuItem6.setOnAction( evt -> setSystemIn( geeznewab ) );
         inMenuItem6.setToggleGroup( groupInMenu );
-        inMenuItem7.setOnAction( evt -> setSystemIn( visualgeez ) );
+        inMenuItem7.setOnAction( evt -> setSystemIn( geeztypenet ) );
         inMenuItem7.setToggleGroup( groupInMenu );
-        inMenuItem8.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem8.setOnAction( evt -> setSystemIn( powergeez ) );
         inMenuItem8.setToggleGroup( groupInMenu );
+        inMenuItem9.setOnAction( evt -> setSystemIn( samawerfa ) );
+        inMenuItem9.setToggleGroup( groupInMenu );
+        inMenuItem10.setOnAction( evt -> setSystemIn( visualgeez ) );
+        inMenuItem10.setToggleGroup( groupInMenu );
+        inMenuItem11.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem11.setToggleGroup( groupInMenu );
         
-        inFontMenu.getItems().addAll( inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8 );
+        inFontMenu.getItems().addAll( inMenuItem0, new SeparatorMenuItem(), inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10,  inMenuItem11 );
 
 
         Menu outFontMenu = new Menu( "Font _Out" );
         RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
-        RadioMenuItem outMenuItem2 = new RadioMenuItem( "_" + brana_uni );
-        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_Kefa" );
-        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_" + nyala );
-        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_" + powergeez_uni );
+        RadioMenuItem outMenuItem2 = new RadioMenuItem( "Bembin_o" );
+        RadioMenuItem outMenuItem3 = new RadioMenuItem( "_" + brana_uni );
+        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_Kefa" );
+        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_" + nyala );
+        RadioMenuItem outMenuItem6 = new RadioMenuItem( "_" + powergeez_uni );
         ToggleGroup groupOutMenu = new ToggleGroup();
               
         outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
         outMenuItem1.setSelected(true);
-        outMenuItem1.setToggleGroup( groupOutMenu );        
-        outMenuItem2.setOnAction( event -> setSystemOut( brana_uni ) );
+        outMenuItem1.setToggleGroup( groupOutMenu );   
+        outMenuItem2.setOnAction( event -> setSystemOut( bembino ) );
         outMenuItem2.setToggleGroup( groupOutMenu );
-        outMenuItem3.setOnAction( event -> setSystemOut( kefa ) );
+        outMenuItem3.setOnAction( event -> setSystemOut( brana_uni ) );
         outMenuItem3.setToggleGroup( groupOutMenu );
-        outMenuItem4.setOnAction( event -> setSystemOut( nyala ) );
+        outMenuItem4.setOnAction( event -> setSystemOut( kefa ) );
         outMenuItem4.setToggleGroup( groupOutMenu );
-        outMenuItem5.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem5.setOnAction( event -> setSystemOut( nyala ) );
         outMenuItem5.setToggleGroup( groupOutMenu );
+        outMenuItem6.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem6.setToggleGroup( groupOutMenu );
 
        
-        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5 );
+        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5, outMenuItem6 );
         
 
         ListView<Label> listView = new ListView<Label>();
-        listView.setEditable(false);
+        listView.setEditable( false );
         listView.setPrefHeight( 125 ); // 205 for screenshots
         listView.setPrefWidth( 310 );
         ObservableList<Label> data = FXCollections.observableArrayList();
@@ -182,13 +219,13 @@ public final class DocxConverter extends Application {
         fileMenuItem1.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(final ActionEvent e) {
+                public void handle(final ActionEvent evt) {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
-                    inputList = fileChooser.showOpenMultipleDialog( stage );
+                    inputFileList = fileChooser.showOpenMultipleDialog( stage );
                     
-                    if ( inputList != null ) {
-                    	for( File file: inputList) {
+                    if ( inputFileList != null ) {
+                    	for( File file: inputFileList) {
                     		Label rowLabel = new Label( file.getName() );
                     		data.add( rowLabel );
                     		Tooltip tooltip = new Tooltip( file.getPath() );
@@ -203,7 +240,7 @@ public final class DocxConverter extends Application {
         fileMenu.getItems().add( fileMenuItem1 ); 
         fileMenu.getItems().add( new SeparatorMenuItem() );
         
-        MenuItem exitMenuItem = new MenuItem("Exit");
+        MenuItem exitMenuItem = new MenuItem( "Exit" );
         exitMenuItem.setOnAction(actionEvent -> Platform.exit());
         fileMenu.getItems().add( exitMenuItem ); 
         
@@ -215,8 +252,8 @@ public final class DocxConverter extends Application {
         aboutMenuItem.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
-                public void handle(final ActionEvent e) {
-			        Alert alert = new Alert(AlertType.INFORMATION);
+                public void handle( final ActionEvent evt ) {
+			        Alert alert = new Alert( AlertType.INFORMATION );
 			        alert.setTitle( "About Legacy Ethiopic Docx Converter" );
 			        alert.setHeaderText( "Legacy Ethiopic Font Converter for Docx " + VERSION );
 			        
@@ -232,7 +269,10 @@ public final class DocxConverter extends Application {
 		                    desktop.browse( uri );
 	                    }
 	                    catch(Exception ex) {
-	                    	
+	    					Alert errorAlert = new Alert( AlertType.ERROR );
+	    					errorAlert.setHeaderText( "An error opening a web browser." );
+	    					errorAlert.setContentText( ex.getMessage() );
+	    					errorAlert.showAndWait();
 	                    }
 			        });
 
@@ -260,7 +300,7 @@ public final class DocxConverter extends Application {
         openFilesCheckbox.setSelected(true);
         
         Region bottomSpacer = new Region();
-        HBox.setHgrow(bottomSpacer, Priority.SOMETIMES);
+        HBox.setHgrow( bottomSpacer, Priority.SOMETIMES );
         HBox hbottomBox = new HBox( openFilesCheckbox, bottomSpacer, convertButton );
         hbottomBox.setPadding(new Insets(4, 0, 4, 0));
         hbottomBox.setAlignment( Pos.CENTER_LEFT );
@@ -273,28 +313,24 @@ public final class DocxConverter extends Application {
         MenuBar rightBar = new MenuBar();
         rightBar.getMenus().addAll( helpMenu );
         Region spacer = new Region();
-        spacer.getStyleClass().add("menu-bar");
-        HBox.setHgrow(spacer, Priority.SOMETIMES);
-        HBox menubars = new HBox(leftBar, spacer, rightBar);
+        spacer.getStyleClass().add( "menu-bar" );
+        HBox.setHgrow( spacer, Priority.SOMETIMES );
+        HBox menubars = new HBox( leftBar, spacer, rightBar );
         
  
-        final BorderPane rootGroup =new BorderPane();
+        final BorderPane rootGroup = new BorderPane();
         rootGroup.setTop( menubars );
         rootGroup.setCenter( listVBox );
         rootGroup.setBottom( vbottomBox );
         rootGroup.setPadding( new Insets(8, 8, 8, 8) );
  
-        stage.setScene(new Scene(rootGroup, 420, 220) ); // 305 for screenshots
+        stage.setScene( new Scene(rootGroup, 420, 220) ); // 305 for screenshots
         stage.show();
     }
- 
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
+    
  
     private void convertFiles(Button convertButton, ListView<Label> listView) {
-    	
-        if ( inputList != null ) {
+        if ( inputFileList != null ) {
         	if( converted ) {
         		// this is a re-run, reset file names;
         		for(Label label: listView.getItems()) {
@@ -305,7 +341,19 @@ public final class DocxConverter extends Application {
         		converted = false;
         	}
             int i = 0;
-            for (File file : inputList) {
+            // if "Autodetect" is the system out, create the converter instance here and
+            // pass it the inputList to iterate over to setup its font list and map
+            if( systemIn.equals( "Autodetect") ) {
+            	processor = new DocxProcessorAutodetect( inputFileList );
+            	((DocxProcessorAutodetect)processor).readFonts();
+            }
+            else {
+            	setFileConverter();
+            }
+            
+    		processor.setFontOut( systemOut );
+    		
+            for( File file : inputFileList ) {
                 processFile( file, convertButton, listView, i );
                 i++;
                 
@@ -314,64 +362,97 @@ public final class DocxConverter extends Application {
                 // avoids an exception from wordMLPackage.save( outputFile );
                 try {
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				}
+                catch (InterruptedException ex) {
+					Alert errorAlert = new Alert(AlertType.ERROR);
+					errorAlert.setHeaderText( "An error occurred processing a file." );
+					errorAlert.setContentText( ex.getMessage() );
+					errorAlert.showAndWait();
 				}
              }
+           
             converted = true;
          } 
     }
     
     
-    ConvertDocx converter = null;
-    private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
+    private void setFileConverter() {
         try {
-        	String inputFilePath = inputFile.getPath();
-        	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
-    		File outputFile = new File ( outputFilePath );
-
-    		
-    		switch( systemIn ) {
-		   		case brana:
-		   			converter = new ConvertDocxBrana( inputFile, outputFile );
-		   			break;
-	    			
-			   	case geezii:
-		    		converter = new ConvertDocxFeedelGeezII( inputFile, outputFile );
-		    		break;
+    		// when working on a list, see if the previous instance can be used, where the inputFile and outputFile are just reset.
+    		if( (processor.getTargetTypefaces().isEmpty()) || (! processor.getTargetTypefaces().contains( systemIn ) ) ) {
+        		ConvertFontSystem converter = null;
+	    		switch( systemIn ) {
+			   		case brana:
+			   			converter = new ConvertFontSystemBrana();
+			   			break;
 		    			
-		   		case geeznewab:
-	    			converter = new ConvertDocxFeedelGeezNewAB( inputFile, outputFile );
-	    			break;
-
-		    	case geeztypenet:
-		    		converter = new ConvertDocxGeezTypeNet( inputFile, outputFile );
-		   			break;
-
-		    	case powergeez:
-		    		converter = new ConvertDocxPowerGeez( inputFile, outputFile );
-		   			break;
-
-		    	case samawerfa:
-		    		converter = new ConvertDocxSamawerfa( inputFile, outputFile );
-		   			break;
-		   			
-		    	case visualgeez:
-		    		converter = new ConvertDocxVisualGeez( inputFile, outputFile );
-		    		break;
-		   			
-		    	case visualgeez2000:
-		    		converter = new ConvertDocxVisualGeez2000( inputFile, outputFile );
-		    		break;
-    			
-		    	default:
-		    		System.err.println( "Unrecognized input system: " + systemIn );
-		    		return;
+				   	case geezii:
+			    		converter = new ConvertFontSystemFeedelGeezII();
+			    		break;	
+		    			
+				   	case geezigna:
+			    		converter = new ConvertFontSystemFeedelGeezigna();
+			    		break;
+			
+				   	case geezfont:
+			    		converter = new ConvertFontSystemGeezFont();
+			    		break;    			
+			    			
+			   		case geeznewab:
+		    			converter = new ConvertFontSystemFeedelGeezNewAB();
+		    			break;
+	
+			    	case geeztypenet:
+			    		converter = new ConvertFontSystemGeezTypeNet();
+			   			break;
+	
+			    	case ncic:
+			    		converter = new ConvertFontSystemNCIC();
+			   			break;
+			   			
+			    	case powergeez:
+			    		converter = new ConvertFontSystemPowerGeez();
+			   			break;
+	
+			    	case samawerfa:
+			    		converter = new ConvertFontSystemSamawerfa();
+			   			break;
+			   			
+			    	case visualgeez:
+			    		converter = new ConvertFontSystemVisualGeez();
+			    		break;
+			   			
+			    	case visualgeez2000:
+			    		converter = new ConvertFontSystemVisualGeez2000();
+			    		break;
+	    			
+			    	default:
+			    		System.err.println( "Unrecognized input system: " + systemIn );
+			    		return;
+	    		}
+	    		
+	    		processor.addConverter( converter );
     		}
-		
-    		converter.setFont( systemOut );
+		}
+        catch (Exception ex) {
+        	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+			Alert errorAlert = new Alert(AlertType.ERROR);
+			errorAlert.setHeaderText( "An error occurred instantiating a converter." );
+			errorAlert.setContentText( ex.getMessage() );
+			errorAlert.showAndWait();
+        }
+            
+    }
+    
 
-    		
+    private void processFile(File inputFile, Button convertButton, ListView<Label> listView, int listIndex) {
+    	
+    	String inputFilePath = inputFile.getPath();
+    	String outputFilePath = inputFilePath.replaceAll("\\.docx", "-" + systemOut.replace( " ", "-" ) + ".docx");
+		File outputFile = new File ( outputFilePath );
+		
+		processor.setFiles( inputFile, outputFile );
+        try {
     		// references:
     		// https://stackoverflow.com/questions/49222017/javafx-make-threads-wait-and-threadsave-gui-update
     		// https://stackoverflow.com/questions/47419949/propagate-progress-information-from-callable-to-task
@@ -379,11 +460,11 @@ public final class DocxConverter extends Application {
                 @Override protected Void call() throws Exception {
                 	
                 	updateProgress(0.0,1.0);
-                	converter.progressProperty().addListener( 
+                	processor.progressProperty().addListener( 
                 		(obs, oldProgress, newProgress) -> updateProgress( newProgress.doubleValue(), 1.0 )
                 	);
                 	updateMessage("[" +  (listIndex+1) + "/" + listView.getItems().size() + "]" );
-                	converter.call();
+                	processor.call();
                 	updateProgress(1.0, 1.0);
 
     				done();
@@ -397,6 +478,7 @@ public final class DocxConverter extends Application {
            	// remove bindings again
             task.setOnSucceeded( event -> { 
             	statusBar.progressProperty().unbind();
+                //File outputFile = processor.getOutputFile( listIndex );
             	if ( openOutput ) {
             		if ( outputFile.exists() ) {
             			try { 
@@ -431,6 +513,10 @@ public final class DocxConverter extends Application {
         }
         catch (Exception ex) {
         	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+			Alert errorAlert = new Alert(AlertType.ERROR);
+			errorAlert.setHeaderText( "An error occurred processing a file." );
+			errorAlert.setContentText( ex.getMessage() );
+			errorAlert.showAndWait();
         }
         
     }
@@ -438,6 +524,14 @@ public final class DocxConverter extends Application {
 
     Text systemInText = new Text( systemIn );
     Text systemOutText = new Text( systemOut );
+    private void setSystemIn(String systemIn) {
+    	this.systemIn = systemIn;
+    	systemInText.setText( systemIn );
+    }
+    private void setSystemOut(String systemOut) {
+    	this.systemOut = systemOut;
+    	systemOutText.setText( systemOut );
+    }
     // status bar reference:
     // https://jar-download.com/artifacts/org.controlsfx/controlsfx-samples/8.40.14/source-code/org/controlsfx/samples/HelloStatusBar.java
     private void updateStatusMessage() {
@@ -481,13 +575,9 @@ public final class DocxConverter extends Application {
         
         statusBar.getLeftItems().add( hbox );
     }
-    private void setSystemIn(String systemIn) {
-    	this.systemIn = systemIn;
-    	systemInText.setText( systemIn );
+    
+    
+    public static void main(String[] args) {
+        Application.launch(args);
     }
-    private void setSystemOut(String systemOut) {
-    	this.systemOut = systemOut;
-    	systemOutText.setText( systemOut );
-    }
-
 }

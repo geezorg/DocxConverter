@@ -15,7 +15,7 @@
 #
 $kaib  = [ \xe9 \xea \xeb \xec ] ;
 $salis = [ \xef \xf0 \xf1 ] ;
-$hamis = [ \xed \xf2 \xf3 \xf4 ] ;
+$hamis = [ \xed \xf2 \xf3 \xf4 \xf5 ] ;
 $diqala_geez  = [ \xf7 \xf8 ];
 $diqala_salis = \xf9 ;
 $diqala_kaib  = \xe8 ;

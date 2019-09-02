@@ -6,9 +6,17 @@
 Migrate Microsoft Word documents in pre-Unicode Ethiopic fonts into a Unicode font supporting Ethiopic script.
 The converter presently provides support for seven legacy (non-Unicode) systems and their respective fonts:
 
+ * Agafari
+   * AGF - Zemen
+   * AGF - Dawit
+   * AGF - Ejji Tsihuf
+   * AGF - Rejim
+   * AGF - Yigezu Bisrat
  * Brana 90 
    * Brana I
    * Brana II
+ * Feedel
+   * Geezigna
  * Feedel
    * Geez
    * GeezII
@@ -22,6 +30,12 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
    * ZewdituA
    * ZewdituB
    * GeezNet
+ * GeezFont
+   * GeezAddis
+   * geezBasic
+   * geezDirib
+   * geezLong
+   * GeezThin
  * Ge'ezSoft
    * GeezTypeNet
  * Power Ge'ez
@@ -44,13 +58,13 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
 
 The conversion mappings come directly from the long defunct [LibEth](http://libeth.sourceforge.net) C language library which
 supported conversion of [many more legacy encoding systems](http://libeth.sourceforge.net/CharacterSets.html).  Support for additional
-encodings systems can be porrted from LibEth as the need arrises. 
+encodings systems can be ported from LibEth as the need arises. 
 Please feel free to [request support](https://github.com/geezorg/DocxConverter/issues) for additional systems.
 
 This repository may be imported into [Eclipse](http://www.eclipse.org) as a simple [Maven](https://maven.apache.org/) Java project.
 The "Eclipse IDE for Java Developers" download option will include both Maven and Git integration, no additional installation will
 be needed to build this project.  Maven in turn will retrieve all dependencies, primarily the [docx4j](https://www.docx4java.org/)
-(6.1.0) and [ICU](http://site.icu-project.org/) (63.1) and Java libaries.
+(6.1.0) and [ICU](http://site.icu-project.org/) (63.1) and Java libraries.
 
 
 ## Usage (Executable Jar with GUI)
@@ -77,7 +91,7 @@ if "Abyssinica SIL" (the default) is selected as the output font name, an input 
 
 The application uses the [Abyssinica SIL](http://software.sil.org/abyssinica/download/) font as a default for output.
 The "Nyala" font that comes with Microsoft Windows and "Kefa" which comes OSX are other output options.  These
-fonts maybe substuited for any other Unicode compliant font for Ethiopic.
+fonts maybe substituted for any other Unicode compliant font for Ethiopic.
 
 
 ### Limitations
@@ -87,11 +101,18 @@ Ethiopic syllabary.  Testing is thus not comprehensive and is limited by the cor
 Conversion errors will likely be found as new documents uses letters not found in the testing corpus.
 
 Conversion issues may also be found when documents produced by additional versions of Microsoft Word are tested,
-or for documents produced by other word processors that support the .docx format.  Convesion may also fail for
+or for documents produced by other word processors that support the .docx format.  Conversion may also fail for
 more complex formatting such as for tables which have not been tested.
 
 Issues can be reported to the author directly, or via the GitHub [issues tracker](https://github.com/geezorg/DocxConverter/issues)
 for the project.
+
+### Trouble shooting
+
+If nothing happens when you double click the "DocxConverter-0.7.0-full-gui.jar" file, and you are certain that
+Java is installed on your Windows system, you likely need to fix the Window's registry.  Try downloading and launching
+[Jarfix](https://johann.loefflmann.net/en/software/jarfix/) to fix the registry.
+
 
 
 ## Command Line Usage

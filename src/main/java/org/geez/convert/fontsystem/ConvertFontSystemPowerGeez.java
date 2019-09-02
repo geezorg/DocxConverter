@@ -1,23 +1,32 @@
-package org.geez.convert.docx;
+package org.geez.convert.fontsystem;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-/*
- * The non-maven way to build the jar file:
- *
- * javac -Xlint:deprecation -cp docx4j-6.0.1.jar:dependencies/commons-io-2.5.jar:../icu4j-63_1.jar:dependencies/slf4j-api-1.7.25.jar:slf4j-1.7.25 *.java
- * jar -cvf convert.jar org/geez/convert/docx/*.class org/geez/convert/tables/
- * java -cp convert.jar:docx4j-6.0.1.jar:dependencies/*:../icu4j-63_1.jar:slf4j-1.7.25/slf4j-nop-1.7.25.jar org.geez.convert.docx.ConvertDocx geeznewab myFile-In.docx myFile-Out.docx
- *
- */
+import java.util.HashSet;
+import java.util.Set;
 
 
-public class ConvertDocxPowerGeez extends  ConvertDocxDiacriticalSystem {
 
-	public ConvertDocxPowerGeez( final File inputFile, final File outputFile ) {
-		super( inputFile, outputFile );
+public class ConvertFontSystemPowerGeez extends  ConvertFontSystemDiacriticalSystem {
+	
+	public static final Set<String> supportedFonts = new HashSet<String> (
+			Arrays.asList(
+					"Ge'ez-1", "Ge'ez-1 Normal", "Ge'ez-1 Numbers",
+				    "Ge'ez-2", "Ge'ez-2 Normal",
+				    "Ge'ez-3", "Ge'ez-3 Normal"
+			)
+	);
+	
+	{
+		IDs = new String[] { "PowerGeez", "PowerGeezNumbers" } ;
+	}
+	
+	public ConvertFontSystemPowerGeez() {
+		super();
+		init();
+	}
+	
+	private void init() {
 		this.initialize( "monodirectional/PowerGeez.txt", "bidirectional/PowerGeezNumbers.txt", "Ge'ez-1", "Ge'ez-1 Numbers" );
 		
 		huletNeteb = ':';

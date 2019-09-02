@@ -16,7 +16,7 @@ import org.docx4j.wml.RPr;
 import org.docx4j.wml.Text;
 
 
-public class  UnstyledTextFinder extends CallbackImpl {
+public class DocxUnstyledTextFinder extends CallbackImpl {
     
     public Map<Text,String> results = new HashMap<Text,String>();
     public Map<R.Sym,String> symResults = new HashMap<R.Sym,String>();
@@ -25,7 +25,7 @@ public class  UnstyledTextFinder extends CallbackImpl {
     private String fontOut = null;
     List<String> targetTypefaces= null;
     
-    public UnstyledTextFinder( List<String> targetTypefaces, String fontOut ) {
+    public DocxUnstyledTextFinder( List<String> targetTypefaces, String fontOut ) {
     	super();
     	this.targetTypefaces = targetTypefaces;
     	this.fontOut = fontOut;
@@ -124,17 +124,35 @@ public class  UnstyledTextFinder extends CallbackImpl {
 			}
 		}
 		else if (o instanceof org.docx4j.wml.P) {
+			// Why do we do this checking if we store no found nodes??
+			// Remove this code, if nothing breaks after commenting it out
+			/* We need this code block to map the font name (in checkTargetFont) to handle
+			 * hidden control characters for paragraph breaks (¶) and the like,
+			 * for example:
+			 *          
+			<w:p w:rsidR="00000000" w:rsidRDefault="002335F2">
+                <w:pPr>
+                    <w:jc w:val="center"/>
+                    <w:rPr>
+                        <w:rFonts w:ascii="GeezNewA" w:hAnsi="GeezNewA"/>
+                        <w:i/>
+                        <w:iCs/>
+                        <w:sz w:val="28"/>
+                    </w:rPr>
+                </w:pPr>
+			 */
 			P p = (org.docx4j.wml.P)o;
 			PPr ppr = p.getPPr();
 			if (ppr == null ) return null;
-			ParaRPr rpr = ppr.getRPr();
-			if ( (rpr == null) || (rpr.getRFonts() == null) ) return null;
+			ParaRPr prpr = ppr.getRPr();
+			if ( (prpr == null) || (prpr.getRFonts() == null) ) return null;
 
-			String fontIn = checkTargetFont( rpr.getRFonts() );
+			String fontIn = checkTargetFont( prpr.getRFonts() );
 			if ( fontIn == null ) {
 				return null;
 			}
 		}
+		
     	
         return null;
     }
