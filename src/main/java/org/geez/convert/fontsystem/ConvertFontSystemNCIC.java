@@ -11,10 +11,10 @@ public class ConvertFontSystemNCIC extends ConvertFontSystemDiacriticalSystem {
 	public static final Set<String> supportedFonts = new HashSet<String> (
 			Arrays.asList(
 					"AGF - Zemen  Zemen",
-					"AGF - Dawit",
-					"AGF - Ejji Tsihuf",
+					"AGF - Dawit  Zemen",
+					"AGF - Ejji Tsihuf  Ejji",
 					"AGF - Rejim",
-					"AGF - Yigezu Bisrat"
+					"AGF - Yigezu Bisrat Normal"
 			)
 	);
 
@@ -35,10 +35,10 @@ public class ConvertFontSystemNCIC extends ConvertFontSystemDiacriticalSystem {
 		font1Typefaces.addAll(
 			Arrays.asList(
 			    "AGF - Zemen  Zemen",
-			    "AGF - Dawit",
-			    "AGF - Ejji Tsihuf",
+			    "AGF - Dawit  Zemen",
+			    "AGF - Ejji Tsihuf  Ejji",
 			    "AGF - Rejim",
-			    "AGF - Yigezu Bisrat"
+			    "AGF - Yigezu Bisrat Normal"
 			)
 		);
 		targetTypefaces.addAll( font1Typefaces );
