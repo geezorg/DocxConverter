@@ -228,9 +228,10 @@ public final class DocxConverter extends Application {
                 public void handle(final ActionEvent evt) {
                 	listView.getItems().clear();
                 	configureFileChooser(fileChooser);    
-                    inputFileList = new ArrayList<File>( fileChooser.showOpenMultipleDialog( stage ) );
+                	List<File> selectedFiles = fileChooser.showOpenMultipleDialog( stage );
                     
-                    if ( inputFileList != null ) {
+                    if ( selectedFiles != null ) {
+                    	inputFileList = new ArrayList<File>( selectedFiles );
 	                    if ( inputFileList.size() == 1 ) {
 	                    	openFilesCheckbox.setText( "Open file after conversion?" );
 	                    } else {
