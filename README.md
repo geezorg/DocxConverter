@@ -41,7 +41,7 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
  * Power Ge'ez
    * Ge'ez-1
    * Ge'ez-2
-   * Ge'ez-3,
+   * Ge'ez-3
    * Ge'ez-1 Numbers
  * Samawerfa
    * Addis98
