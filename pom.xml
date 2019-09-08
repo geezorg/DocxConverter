@@ -10,7 +10,7 @@
 	<groupId>geez.org</groupId>
 	<artifactId>DocxConverter</artifactId>
 	<version>0.7.0</version>
-	<name>Word DOCX Converter</name>
+	<name>Word Docx Converter</name>
 	<dependencies>
 		<dependency>
 		    <groupId>org.controlsfx</groupId>
@@ -46,7 +46,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>org.geez.convert.ui.DocxConverter</mainClass>
+							<mainClass>org.geez.ui.DocxConverter</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
