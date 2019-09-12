@@ -96,6 +96,7 @@ public final class DocxConverter extends Application {
 	private static final String brana_uni = "Brana";
 	private static final String powergeez_uni = "Power Geez Unicode1";
 	private static final String bembino = "Bembino";
+	private static final String gsmahtem = "GS GeezMahtemUnicode";
 	
 	private String systemIn  = autodetect;
 	private String systemOut = abyssinica;
@@ -176,9 +177,10 @@ public final class DocxConverter extends Application {
         RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
         RadioMenuItem outMenuItem2 = new RadioMenuItem( "Bembin_o" );
         RadioMenuItem outMenuItem3 = new RadioMenuItem( "_" + brana_uni );
-        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_Kefa" );
-        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_" + nyala );
-        RadioMenuItem outMenuItem6 = new RadioMenuItem( "_" + powergeez_uni );
+        RadioMenuItem outMenuItem4 = new RadioMenuItem( "_" + gsmahtem );
+        RadioMenuItem outMenuItem5 = new RadioMenuItem( "_Kefa" );
+        RadioMenuItem outMenuItem6 = new RadioMenuItem( "_" + nyala );
+        RadioMenuItem outMenuItem7 = new RadioMenuItem( "_" + powergeez_uni );
         ToggleGroup groupOutMenu = new ToggleGroup();
               
         outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
@@ -188,15 +190,17 @@ public final class DocxConverter extends Application {
         outMenuItem2.setToggleGroup( groupOutMenu );
         outMenuItem3.setOnAction( event -> setSystemOut( brana_uni ) );
         outMenuItem3.setToggleGroup( groupOutMenu );
-        outMenuItem4.setOnAction( event -> setSystemOut( kefa ) );
+        outMenuItem4.setOnAction( event -> setSystemOut( gsmahtem ) );
         outMenuItem4.setToggleGroup( groupOutMenu );
-        outMenuItem5.setOnAction( event -> setSystemOut( nyala ) );
+        outMenuItem5.setOnAction( event -> setSystemOut( kefa ) );
         outMenuItem5.setToggleGroup( groupOutMenu );
-        outMenuItem6.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem6.setOnAction( event -> setSystemOut( nyala ) );
         outMenuItem6.setToggleGroup( groupOutMenu );
+        outMenuItem7.setOnAction( event -> setSystemOut( powergeez_uni ) );
+        outMenuItem7.setToggleGroup( groupOutMenu );
 
        
-        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5, outMenuItem6 );
+        outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5, outMenuItem6, outMenuItem7 );
         
 
         ListView<Label> listView = new ListView<Label>();
