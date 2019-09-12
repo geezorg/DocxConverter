@@ -69,8 +69,8 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 
 ## Usage (Executable Jar with GUI)
 
-1. Select one or more Microsoft Word files using the same font *(files must be in .docx format)*.
-2. Select the "Font In"
+1. Select one or more Microsoft Word files *(files must be in .docx format)*.
+2. Select the "Font In" *(optional, supported fonts will be autodetected)*
 3. Select the "Font Out"
 4. Click "Convert File(s)"
 5. Converted files will automatically open.
@@ -82,7 +82,7 @@ the output document of the first conversion is used as the input document of the
 
 
 In the GitHub the "[releases](https://github.com/geezorg/DocxConverter/releases/)" folder you can find and download the
-"DocxConverter-0.6.0-full-gui.jar" file. This version contains the converter and all of its dependencies (jar libraries).
+"DocxConverter-0.7.0-full-gui.jar" file. This version contains the converter and all of its dependencies (jar libraries).
 Double clicking the jar file will launch a user interface where fonts and files may be selected via mouse and menus.
 
 Output files will have the name of the selected output font appended to them.  For example
@@ -90,8 +90,19 @@ if "Abyssinica SIL" (the default) is selected as the output font name, an input 
 "MyFile.docx" will have the output name "MyFile-Abyssinica-SIL.docx".
 
 The application uses the [Abyssinica SIL](http://software.sil.org/abyssinica/download/) font as a default for output.
-The "Nyala" font that comes with Microsoft Windows and "Kefa" which comes OSX are other output options.  These
-fonts maybe substituted for any other Unicode compliant font for Ethiopic.
+The "Nyala" font that comes with Microsoft Windows and "Kefa" which comes OSX are other output options. The full list
+of output font options:
+
+* Abyssinica SIL
+* Bembino
+* Brana
+* Kefa
+* GS Mahtem Unicode
+* Nyala
+* Power Geez Unicode1
+
+If your desired font is not available for output, you may still use it by selecting text and changing the font style
+to another Unicode compliant font for Ethiopic.
 
 
 ### Limitations
@@ -107,7 +118,7 @@ more complex formatting such as for tables which have not been tested.
 Issues can be reported to the author directly, or via the GitHub [issues tracker](https://github.com/geezorg/DocxConverter/issues)
 for the project.
 
-### Trouble shooting
+### Troubleshooting
 
 If nothing happens when you double click the "DocxConverter-0.7.0-full-gui.jar" file, and you are certain that
 Java is installed on your Windows system, you likely need to fix the Window's registry.  Try downloading and launching
