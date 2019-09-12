@@ -66,6 +66,10 @@ The "Eclipse IDE for Java Developers" download option will include both Maven an
 be needed to build this project.  Maven in turn will retrieve all dependencies, primarily the [docx4j](https://www.docx4java.org/)
 (6.1.0) and [ICU](http://site.icu-project.org/) (63.1) and Java libraries.
 
+## Download
+
+[Direct download of v0.7 here.](https://github.com/geezorg/DocxConverter/releases/download/v0.7.0/DocxConverter-0.7.0-full-gui.jar)
+[Read the notes](https://github.com/geezorg/DocxConverter/releases/tag/v0.7.0) on the latest updates.
 
 ## Usage (Executable Jar with GUI)
 
