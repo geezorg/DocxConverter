@@ -68,8 +68,8 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 
 ## Download
 
-[Direct download of v0.7 here.](https://github.com/geezorg/DocxConverter/releases/download/v0.7.0/DocxConverter-0.7.0-full-gui.jar)
-[Read the notes](https://github.com/geezorg/DocxConverter/releases/tag/v0.7.0) on the latest updates.
+* [Direct download of v0.7 here.](https://github.com/geezorg/DocxConverter/releases/download/v0.7.0/DocxConverter-0.7.0-full-gui.jar)
+* [Read the notes on the latest updates.](https://github.com/geezorg/DocxConverter/releases/tag/v0.7.0)
 
 ## Usage (Executable Jar with GUI)
 
