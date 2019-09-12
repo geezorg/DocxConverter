@@ -71,7 +71,7 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 * [Direct download of v0.7 here.](https://github.com/geezorg/DocxConverter/releases/download/v0.7.0/DocxConverter-0.7.0-full-gui.jar)
 * [Read the notes on the latest updates.](https://github.com/geezorg/DocxConverter/releases/tag/v0.7.0)
 
-## Usage (Executable Jar with GUI)
+## Usage
 
 1. Select one or more Microsoft Word files *(files must be in .docx format)*.
 2. Select the "Font In" *(optional, supported fonts will be autodetected)*
