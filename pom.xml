@@ -4,14 +4,20 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>geez.org</groupId>
+	<groupId>org.geez</groupId>
 	<artifactId>DocxConverter</artifactId>
-	<version>0.7.0</version>
+	<version>0.8.0</version>
 	<name>Word Docx Converter</name>
 	<dependencies>
+		<dependency>
+    		<groupId>org.geez</groupId>
+    		<artifactId>gff-geez-lib</artifactId>
+    		<version>0.1.0</version>
+		</dependency>
 		<dependency>
 		    <groupId>org.controlsfx</groupId>
  		   <artifactId>controlsfx</artifactId>

@@ -72,7 +72,7 @@ import javafx.stage.Stage;
 
 public final class DocxConverter extends Application {
  
-	private static final String VERSION = "v0.7.0";
+	private static final String VERSION = "v0.8.0";
 	private final int APP_HEIGHT = 220, APP_WIDTH = 420; //  420, 420) ); // 305 for screenshots 220 normal
     private Desktop desktop = Desktop.getDesktop();
     
@@ -122,7 +122,8 @@ public final class DocxConverter extends Application {
     @Override
     public void start(final Stage stage) {
         stage.setTitle( "Ethiopic Docx Font Converter" );
-        Image logoImage = new Image( ClassLoader.getSystemResourceAsStream( "images/geez-org-avatar.png" ) );
+        ClassLoader geezLibClassLoader = org.geez.convert.Converter.class.getClassLoader();
+        Image logoImage = new Image( geezLibClassLoader.getResourceAsStream("images/geez-org-avatar.png") );
         stage.getIcons().add( logoImage );
         String osName = System.getProperty( "os.name" );
         if( osName.equals( "Mac OS X" ) ) {
