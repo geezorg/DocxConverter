@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+// import java.util.logging.Level;
+// import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import org.controlsfx.control.StatusBar;
 import org.geez.convert.docx.DocxProcessor;
@@ -104,7 +106,8 @@ public final class DocxConverter extends Application {
 	private List<File> inputFileList = null;
 	protected StatusBar statusBar = new StatusBar();
 	private boolean converted = false;
-	
+	private static Logger LOGGER = LoggerFactory.getLogger( DocxConverter.class );
+			
     private DocxProcessor processor = new DocxProcessor();
 	
     
@@ -468,7 +471,7 @@ public final class DocxConverter extends Application {
     		}
 		}
         catch (Exception ex) {
-        	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+        	LOGGER.error ( ex.getStackTrace().toString() );
 			Alert errorAlert = new Alert(AlertType.ERROR);
 			errorAlert.setHeaderText( "An error occurred instantiating a converter." );
 			errorAlert.setContentText( ex.getMessage() );
@@ -545,7 +548,7 @@ public final class DocxConverter extends Application {
 
         }
         catch (Exception ex) {
-        	Logger.getLogger( DocxConverter.class.getName() ).log( Level.SEVERE, null, ex );
+        	LOGGER.error ( ex.getStackTrace().toString() );
 			Alert errorAlert = new Alert(AlertType.ERROR);
 			errorAlert.setHeaderText( "An error occurred processing a file." );
 			errorAlert.setContentText( ex.getMessage() );
