@@ -71,13 +71,18 @@
     		<configuration>
         		<vendor>Ge'ez Frontier Foundation</vendor>
 				<mainClass>org.geez.ui.DocxConverter</mainClass>
-				<bundler>EXE</bundler><!-- Change EXE to MSI to build .msi installer -->
+				<bundler>DMG</bundler>
+				<!-- bundler>EXE</bundler -->
+				<!-- bundler>MSI</bundler -->
         		<nativeReleaseVersion>${project.version}</nativeReleaseVersion>  
         		<needShortcut>true</needShortcut>  
       		  	<needMenu>true</needMenu>  
      		   	<appName>${project.artifactId}</appName>
+     		   	<verbose>true</verbose>
+     		   	<!-- deployDir>${project.basedir}/src/main/deploy/package/macosx</deployDir -->
                 <bundleArguments>
-                    <icon>${project.basedir}/src/main/resources/geez-org.ico</icon>
+                    <!-- icon>${project.basedir}/src/main/resources/${project.artifactId}.icns</icon -->
+                    <!-- icon>${project.basedir}/src/main/resources/geez-org.ico</icon -->
                 </bundleArguments>
              	<manifestAttributes>  
                     <Specification-Title>${project.name}</Specification-Title>  
