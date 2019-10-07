@@ -85,6 +85,7 @@ public final class DocxConverter extends Application {
 	private static final String geezigna = "Geezigna";
 	private static final String geezfont = "GeezFont";
 	private static final String geeznewab = "GeezNewA/B";
+	private static final String geeztype  = "GeezType";
 	private static final String geeztypenet = "GeezTypeNet";
 	private static final String ncic = "Agafari (AGF)";
 	private static final String powergeez = "Power Ge'ez";
@@ -141,11 +142,12 @@ public final class DocxConverter extends Application {
         RadioMenuItem inMenuItem4  = new RadioMenuItem( "Geezigna" );
         RadioMenuItem inMenuItem5  = new RadioMenuItem( "Geez_Font" );
         RadioMenuItem inMenuItem6  = new RadioMenuItem( "Geez_NewA/B" );
-        RadioMenuItem inMenuItem7  = new RadioMenuItem( "Geez_TypeNet" );
-        RadioMenuItem inMenuItem8  = new RadioMenuItem( "_" + powergeez );
-        RadioMenuItem inMenuItem9  = new RadioMenuItem( "_" + samawerfa );
-        RadioMenuItem inMenuItem10 = new RadioMenuItem( "_" + visualgeez );
-        RadioMenuItem inMenuItem11 = new RadioMenuItem( "VG _2000" );
+        RadioMenuItem inMenuItem7  = new RadioMenuItem( "Geez_Type" );
+        RadioMenuItem inMenuItem8  = new RadioMenuItem( "Geez_TypeNet" );
+        RadioMenuItem inMenuItem9  = new RadioMenuItem( "_" + powergeez );
+        RadioMenuItem inMenuItem10 = new RadioMenuItem( "_" + samawerfa );
+        RadioMenuItem inMenuItem11 = new RadioMenuItem( "_" + visualgeez );
+        RadioMenuItem inMenuItem12 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
         inMenuItem0.setSelected(true);
@@ -174,7 +176,7 @@ public final class DocxConverter extends Application {
         inMenuItem11.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
         inMenuItem11.setToggleGroup( groupInMenu );
         
-        inFontMenu.getItems().addAll( inMenuItem0, new SeparatorMenuItem(), inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10,  inMenuItem11 );
+        inFontMenu.getItems().addAll( inMenuItem0, new SeparatorMenuItem(), inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10, inMenuItem11,  inMenuItem12 );
 
 
         Menu outFontMenu = new Menu( "Font _Out" );
@@ -438,6 +440,11 @@ public final class DocxConverter extends Application {
 		    			converter = new ConvertFontSystemFeedelGeezNewAB();
 		    			break;
 	
+		    			
+			    	case geeztype:
+			    		converter = new ConvertFontSystemGeezType();
+			   			break;
+			   			
 			    	case geeztypenet:
 			    		converter = new ConvertFontSystemGeezTypeNet();
 			   			break;
