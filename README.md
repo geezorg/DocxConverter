@@ -37,6 +37,7 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
    * geezLong
    * GeezThin
  * Ge'ezSoft
+   * GeezType
    * GeezTypeNet
  * Power Ge'ez
    * Ge'ez-1
