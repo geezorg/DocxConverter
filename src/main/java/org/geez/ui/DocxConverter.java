@@ -30,8 +30,6 @@ import org.geez.convert.fontsystem.ConvertFontSystemPowerGeez;
 import org.geez.convert.fontsystem.ConvertFontSystemSamawerfa;
 import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez;
 import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez2000;
-import org.geez.ui.xliterator.ConvertFilesTab;
-import org.geez.ui.xliterator.EditorTab;
 
 import javafx.application.Application;
 import javafx.application.Platform;
