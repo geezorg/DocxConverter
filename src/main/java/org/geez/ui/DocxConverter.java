@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.prefs.Preferences;
+
 // import java.util.logging.Level;
 // import java.util.logging.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,8 @@ import org.geez.convert.fontsystem.ConvertFontSystemPowerGeez;
 import org.geez.convert.fontsystem.ConvertFontSystemSamawerfa;
 import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez;
 import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez2000;
+import org.geez.ui.xliterator.ConvertFilesTab;
+import org.geez.ui.xliterator.EditorTab;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -108,7 +112,10 @@ public final class DocxConverter extends Application {
 	protected StatusBar statusBar = new StatusBar();
 	private boolean converted = false;
 	private static Logger LOGGER = LoggerFactory.getLogger( DocxConverter.class );
-			
+	
+    private final String outFontPref = "org.geez.ui.docxconverter.fontIn";
+    private final String inFontPref  = "org.geez.ui.docxconverter.fontOut";
+    
     private DocxProcessor processor = new DocxProcessor();
 	
     
@@ -133,6 +140,8 @@ public final class DocxConverter extends Application {
         if( osName.equals( "Mac OS X" ) ) {
             com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) );      
         }
+        
+        checkPreferences();
 
         Menu inFontMenu = new Menu( "Font _In" );
         RadioMenuItem inMenuItem0  = new RadioMenuItem( autodetect );
@@ -280,7 +289,9 @@ public final class DocxConverter extends Application {
         
         final Menu helpMenu = new Menu( "Help" );
         final MenuItem aboutMenuItem = new MenuItem( "About" );
+        final MenuItem saveDefaultFontsMenuItem   = new MenuItem( "Save Font Selections" );
         helpMenu.getItems().add( aboutMenuItem );
+        saveDefaultFontsMenuItem.setOnAction( evt -> saveDefaultFontSelections() );
         
         aboutMenuItem.setOnAction(
             new EventHandler<ActionEvent>() {
@@ -438,8 +449,7 @@ public final class DocxConverter extends Application {
 			    			
 			   		case geeznewab:
 		    			converter = new ConvertFontSystemFeedelGeezNewAB();
-		    			break;
-	
+		    			break;	
 		    			
 			    	case geeztype:
 			    		converter = new ConvertFontSystemGeezType();
@@ -617,6 +627,23 @@ public final class DocxConverter extends Application {
         // flow.getChildren().addAll( in, systemInText, separator1, out, systemOutText, separator2 );
         
         statusBar.getLeftItems().add( hbox );
+    }
+    
+    
+    private void saveDefaultFontSelections() {
+        Preferences prefs = Preferences.userNodeForPackage( DocxConverter.class );
+
+        prefs.put( inFontPref , systemIn  );
+        prefs.put( outFontPref, systemOut );
+    }
+    
+    private boolean checkPreferences() {
+    	Preferences prefs = Preferences.userNodeForPackage( DocxConverter.class );
+		  
+    	systemIn  = prefs.get( inFontPref, autodetect );	  
+		systemOut = prefs.get( outFontPref, abyssinica );
+
+		return true;
     }
     
     
