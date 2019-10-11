@@ -24,6 +24,7 @@ import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezII;
 import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezNewAB;
 import org.geez.convert.fontsystem.ConvertFontSystemFeedelGeezigna;
 import org.geez.convert.fontsystem.ConvertFontSystemGeezFont;
+import org.geez.convert.fontsystem.ConvertFontSystemGeezType;
 import org.geez.convert.fontsystem.ConvertFontSystemGeezTypeNet;
 import org.geez.convert.fontsystem.ConvertFontSystemNCIC;
 import org.geez.convert.fontsystem.ConvertFontSystemPowerGeez;
@@ -135,8 +136,13 @@ public final class DocxConverter extends Application {
         Image logoImage = new Image( geezLibClassLoader.getResourceAsStream("images/geez-org-avatar.png") );
         stage.getIcons().add( logoImage );
         String osName = System.getProperty( "os.name" );
+        String defaultFont = null;
         if( osName.equals( "Mac OS X" ) ) {
-            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) );      
+            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) );    
+            defaultFont = "Kefa";
+        }
+        else {
+        	defaultFont =  "Ebrima" ;
         }
         
         checkPreferences();
@@ -157,7 +163,6 @@ public final class DocxConverter extends Application {
         RadioMenuItem inMenuItem12 = new RadioMenuItem( "VG _2000" );
         ToggleGroup groupInMenu = new ToggleGroup();
         
-        inMenuItem0.setSelected(true);
         inMenuItem0.setOnAction( evt -> setSystemIn( autodetect ) );
         inMenuItem0.setToggleGroup( groupInMenu );
         inMenuItem1.setOnAction( evt -> setSystemIn( ncic ) );
@@ -185,6 +190,14 @@ public final class DocxConverter extends Application {
         
         inFontMenu.getItems().addAll( inMenuItem0, new SeparatorMenuItem(), inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10, inMenuItem11,  inMenuItem12 );
 
+        for(MenuItem menuItem: inFontMenu.getItems() ) {
+        	if( menuItem.getClass() == SeparatorMenuItem.class ) {
+        		continue;
+        	}
+        	if( systemIn.equals( menuItem.getText().replace( "_", "" ) ) ) {
+        		((RadioMenuItem)menuItem).setSelected( true );
+        	}
+        }
 
         Menu outFontMenu = new Menu( "Font _Out" );
         RadioMenuItem outMenuItem1 = new RadioMenuItem( "_" + abyssinica );
@@ -197,7 +210,6 @@ public final class DocxConverter extends Application {
         ToggleGroup groupOutMenu = new ToggleGroup();
               
         outMenuItem1.setOnAction( event -> setSystemOut( abyssinica ) );
-        outMenuItem1.setSelected(true);
         outMenuItem1.setToggleGroup( groupOutMenu );   
         outMenuItem2.setOnAction( event -> setSystemOut( bembino ) );
         outMenuItem2.setToggleGroup( groupOutMenu );
@@ -211,9 +223,14 @@ public final class DocxConverter extends Application {
         outMenuItem6.setToggleGroup( groupOutMenu );
         outMenuItem7.setOnAction( event -> setSystemOut( powergeez_uni ) );
         outMenuItem7.setToggleGroup( groupOutMenu );
-
-       
+      
         outFontMenu.getItems().addAll( outMenuItem1, outMenuItem2, outMenuItem3, outMenuItem4, outMenuItem5, outMenuItem6, outMenuItem7 );
+        
+        for(MenuItem menuItem: outFontMenu.getItems() ) {
+        	if( systemOut.equals( menuItem.getText().replace("_", "") ) ) {
+        		((RadioMenuItem)menuItem).setSelected( true );
+        	}
+        }
         
 
         ListView<Label> listView = new ListView<Label>();
@@ -223,6 +240,7 @@ public final class DocxConverter extends Application {
         ObservableList<Label> data = FXCollections.observableArrayList();
         VBox listVBox = new VBox( listView );
         listView.autosize();
+        listView.setStyle( "-fx-font-family: \"" + defaultFont  + "\";");
         
         
         final Button convertButton = new Button("Convert");
@@ -288,7 +306,7 @@ public final class DocxConverter extends Application {
         final Menu helpMenu = new Menu( "Help" );
         final MenuItem aboutMenuItem = new MenuItem( "About" );
         final MenuItem saveDefaultFontsMenuItem   = new MenuItem( "Save Font Selections" );
-        helpMenu.getItems().add( aboutMenuItem );
+        helpMenu.getItems().addAll( saveDefaultFontsMenuItem, aboutMenuItem );
         saveDefaultFontsMenuItem.setOnAction( evt -> saveDefaultFontSelections() );
         
         aboutMenuItem.setOnAction(
