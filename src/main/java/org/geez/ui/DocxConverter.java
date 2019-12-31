@@ -71,6 +71,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
  
@@ -129,6 +130,45 @@ public final class DocxConverter extends Application {
     }
     
     
+    private static void configureDirectoryChooser( final DirectoryChooser directoryChooser ) {      
+        // Set title for DirectoryChooser
+        directoryChooser.setTitle( "Select Directories" );
+        // Set Initial Directory
+        directoryChooser.setInitialDirectory( new File(System.getProperty("user.home")) );
+    }
+    
+    private List<File> walkDirectoryTree( File directory ) {
+        // Do this:  https://www.mkyong.com/java/java-files-walk-examples/
+    	List<File> selectedFiles = new ArrayList<File>();
+    	return selectedFiles;
+    }
+    
+    private void populateListView( List<File> selectedFiles, ListView<Label> listView, ObservableList<Label> data, CheckBox openFilesCheckbox ) {
+    	inputFileList = new ArrayList<File>( selectedFiles );
+        if ( inputFileList.size() == 1 ) {
+        	openFilesCheckbox.setText( "Open file after conversion?" );
+        } else {
+        	openFilesCheckbox.setText( "Open files after conversion?" );                    	
+        }
+        
+        Collections.sort( inputFileList, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                String n1 = o1.getName();
+                String n2 = o2.getName();
+                return n1.compareTo(n2);
+            }
+
+        });
+    
+    	for( File file: inputFileList ) {
+    		Label rowLabel = new Label( file.getName() );
+    		data.add( rowLabel );
+    		Tooltip tooltip = new Tooltip( file.getPath() );
+    		rowLabel.setTooltip( tooltip );
+    	} 
+    	listView.setItems( data );
+    }
     @Override
     public void start(final Stage stage) {
         stage.setTitle( "Ethiopic Docx Font Converter" );
@@ -254,53 +294,55 @@ public final class DocxConverter extends Application {
 
         final Menu fileMenu = new Menu("_File"); 
         final FileChooser fileChooser = new FileChooser();
+    	configureFileChooser( fileChooser );  
         
         // create menu items 
-        final MenuItem fileMenuItem1 = new MenuItem( "Select Files..." ); 
-        fileMenuItem1.setOnAction(
+        final MenuItem fileMenuItem = new MenuItem( "Select Files..." ); 
+        fileMenuItem.setOnAction(
             new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(final ActionEvent evt) {
                 	listView.getItems().clear();
-                	configureFileChooser(fileChooser);    
                 	List<File> selectedFiles = fileChooser.showOpenMultipleDialog( stage );
                     
                     if ( selectedFiles != null ) {
-                    	inputFileList = new ArrayList<File>( selectedFiles );
-	                    if ( inputFileList.size() == 1 ) {
-	                    	openFilesCheckbox.setText( "Open file after conversion?" );
-	                    } else {
-	                    	openFilesCheckbox.setText( "Open files after conversion?" );                    	
-	                    }
-	                    
-	                    Collections.sort( inputFileList, new Comparator<File>() {
-	                        @Override
-	                        public int compare(File o1, File o2) {
-	                            String n1 = o1.getName();
-	                            String n2 = o2.getName();
-	                            return n1.compareTo(n2);
-	                        }
-	
-	                    });
-                    
-                    	for( File file: inputFileList ) {
-                    		Label rowLabel = new Label( file.getName() );
-                    		data.add( rowLabel );
-                    		Tooltip tooltip = new Tooltip( file.getPath() );
-                    		rowLabel.setTooltip( tooltip );
-                    	} 
-                    	listView.setItems( data );
+                    	populateListView( selectedFiles, listView, data, openFilesCheckbox );
+
                     	convertButton.setDisable( false );
                     }
                 }
             }
         );
-        fileMenu.getItems().add( fileMenuItem1 ); 
-        fileMenu.getItems().add( new SeparatorMenuItem() );
+ 
+
+        final DirectoryChooser directoryChooser = new DirectoryChooser();
+        configureDirectoryChooser( directoryChooser );
+        
+        final MenuItem directoryMenuItem = new MenuItem( "Select Directory..." ); 
+        directoryMenuItem.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent evt) {
+                    	listView.getItems().clear();
+                        File directory = directoryChooser.showDialog( stage );
+                        if (directory != null) {
+                            System.out.println( directory.getAbsolutePath() );
+                            // Do this:  https://www.mkyong.com/java/java-files-walk-examples/
+                            List<File> selectedFiles = walkDirectoryTree( directory );
+                            
+                        	populateListView( selectedFiles, listView, data, openFilesCheckbox );
+
+                        	convertButton.setDisable( false );
+                        } 
+                    }
+                }
+         );
+ 
         
         MenuItem exitMenuItem = new MenuItem( "Exit" );
         exitMenuItem.setOnAction(actionEvent -> Platform.exit());
-        fileMenu.getItems().add( exitMenuItem ); 
+        
+        fileMenu.getItems().addAll( fileMenuItem, directoryMenuItem, new SeparatorMenuItem(), exitMenuItem ); 
         
         
         final Menu helpMenu = new Menu( "Help" );
