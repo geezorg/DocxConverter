@@ -146,11 +146,12 @@ public final class DocxConverter extends Application {
     }
     
     private List<File> walkDirectoryTree( File directory ) {
-        // Do this:  https://www.mkyong.com/java/java-files-walk-examples/
     	List<File> selectedFiles = new ArrayList<File>();
     	try ( Stream<Path> walk = Files.walk(  directory.toPath()  ) ) {
     		List<String> result = walk.map( x -> x.toString() )
-    				.filter( f -> (f.endsWith(".docx") || f.endsWith( ".txt" )) ).collect( Collectors.toList() );
+    			.filter( f -> ( f.endsWith(".docx") || f.endsWith( ".txt" ) ) )
+    			.collect( Collectors.toList() )
+    		;
 
     		// result.forEach( System.out::println );
     		result.forEach( item-> { selectedFiles.add( new File( item ) ); } ); 
@@ -364,7 +365,6 @@ public final class DocxConverter extends Application {
                         File directory = directoryChooser.showDialog( stage );
                         if (directory != null) {
                             // System.out.println( directory.getAbsolutePath() );
-                            // Do this:  https://www.mkyong.com/java/java-files-walk-examples/
                             List<File> selectedFiles = walkDirectoryTree( directory );
                             
                         	populateListView( selectedFiles, listView, data, openFilesCheckbox );
