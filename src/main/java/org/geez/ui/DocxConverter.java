@@ -4,11 +4,16 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // import java.util.logging.Level;
 // import java.util.logging.Logger;
@@ -50,6 +55,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -62,6 +68,8 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -134,12 +142,22 @@ public final class DocxConverter extends Application {
         // Set title for DirectoryChooser
         directoryChooser.setTitle( "Select Directories" );
         // Set Initial Directory
-        directoryChooser.setInitialDirectory( new File(System.getProperty("user.home")) );
+        directoryChooser.setInitialDirectory( new File(System.getProperty( "user.home" )) );
     }
     
     private List<File> walkDirectoryTree( File directory ) {
         // Do this:  https://www.mkyong.com/java/java-files-walk-examples/
     	List<File> selectedFiles = new ArrayList<File>();
+    	try ( Stream<Path> walk = Files.walk(  directory.toPath()  ) ) {
+    		List<String> result = walk.map( x -> x.toString() )
+    				.filter( f -> (f.endsWith(".docx") || f.endsWith( ".txt" )) ).collect( Collectors.toList() );
+
+    		// result.forEach( System.out::println );
+    		result.forEach( item-> { selectedFiles.add( new File( item ) ); } ); 
+    	} catch (IOException ex) {
+    		ex.printStackTrace();
+    	}
+    
     	return selectedFiles;
     }
     
@@ -272,7 +290,7 @@ public final class DocxConverter extends Application {
         	}
         }
         
-
+        
         ListView<Label> listView = new ListView<Label>();
         listView.setEditable( false );
         listView.setPrefHeight(  APP_HEIGHT - 95 ); // 420, 220 => 330, 125
@@ -281,6 +299,25 @@ public final class DocxConverter extends Application {
         VBox listVBox = new VBox( listView );
         listView.autosize();
         listView.setStyle( "-fx-font-family: \"" + defaultFont  + "\";");
+        ContextMenu cm = new ContextMenu();
+        MenuItem mi1 = new MenuItem( "Remove" );
+        cm.getItems().add(mi1);
+        cm.setOnAction( event -> {
+        	int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        	listView.getItems().remove( selectedIndex );
+        	// data.remove( selectedIndex );
+        	
+        });
+        listView.addEventHandler( MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if( event.getButton() == MouseButton.SECONDARY) {
+                    cm.show( listView, event.getScreenX(), event.getScreenY() );
+                }
+            }
+        });
+        
+        
         
         
         final Button convertButton = new Button("Convert");
@@ -326,7 +363,7 @@ public final class DocxConverter extends Application {
                     	listView.getItems().clear();
                         File directory = directoryChooser.showDialog( stage );
                         if (directory != null) {
-                            System.out.println( directory.getAbsolutePath() );
+                            // System.out.println( directory.getAbsolutePath() );
                             // Do this:  https://www.mkyong.com/java/java-files-walk-examples/
                             List<File> selectedFiles = walkDirectoryTree( directory );
                             
