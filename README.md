@@ -37,6 +37,7 @@ The converter presently provides support for seven legacy (non-Unicode) systems 
    * geezLong
    * GeezThin
  * Ge'ezSoft
+   * GeezType
    * GeezTypeNet
  * Power Ge'ez
    * Ge'ez-1
@@ -68,8 +69,11 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 
 ## Download
 
-* [Direct download of v0.7 here.](https://github.com/geezorg/DocxConverter/releases/download/v0.7.0/DocxConverter-0.7.0-full-gui.jar)
-* [Read the notes on the latest updates.](https://github.com/geezorg/DocxConverter/releases/tag/v0.7.0)
+* [Windows EXE (Java bundled internally)](https://github.com/geezorg/DocxConverter/releases/download/v0.8.0/DocxConverter-0.8.0.exe)
+* [Windows MSI (Java bundled internally)](https://github.com/geezorg/DocxConverter/releases/download/v0.8.0/DocxConverter-0.8.0.msi)
+* [Mac DMG (Java bundled internally)](https://github.com/geezorg/DocxConverter/releases/download/v0.8.0/DocxConverter-0.8.0.dmg)
+* [Jar (Best if Java already installed)](https://github.com/geezorg/DocxConverter/releases/download/v0.8.0/DocxConverter-0.8.0-full-gui.jar)
+* [Read the notes on the latest updates.](https://github.com/geezorg/DocxConverter/releases/tag/v0.8.0)
 
 ## Usage
 
@@ -79,14 +83,14 @@ be needed to build this project.  Maven in turn will retrieve all dependencies, 
 4. Click "Convert File(s)"
 5. Converted files will automatically open.
 
-![v0.7 Screenshot](doc/gui-screenshot-v0.7.png)
+![v0.8 Screenshot](doc/gui-screenshot-v0.7.png)
 
 If your document contains more than one legacy font system, you may convert the fonts one at a time where
 the output document of the first conversion is used as the input document of the 2nd conversion and so on.
 
 
 In the GitHub the "[releases](https://github.com/geezorg/DocxConverter/releases/)" folder you can find and download the
-"DocxConverter-0.7.0-full-gui.jar" file. This version contains the converter and all of its dependencies (jar libraries).
+"DocxConverter-0.8.0-full-gui.jar" file. This version contains the converter and all of its dependencies (jar libraries).
 Double clicking the jar file will launch a user interface where fonts and files may be selected via mouse and menus.
 
 Output files will have the name of the selected output font appended to them.  For example
@@ -124,13 +128,6 @@ for the project.
 
 ### Troubleshooting
 
-If nothing happens when you double click the "DocxConverter-0.7.0-full-gui.jar" file, and you are certain that
+If nothing happens when you double click the "DocxConverter-0.8.0-full-gui.jar" file, and you are certain that
 Java is installed on your Windows system, you likely need to fix the Window's registry.  Try downloading and launching
 [Jarfix](https://johann.loefflmann.net/en/software/jarfix/) to fix the registry.
-
-
-
-## Command Line Usage
-
-Command line use of the application has not been tested since version 0.5 of the application and it is uncertain that it continues
-to work as documented.  The previous documentation of examples is available [here](doc/CommandLine.md).
