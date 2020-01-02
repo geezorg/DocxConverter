@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -149,7 +148,7 @@ public final class DocxConverter extends Application {
     	List<File> selectedFiles = new ArrayList<File>();
     	try ( Stream<Path> walk = Files.walk(  directory.toPath()  ) ) {
     		List<String> result = walk.map( x -> x.toString() )
-    			.filter( f -> ( f.endsWith(".docx") || f.endsWith( ".txt" ) ) )
+    			.filter( f -> f.endsWith(".docx") )
     			.collect( Collectors.toList() )
     		;
 
@@ -236,16 +235,18 @@ public final class DocxConverter extends Application {
         inMenuItem5.setToggleGroup( groupInMenu );
         inMenuItem6.setOnAction( evt -> setSystemIn( geeznewab ) );
         inMenuItem6.setToggleGroup( groupInMenu );
-        inMenuItem7.setOnAction( evt -> setSystemIn( geeztypenet ) );
+        inMenuItem7.setOnAction( evt -> setSystemIn( geeztype ) );
         inMenuItem7.setToggleGroup( groupInMenu );
-        inMenuItem8.setOnAction( evt -> setSystemIn( powergeez ) );
+        inMenuItem8.setOnAction( evt -> setSystemIn( geeztypenet ) );
         inMenuItem8.setToggleGroup( groupInMenu );
-        inMenuItem9.setOnAction( evt -> setSystemIn( samawerfa ) );
+        inMenuItem9.setOnAction( evt -> setSystemIn( powergeez ) );
         inMenuItem9.setToggleGroup( groupInMenu );
-        inMenuItem10.setOnAction( evt -> setSystemIn( visualgeez ) );
+        inMenuItem10.setOnAction( evt -> setSystemIn( samawerfa ) );
         inMenuItem10.setToggleGroup( groupInMenu );
-        inMenuItem11.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem11.setOnAction( evt -> setSystemIn( visualgeez ) );
         inMenuItem11.setToggleGroup( groupInMenu );
+        inMenuItem12.setOnAction( evt -> setSystemIn( visualgeez2000 ) );
+        inMenuItem12.setToggleGroup( groupInMenu );
         
         inFontMenu.getItems().addAll( inMenuItem0, new SeparatorMenuItem(), inMenuItem1, inMenuItem2, inMenuItem3, inMenuItem4, inMenuItem5, inMenuItem6, inMenuItem7, inMenuItem8, inMenuItem9, inMenuItem10, inMenuItem11,  inMenuItem12 );
 
@@ -307,6 +308,7 @@ public final class DocxConverter extends Application {
         	int selectedIndex = listView.getSelectionModel().getSelectedIndex();
         	listView.getItems().remove( selectedIndex );
         	// data.remove( selectedIndex );
+        	inputFileList.remove( selectedIndex );
         	
         });
         listView.addEventHandler( MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -735,8 +737,8 @@ public final class DocxConverter extends Application {
     private boolean checkPreferences() {
     	Preferences prefs = Preferences.userNodeForPackage( DocxConverter.class );
 		  
-    	systemIn  = prefs.get( inFontPref, autodetect );	  
-		systemOut = prefs.get( outFontPref, abyssinica );
+    	setSystemIn( (String)prefs.get( inFontPref, autodetect ) );	  
+		setSystemOut( prefs.get( outFontPref, abyssinica ) );
 
 		return true;
     }
