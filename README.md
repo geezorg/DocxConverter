@@ -4,7 +4,7 @@
 ## About
 
 Migrate Microsoft Word documents in pre-Unicode Ethiopic fonts into a Unicode font supporting Ethiopic script.
-The converter presently provides support for seven legacy (non-Unicode) systems and their respective fonts:
+The converter presently provides support for eleven legacy (non-Unicode) systems and their respective fonts:
 
  * Agafari
    * AGF - Zemen
