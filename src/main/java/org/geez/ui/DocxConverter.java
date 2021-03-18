@@ -1,9 +1,11 @@
 package org.geez.ui;
 
 import java.awt.Desktop;
+import java.awt.Taskbar;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import org.geez.convert.fontsystem.ConvertFontSystemSamawerfa;
 import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez;
 import org.geez.convert.fontsystem.ConvertFontSystemVisualGeez2000;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -43,7 +46,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.embed.swing.SwingFXUtils;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.Image;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -66,7 +71,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
+// import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -191,16 +196,33 @@ public final class DocxConverter extends Application {
     public void start(final Stage stage) {
         stage.setTitle( "Ethiopic Docx Font Converter" );
         ClassLoader geezLibClassLoader = org.geez.convert.Converter.class.getClassLoader();
-        Image logoImage = new Image( geezLibClassLoader.getResourceAsStream("images/geez-org-avatar.png") );
-        stage.getIcons().add( logoImage );
+        // Image logoImage = new Image( geezLibClassLoader.getResourceAsStream("images/geez-org-avatar.png") );
+        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+        final URL imageResource = geezLibClassLoader.getResource("images/geez-org-avatar.png");
+        final Image logoImage = defaultToolkit.getImage(imageResource);
+        /*
+         * Setting an icon is crashing the application, fix this later:
+         *
+        final javafx.scene.image.Image stageImage = SwingFXUtils.toFXImage( (BufferedImage)logoImage, null);
+        stage.getIcons().add( stageImage );
+       */
         String osName = System.getProperty( "os.name" );
         String defaultFont = null;
         if( osName.equals( "Mac OS X" ) ) {
-            com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) );    
+            // com.apple.eawt.Application.getApplication().setDockIconImage( SwingFXUtils.fromFXImage( logoImage, null ) ); 
             defaultFont = "Kefa";
         }
         else {
         	defaultFont =  "Ebrima" ;
+        }
+        final Taskbar taskbar = Taskbar.getTaskbar();
+        try {
+            //set icon for mac os (and other systems which do support this method)
+            taskbar.setIconImage(logoImage);
+        } catch (final UnsupportedOperationException e) {
+            System.out.println("The os does not support: 'taskbar.setIconImage'");
+        } catch (final SecurityException e) {
+            System.out.println("There was a security exception for: 'taskbar.setIconImage'");
         }
         
         checkPreferences();

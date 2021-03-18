@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geez</groupId>
+	<artifactId>DocxConverter</artifactId>
+	<version>0.8.0</version>
+	<name>Word Docx Converter</name>
+	<dependencies>
+		<dependency>
+    		<groupId>org.geez</groupId>
+    		<artifactId>gff-geez-lib</artifactId>
+    		<version>0.1.0</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.controlsfx</groupId>
+ 		   <artifactId>controlsfx</artifactId>
+  		  <version>8.40.14</version>
+		</dependency>
+		<dependency>
+			<groupId>com.apple</groupId>
+    		<artifactId>AppleJavaExtensions</artifactId>
+    		<version>1.4</version>
+		</dependency>
+		<dependency>
+  			<groupId>com.zenjava</groupId>
+  			<artifactId>javafx-maven-plugin</artifactId>
+  			<version>8.8.3</version>
+  			<type>pom</type>
+  		</dependency>
+  		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.28</version>
+		</dependency>
+  		<dependency>
+    		<groupId>org.slf4j</groupId>
+    		<artifactId>slf4j-simple</artifactId>
+    		<version>1.7.28</version>
+    		<!-- scope>test</scope -->
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>15.0.1</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.geez.ui.DocxConverter</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<finalName>${project.artifactId}-${project.version}-full-gui</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+			</plugin>
+		<plugin>
+    		<groupId>com.zenjava</groupId>
+    		<artifactId>javafx-maven-plugin</artifactId>
+    		<version>8.8.3</version>
+    		<configuration>
+        		<vendor>Ge'ez Frontier Foundation</vendor>
+				<mainClass>org.geez.ui.DocxConverter</mainClass>
+				<bundler>DMG</bundler>
+				<!-- bundler>EXE</bundler -->
+				<!-- bundler>MSI</bundler -->
+        		<nativeReleaseVersion>${project.version}</nativeReleaseVersion>  
+        		<needShortcut>true</needShortcut>  
+      		  	<needMenu>true</needMenu>  
+     		   	<appName>${project.artifactId}</appName>
+     		   	<verbose>true</verbose>
+     		   	<!-- deployDir>${project.basedir}/src/main/deploy/package/macosx</deployDir -->
+                <bundleArguments>
+                    <!-- icon>${project.basedir}/src/main/resources/${project.artifactId}.icns</icon -->
+                    <!-- icon>${project.basedir}/src/main/resources/geez-org.ico</icon -->
+                </bundleArguments>
+             	<manifestAttributes>  
+                    <Specification-Title>${project.name}</Specification-Title>  
+                    <Specification-Version>${project.version}</Specification-Version>  
+                    <Specification-Vendor>${project.organization.name}</Specification-Vendor>  
+                    <Implementation-Title>${project.name}</Implementation-Title>  
+                    <Implementation-Version>${project.version}</Implementation-Version>  
+                    <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>  
+                    <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>  
+      			</manifestAttributes> 
+    		</configuration>
+    		<executions>
+       			<execution>
+            		<!-- required before build-native -->
+            		<id>create-jfxjar</id>
+            		<phase>package</phase>
+            		<goals>
+               			<goal>build-jar</goal>
+            		</goals>
+       			</execution>
+        		<execution>
+            		<id>create-native</id>
+            		<phase>package</phase>
+            		<goals>
+                		<goal>build-native</goal>
+            		</goals>
+        		</execution>
+   			</executions>
+		</plugin>
+		
+		</plugins>
+	</build>
+
+</project>
