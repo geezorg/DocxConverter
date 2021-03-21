@@ -7,6 +7,7 @@
         <javafx.version>15</javafx.version>
 	</properties>
 
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geez</groupId>
 	<artifactId>DocxConverter</artifactId>
@@ -18,21 +19,21 @@
     		<artifactId>gff-geez-lib</artifactId>
     		<version>0.1.15</version>
 		</dependency>
-<dependency>
-  <groupId>org.controlsfx</groupId>
-  <artifactId>controlsfx</artifactId>
-  <version>11.1.0</version>
-</dependency>
+		<dependency>
+			<groupId>org.controlsfx</groupId>
+			<artifactId>controlsfx</artifactId>
+			<version>11.1.0</version>
+		</dependency>
 		<!--  dependency>
 			<groupId>com.apple</groupId>
     		<artifactId>AppleJavaExtensions</artifactId>
     		<version>1.4</version>
 		</dependency -->
 		<dependency>
-	<groupId>org.openjfx</groupId>
-	<artifactId>javafx-swing</artifactId>
-	<version>11</version>
-</dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>11</version>
+		</dependency>
   		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -50,19 +51,18 @@
             <version>${javafx.version}</version>
 		</dependency>
 		<dependency>
-  <groupId>org.openjfx</groupId>
-  <artifactId>javafx-maven-plugin</artifactId>
-  <version>0.0.5</version>
-  <type>maven-plugin</type>
-</dependency>
-		<dependency>
-  <groupId>com.gluonhq</groupId>
-  <artifactId>client-maven-plugin</artifactId>
-  <version>0.1.38</version>
-  <type>maven-plugin</type>
-</dependency>
+  			<groupId>org.openjfx</groupId>
+  			<artifactId>javafx-maven-plugin</artifactId>
+			<version>0.0.5</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<!-- dependency>
+  			<groupId>com.gluonhq</groupId>
+ 			<artifactId>client-maven-plugin</artifactId>
+ 			<version>0.1.38</version>
+ 			<type>maven-plugin</type>
+		</dependency -->
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -71,18 +71,16 @@
                 <version>3.8.1</version>
                 <configuration>
                     <release>${maven.compiler.release}</release>
-                </configuration>
+      		  </configuration>
             </plugin>
-
-    <plugin>
-        <groupId>org.openjfx</groupId>
-        <artifactId>javafx-maven-plugin</artifactId>
-        <version>0.0.5</version>
-        <configuration>
-            <mainClass>org.geez.ui.DocxConverter</mainClass>
-        </configuration>
-    </plugin>
+    		<plugin>
+     		   <groupId>org.openjfx</groupId>
+      		  <artifactId>javafx-maven-plugin</artifactId>
+       		 <version>0.0.5</version>
+       		 <configuration>
+       		     <mainClass>org.geez.ui.DocxConverter</mainClass>
+       		  </configuration>
+  		 	</plugin>
 		</plugins>
 	</build>
-
 </project>
